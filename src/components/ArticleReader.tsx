@@ -17,7 +17,8 @@ import {
   Copy,
   Link,
   Printer,
-  Download
+  Download,
+  Pin
 } from 'lucide-react';
 import { BlogPost, BlogTheme, FontStyle, Comment } from '../types';
 import { getAuthorInitials } from '../utils/authorUtils';
@@ -40,6 +41,9 @@ interface ArticleReaderProps {
 const parseInlineMarkdown = (text: string): React.ReactNode => {
   if (!text) return '';
   
+  // Strip any accidental leading markdown heading hashes
+  const cleanSource = text.replace(/^#{1,6}\s+/, '');
+  
   // Regex to match **bold**, *italic*, `code`
   const regex = /(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)/g;
   const parts: React.ReactNode[] = [];
@@ -47,9 +51,9 @@ const parseInlineMarkdown = (text: string): React.ReactNode => {
   let match: RegExpExecArray | null;
   let key = 0;
 
-  while ((match = regex.exec(text)) !== null) {
+  while ((match = regex.exec(cleanSource)) !== null) {
     if (match.index > lastIndex) {
-      parts.push(text.substring(lastIndex, match.index));
+      parts.push(cleanSource.substring(lastIndex, match.index));
     }
 
     const str = match[0];
@@ -79,11 +83,113 @@ const parseInlineMarkdown = (text: string): React.ReactNode => {
     lastIndex = regex.lastIndex;
   }
 
-  if (lastIndex < text.length) {
-    parts.push(text.substring(lastIndex));
+  if (lastIndex < cleanSource.length) {
+    parts.push(cleanSource.substring(lastIndex));
   }
 
-  return parts.length > 0 ? parts : text;
+  return parts.length > 0 ? parts : cleanSource;
+};
+
+// Robust tokenizer to split markdown into clean semantic blocks
+const splitMarkdownIntoBlocks = (rawContent: string): string[] => {
+  if (!rawContent) return [];
+  
+  const text = rawContent.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const lines = text.split('\n');
+  const blocks: string[] = [];
+  let currentBlock: string[] = [];
+  let inTable = false;
+  let inList: 'ul' | 'ol' | false = false;
+
+  const flush = () => {
+    if (currentBlock.length > 0) {
+      const blockStr = currentBlock.join('\n').trim();
+      if (blockStr) {
+        blocks.push(blockStr);
+      }
+      currentBlock = [];
+    }
+    inTable = false;
+    inList = false;
+  };
+
+  lines.forEach((line) => {
+    const trimmed = line.trim();
+
+    if (!trimmed) {
+      flush();
+      return;
+    }
+
+    // Horizontal rule
+    if (trimmed === '---' || trimmed === '***' || trimmed === '___') {
+      flush();
+      blocks.push(trimmed);
+      return;
+    }
+
+    // Markdown Image
+    if (trimmed.startsWith('![') && trimmed.includes('](') && trimmed.endsWith(')')) {
+      flush();
+      blocks.push(trimmed);
+      return;
+    }
+
+    // Headings (#, ##, ###, ####, #####, ######)
+    if (/^#{1,6}\s+/.test(trimmed)) {
+      flush();
+      blocks.push(trimmed);
+      return;
+    }
+
+    // Blockquote
+    if (trimmed.startsWith('>')) {
+      if (inTable || inList) flush();
+      currentBlock.push(trimmed);
+      return;
+    }
+
+    // Table row
+    if (trimmed.startsWith('|') && trimmed.endsWith('|')) {
+      if (!inTable) {
+        flush();
+        inTable = true;
+      }
+      currentBlock.push(trimmed);
+      return;
+    } else if (inTable) {
+      flush();
+    }
+
+    // Unordered list item
+    if (/^[-*]\s+/.test(trimmed)) {
+      if (inList !== 'ul') {
+        flush();
+        inList = 'ul';
+      }
+      currentBlock.push(trimmed);
+      return;
+    }
+
+    // Ordered list item
+    if (/^\d+\.\s+/.test(trimmed)) {
+      if (inList !== 'ol') {
+        flush();
+        inList = 'ol';
+      }
+      currentBlock.push(trimmed);
+      return;
+    }
+
+    if (inList) {
+      flush();
+    }
+
+    currentBlock.push(trimmed);
+  });
+
+  flush();
+  return blocks;
 };
 
 export const ArticleReader: React.FC<ArticleReaderProps> = ({
@@ -378,8 +484,15 @@ export const ArticleReader: React.FC<ArticleReaderProps> = ({
         
         {/* Header Metadata */}
         <header className="mb-6 sm:mb-10 text-center">
-          <div className="inline-block bg-[#8C6A43]/10 text-[#8C6A43] dark:text-[#D4A373] text-[11px] sm:text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-3 sm:mb-4">
-            {post.category}
+          <div className="inline-flex items-center gap-1.5 bg-[#8C6A43]/10 text-[#8C6A43] dark:text-[#D4A373] text-[11px] sm:text-xs font-semibold px-3.5 py-1 rounded-full uppercase tracking-wider mb-3 sm:mb-4 border border-[#8C6A43]/20">
+            {post.pinned || post.category === 'Dergi Tanıtımı' ? (
+              <>
+                <Pin className="w-3.5 h-3.5 fill-current text-[#8C6A43] dark:text-[#D4A373]" />
+                <span>Sabitlenmiş Yazı • Dergi Tanıtımı</span>
+              </>
+            ) : (
+              <span>{post.category}</span>
+            )}
           </div>
 
           <h1 className={`text-2xl sm:text-4xl lg:text-5xl font-bold leading-snug sm:leading-tight mb-3 sm:mb-4 tracking-tight px-1 ${getFontClass()}`}>
@@ -436,16 +549,41 @@ export const ArticleReader: React.FC<ArticleReaderProps> = ({
           className={`prose max-w-none leading-relaxed ${getFontClass()} ${dropCap ? 'drop-cap' : ''}`}
           style={{ fontSize: `${fontSize}px` }}
         >
-          {post.content.split('\n\n').map((rawParagraph, index) => {
-            const paragraph = rawParagraph.trim();
-            if (!paragraph) return null;
+          {splitMarkdownIntoBlocks(post.content).map((block, index) => {
+            const trimmed = block.trim();
+            if (!trimmed) return null;
 
-            if (paragraph === '---' || paragraph === '***' || paragraph === '___') {
+            if (trimmed === '---' || trimmed === '***' || trimmed === '___') {
               return <hr key={index} className="my-6 sm:my-8 border-t border-[#E8E2D9] dark:border-[#332F2C]" />;
             }
 
-            if (paragraph.startsWith('# ')) {
-              const cleanHeading = paragraph.replace(/^#\s*/, '');
+            // Markdown Image Parser ![alt](url)
+            if (trimmed.startsWith('![') && trimmed.includes('](') && trimmed.endsWith(')')) {
+              const match = trimmed.match(/^!\[(.*?)\]\((.*?)\)$/);
+              if (match) {
+                const alt = match[1];
+                const src = match[2];
+                return (
+                  <figure key={index} className="my-6 sm:my-8 rounded-xl sm:rounded-2xl overflow-hidden border border-[#E8E2D9] dark:border-[#332F2C] bg-[#F3EFEA] dark:bg-[#272422] shadow-xs">
+                    <img
+                      src={src}
+                      alt={alt}
+                      referrerPolicy="no-referrer"
+                      className="w-full h-auto object-cover max-h-[460px]"
+                    />
+                    {alt && (
+                      <figcaption className="px-4 py-2.5 text-xs font-sans-inter text-center text-[#736C65] dark:text-[#9E968F] italic border-t border-[#E8E2D9] dark:border-[#332F2C] bg-[#FAF8F5] dark:bg-[#1D1B1A]">
+                        {alt}
+                      </figcaption>
+                    )}
+                  </figure>
+                );
+              }
+            }
+
+            // Headings (# h1, ## h2, ### h3, #### h4, ##### h5, ###### h6)
+            if (/^#\s+/.test(trimmed)) {
+              const cleanHeading = trimmed.replace(/^#\s*/, '');
               return (
                 <h1 key={index} className="text-2xl sm:text-3xl font-bold mt-6 sm:mt-10 mb-3 sm:mb-4 text-[#1A1A1A] dark:text-[#F3EFEA] leading-tight tracking-tight">
                   {parseInlineMarkdown(cleanHeading)}
@@ -453,26 +591,54 @@ export const ArticleReader: React.FC<ArticleReaderProps> = ({
               );
             }
 
-            if (paragraph.startsWith('## ')) {
-              const cleanHeading = paragraph.replace(/^##\s*/, '');
+            if (/^##\s+/.test(trimmed)) {
+              const cleanHeading = trimmed.replace(/^##\s*/, '');
               return (
-                <h2 key={index} className="text-xl sm:text-2xl font-bold mt-5 sm:mt-8 mb-2 sm:mb-4 text-[#1A1A1A] dark:text-[#F3EFEA] leading-tight tracking-tight">
+                <h2 key={index} className="text-xl sm:text-2xl font-bold mt-6 sm:mt-9 mb-2.5 sm:mb-4 text-[#1A1A1A] dark:text-[#F3EFEA] leading-tight tracking-tight">
                   {parseInlineMarkdown(cleanHeading)}
                 </h2>
               );
             }
 
-            if (paragraph.startsWith('### ')) {
-              const cleanHeading = paragraph.replace(/^###\s*/, '');
+            if (/^###\s+/.test(trimmed)) {
+              const cleanHeading = trimmed.replace(/^###\s*/, '');
               return (
-                <h3 key={index} className="text-lg sm:text-xl font-bold mt-4 sm:mt-8 mb-2 sm:mb-3 text-[#8C6A43] dark:text-[#D4A373] leading-snug">
+                <h3 key={index} className="text-lg sm:text-xl font-bold mt-5 sm:mt-8 mb-2 sm:mb-3 text-[#8C6A43] dark:text-[#D4A373] leading-snug">
                   {parseInlineMarkdown(cleanHeading)}
                 </h3>
               );
             }
 
-            if (paragraph.startsWith('> ')) {
-              const cleanQuote = paragraph.replace(/^>\s*/, '');
+            if (/^####\s+/.test(trimmed)) {
+              const cleanHeading = trimmed.replace(/^####\s*/, '');
+              return (
+                <h4 key={index} className="text-base sm:text-lg font-bold mt-4 sm:mt-6 mb-2 sm:mb-2.5 text-[#1A1A1A] dark:text-[#F3EFEA] leading-snug flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#8C6A43] dark:bg-[#D4A373] shrink-0" />
+                  <span>{parseInlineMarkdown(cleanHeading)}</span>
+                </h4>
+              );
+            }
+
+            if (/^#####\s+/.test(trimmed)) {
+              const cleanHeading = trimmed.replace(/^#####\s*/, '');
+              return (
+                <h5 key={index} className="text-sm sm:text-base font-semibold mt-3.5 sm:mt-5 mb-1.5 sm:mb-2 text-[#59524B] dark:text-[#C5BEB8] leading-snug">
+                  {parseInlineMarkdown(cleanHeading)}
+                </h5>
+              );
+            }
+
+            if (/^######\s+/.test(trimmed)) {
+              const cleanHeading = trimmed.replace(/^######\s*/, '');
+              return (
+                <h6 key={index} className="text-xs sm:text-sm font-semibold uppercase tracking-wider mt-3 sm:mt-4 mb-1 text-[#8C6A43] dark:text-[#D4A373]">
+                  {parseInlineMarkdown(cleanHeading)}
+                </h6>
+              );
+            }
+
+            if (trimmed.startsWith('>')) {
+              const cleanQuote = trimmed.replace(/^>\s*/, '');
               return (
                 <blockquote key={index} className="my-5 sm:my-8 pl-3.5 sm:pl-6 border-l-3 sm:border-l-4 border-[#8C6A43] italic font-serif-cormorant text-base sm:text-xl text-[#59524B] dark:text-[#C5BEB8] leading-relaxed">
                   {parseInlineMarkdown(cleanQuote)}
@@ -481,8 +647,8 @@ export const ArticleReader: React.FC<ArticleReaderProps> = ({
             }
 
             // Markdown Table Parser
-            if (paragraph.includes('|') && paragraph.split('\n').some((l) => l.trim().startsWith('|'))) {
-              const lines = paragraph.split('\n').map((l) => l.trim()).filter((l) => l.startsWith('|') && l.endsWith('|'));
+            if (trimmed.includes('|') && trimmed.split('\n').some((l) => l.trim().startsWith('|'))) {
+              const lines = trimmed.split('\n').map((l) => l.trim()).filter((l) => l.startsWith('|') && l.endsWith('|'));
               if (lines.length >= 2) {
                 const isSep = (l: string) => /^\|[\s-:|]+\|$/.test(l);
                 const headerLine = lines[0];
@@ -522,8 +688,8 @@ export const ArticleReader: React.FC<ArticleReaderProps> = ({
             }
 
             // Lists Parser
-            const pLines = paragraph.split('\n');
-            if (pLines.length > 1 && pLines.every((l) => l.trim().startsWith('- ') || l.trim().startsWith('* ') || /^\d+\.\s/.test(l.trim()))) {
+            const pLines = trimmed.split('\n');
+            if (pLines.some((l) => /^[-*]\s+/.test(l.trim()) || /^\d+\.\s+/.test(l.trim()))) {
               const isOrdered = /^\d+\.\s/.test(pLines[0].trim());
               if (isOrdered) {
                 return (
@@ -551,7 +717,7 @@ export const ArticleReader: React.FC<ArticleReaderProps> = ({
 
             return (
               <p key={index} className="mb-4 sm:mb-6 leading-relaxed sm:leading-loose text-[#1A1A1A]/95 dark:text-gray-100 break-words hyphens-auto tracking-normal">
-                {parseInlineMarkdown(paragraph)}
+                {parseInlineMarkdown(trimmed)}
               </p>
             );
           })}

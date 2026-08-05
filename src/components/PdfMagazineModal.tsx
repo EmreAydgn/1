@@ -39,15 +39,16 @@ type ViewFilter = 'all' | 'cover' | 'toc' | 'articles';
 const parseInlineMarkdown = (text: string): React.ReactNode => {
   if (!text) return '';
   
+  const cleanSource = text.replace(/^#{1,6}\s+/, '');
   const regex = /(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)/g;
   const parts: React.ReactNode[] = [];
   let lastIndex = 0;
   let match: RegExpExecArray | null;
   let key = 0;
 
-  while ((match = regex.exec(text)) !== null) {
+  while ((match = regex.exec(cleanSource)) !== null) {
     if (match.index > lastIndex) {
-      parts.push(text.substring(lastIndex, match.index));
+      parts.push(cleanSource.substring(lastIndex, match.index));
     }
 
     const str = match[0];
@@ -77,11 +78,11 @@ const parseInlineMarkdown = (text: string): React.ReactNode => {
     lastIndex = regex.lastIndex;
   }
 
-  if (lastIndex < text.length) {
-    parts.push(text.substring(lastIndex));
+  if (lastIndex < cleanSource.length) {
+    parts.push(cleanSource.substring(lastIndex));
   }
 
-  return parts.length > 0 ? parts : text;
+  return parts.length > 0 ? parts : cleanSource;
 };
 
 // Helper to parse Markdown tables
@@ -238,12 +239,37 @@ const renderMagazineMarkdownChunk = (content: string, chunkKey: string) => {
           {parseInlineMarkdown(trimmed.replace(/^###\s*/, ''))}
         </h4>
       );
+    } else if (trimmed.startsWith('#### ')) {
+      elements.push(
+        <h5 key={`${chunkKey}-h4-${idx}`} className="text-[10px] sm:text-[11px] font-sans font-bold text-[#1A1A1A] mt-1.5 mb-0.5 leading-snug flex items-center gap-1">
+          <span className="w-1 h-1 rounded-full bg-[#8C6A43] shrink-0" />
+          <span>{parseInlineMarkdown(trimmed.replace(/^####\s*/, ''))}</span>
+        </h5>
+      );
+    } else if (trimmed.startsWith('##### ')) {
+      elements.push(
+        <h6 key={`${chunkKey}-h5-${idx}`} className="text-[9.5px] sm:text-[10px] font-sans font-semibold text-[#59524B] mt-1 mb-0.5 leading-snug">
+          {parseInlineMarkdown(trimmed.replace(/^#####\s*/, ''))}
+        </h6>
+      );
     } else if (trimmed.startsWith('> ')) {
       elements.push(
         <blockquote key={`${chunkKey}-quote-${idx}`} className="my-2 py-1.5 px-3 bg-[#1A1A1A]/[0.03] border-l-2 border-[#D4A373] italic font-serif-newsreader text-[11px] sm:text-xs text-[#1A1A1A]/85 rounded-r">
           {parseInlineMarkdown(trimmed.replace(/^>\s*/, ''))}
         </blockquote>
       );
+    } else if (trimmed.startsWith('![') && trimmed.includes('](') && trimmed.endsWith(')')) {
+      const match = trimmed.match(/^!\[(.*?)\]\((.*?)\)$/);
+      if (match) {
+        const alt = match[1];
+        const src = match[2];
+        elements.push(
+          <div key={`${chunkKey}-img-${idx}`} className="my-2 rounded-lg overflow-hidden border border-[#1A1A1A]/15 bg-[#FDFBF7]">
+            <img src={src} alt={alt} crossOrigin="anonymous" referrerPolicy="no-referrer" className="w-full h-auto max-h-[140px] object-cover" />
+            {alt && <p className="text-[8px] font-sans-body italic text-[#1A1A1A]/70 text-center py-1 bg-[#F5EFEB]/50 border-t border-[#1A1A1A]/10">{alt}</p>}
+          </div>
+        );
+      }
     } else if (trimmed === '---') {
       elements.push(
         <div key={`${chunkKey}-hr-${idx}`} className="my-2.5 flex items-center justify-center gap-2 text-[#D4A373]/50">

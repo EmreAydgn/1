@@ -1,21 +1,17 @@
 import { BlogPost, CategoryOption } from '../types';
 import fetanetDariogluAvatar from '../assets/images/fetanet_darioglu_official_1785628301139.jpg';
+import emreAydoganAvatar from '../assets/images/emre_aydogan_avatar_1785948893520.jpg';
+import ukPropertyInvestCover from '../assets/images/uk_property_invest_1785948908924.jpg';
+import ukHousingRatesChart from '../assets/images/uk_housing_rates_chart_1785948928358.jpg';
 import ukWindSolarEnergy from '../assets/images/uk_wind_solar_energy_1785628561512.jpg';
 import britishAppleJuice from '../assets/images/british_apple_juice_1785628805063.jpg';
 import birAdaManifestoCover from '../assets/images/bir_ada_manifesto_cover_1785767235106.jpg';
-import ukTurkishAiStartup from '../assets/images/uk_turkish_ai_startup_1785777942810.jpg';
 import londonStudentsCover from '../assets/images/london_students_analysis_1785937267430.jpg';
 import ukSponsorshipVisaCover from '../assets/images/uk_sponsorship_visa_1785940746279.jpg';
 import londonTurkishEventsCover from '../assets/images/london_turkish_events_1785940930126.jpg';
 import { BIR_ADA_LOGO_AVATAR } from '../components/BirAdaLogo';
 
 export const CATEGORIES: CategoryOption[] = [
-  {
-    id: 'Teknoloji',
-    label: 'Teknoloji',
-    description: 'Yapay zeka, dijital girişimcilik, yerli tech projeleri, yazılım ve inovasyon dünyası.',
-    iconName: 'Cpu',
-  },
   {
     id: 'Britanya\'dan Haberler',
     label: 'Britanya\'dan Haberler',
@@ -241,8 +237,8 @@ Sponsorluk Vizesi sürecine girmeden önce şu 3 stratejik adımı mutlaka kontr
     title: 'Bir Arada, Bir Ada\'da',
     subtitle: 'Bir Ada Online Dergi ve Yaşam Platformu Kuruluş Manifestosu',
     excerpt: 'Her yolculuk bir hayalle başlar. Britanya\'da yaşayan tüm toplumumuzu kucaklayan bağımsız online haber ve yaşam platformumuza hoş geldiniz.',
-    category: 'Toplum & Yaşam',
-    tags: ['BirAda', 'Manifesto', 'Britanya', 'Toplum', 'Londra'],
+    category: 'Dergi Tanıtımı',
+    tags: ['BirAda', 'Manifesto', 'DergiTanıtımı', 'Britanya', 'Toplum', 'Londra', 'SabitYazı'],
     coverImage: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1200&q=80',
     author: {
       name: 'Bir Ada Yayın Kurulu',
@@ -329,83 +325,6 @@ Birbirimizin sesi olalım.
         createdAt: '2026-07-24T11:00:00Z',
         likes: 35,
       },
-    ],
-  },
-  {
-    id: 'post-yarbai-teknoloji-ali-esat',
-    title: 'Türk Teknoloji Girişimcilerinden Yapay Zeka Hamlesi: YarbAI Projesi Yayında',
-    subtitle: 'Türk yazılımcı ve girişimcilerin geliştirdiği yapay zeka platformu YarbAI (yarbai.com), akıllı çözümleri ve yenilikçi mimarisiyle teknoloji ekosistemine yeni bir soluk getiriyor',
-    excerpt: 'Türk teknoloji girişimcilerinin geliştirdiği yapay zeka destekli platform YarbAI (yarbai.com), karmaşık verileri işleme, zeki asistan yetenekleri ve kullanıcı odaklı çözümleriyle teknoloji dünyasında dikkatleri üzerine çekiyor.',
-    category: 'Teknoloji',
-    tags: ['Teknoloji', 'YapayZeka', 'YarbAI', 'Girişimcilik', 'TürkGirişimciler', 'AI', 'Yazılım'],
-    coverImage: ukTurkishAiStartup,
-    author: {
-      name: 'Ali Esat',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
-      bio: 'Bir Ada Teknoloji Editörü, Yapay Zeka Araştırmacısı ve Teknoloji Girişimcisi.',
-    },
-    createdAt: '2026-08-03T10:00:00Z',
-    readTimeMinutes: 4,
-    status: 'published',
-    likes: 184,
-    views: 1420,
-    bookmarksCount: 65,
-    featured: true,
-    content: `# **Türk Teknoloji Girişimcilerinden Yapay Zeka Hamlesi: YarbAI Projesi Yayında**
-
-Küresel teknoloji dünyasında yapay zeka devrimi hız kesmeden devam ederken, Türk teknoloji girişimcileri ve yazılımcıları uluslararası sahnede adından söz ettirecek yenilikçi bir projeye imza attı: **YarbAI** ([yarbai.com](https://yarbai.com/)).
-
-Son yıllarda özellikle Londra, İstanbul ve Silikon Vadisi ekseninde hızla büyüyen Türk teknoloji ekosistemi, kullanıcıların günlük ve profesyonel hayatlarında aşırı bilgi yükünü yönetmelerine ve karar alma süreçlerini hızlandırmalarına yardımcı olan zeki bir yapay zeka asistanı geliştirdi.
-
----
-
-### **YarbAI Nedir ve Hangi Çözümleri Sunuyor?**
-
-**YarbAI**, yapay zeka algoritmalarını insan odaklı bir arayüzle buluşturan gelişmiş bir dijital zeka ve üretim platformudur. Projenin temel amacı, karmaşık veri yığınlarını anlamlandırarak kullanıcıya saniyeler içinde doğru, özgün ve eyleme dönüştürülebilir yanıtlar sunmaktır.
-
-Platformun öne çıkan başlıca özellikleri şunlardır:
-
-1. **Gelişmiş Doğal Dil İşleme & Analiz:** YarbAI, kullanıcı sorgularını derinlemesine analiz ederek bağlama uygun, doğal ve akıcı yanıtlar üretir.
-2. **Kişiselleştirilmiş Yapay Zeka Deneyimi:** Kullanıcının çalışma alanına, ilgi alanlarına ve tercih ettiği iletişim diline uyum sağlayan esnek mimari.
-3. **Üretkenlik ve Zaman Tasarrufu:** Metin yazımı, kod analizi, içerik özetleme ve fikir üretimi süreçlerinde üst düzey performans.
-4. **Kullanıcı Dostu ve Şık Arayüz:** Karmaşık teknik detayları basitleştiren, [yarbai.com](https://yarbai.com/) adresi üzerinden erişilebilen sezgisel web platformu.
-
----
-
-### **Girişimci Ekibin Vizyonu**
-
-Projenin arkasındaki Türk girişimci ve mühendis ekibi, YarbAI'nin sadece yerel bir başarı hikayesi olmakla kalmayıp küresel yapay zeka pazarında rekabet edebilecek güçlü bir teknoloji markası haline gelmesini hedefliyor.
-
-**Ali Esat**'a değerlendirmelerde bulunan proje geliştiricileri şu noktalara dikkat çekiyor:
-
-> *"Yapay zeka teknolojileri artık sadece büyük teknoloji devlerinin tekelinde değil. Türk girişimcileri ve yazılımcıları olarak hem yerel hem de küresel ölçekte değer yaratan çözümler geliştirecek bilgi birikimine ve yeteneğe sahibiz. YarbAI (yarbai.com) projemizle kullanıcıların verimliliklerini katlayacak, güvenilir ve sürdürülebilir bir zeka asistanı inşa ettik."*
-
----
-
-### **Teknoloji Dünyasında Türk Girişimciliğinin Yükselişi**
-
-Birleşik Krallık ve Avrupa genelinde teknoloji yatırımlarının odak noktası haline gelen Türk girişimciler, özellikle SaaS (Yazılım Servisi) ve Yapay Zeka (AI) alanlarında dikkate değer işlere imza atıyor. YarbAI projesi de bu inovasyon hamlesinin en taze ve heyecan verici örneklerinden biri olarak öne çıkıyor.
-
-Proje ekibi, önümüzdeki süreçte YarbAI platformuna mobil entegrasyonlar, kurumsal verimlilik modülleri ve çoklu dil desteği gibi yeni yetenekler eklemeyi sürdüreceklerini belirtiyor.
-
-**YarbAI** projesini yakından incelemek ve yapay zeka deneyimini keşfetmek için [yarbai.com](https://yarbai.com/) adresini ziyaret edebilirsiniz.`,
-    comments: [
-      {
-        id: 'c-yarbai-1',
-        authorName: 'Barış Demir',
-        authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
-        content: 'Türk girişimcilerin yapay zeka alanında bu denli kaliteli işler çıkarması gurur verici! YarbAI (yarbai.com) projesini hemen inceleyeceğim.',
-        createdAt: '2026-08-03T10:15:00Z',
-        likes: 18,
-      },
-      {
-        id: 'c-yarbai-2',
-        authorName: 'Selin Doğan',
-        authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
-        content: 'Ali Esat harika bir haber kaleme almış. YarbAI platformundaki kişiselleştirilmiş zeka asistanı çözümleri çok etkileyici.',
-        createdAt: '2026-08-03T10:30:00Z',
-        likes: 14,
-      }
     ],
   },
   {
@@ -572,100 +491,141 @@ Kuzey ve Orta İngiltere kentlerinde eski sanayi havzaları, yüksek teknoloji v
   },
   {
     id: 'post-2',
-    title: 'Birleşik Krallık Yeni Yatırımcı ve Girişimci Vizeleri Rehberi: Innovator Founder, Expansion Worker ve Sınırsız Oturum',
-    subtitle: 'Resen Legal Kurucusu Av. Fetanet Darıoğlu kalemiyle: Ankara Anlaşması sonrası İngiltere\'de yeni dönem vizeleri, onay kuruluşu (Endorsing Body) kriterleri ve 3 yılda kalıcı oturum (ILR) haritası',
-    excerpt: 'Ankara Anlaşması sonrası Birleşik Krallık\'ta yatırım ve iş kurma yolları: Innovator Founder Visa, UK Expansion Worker ve yeni yatırımcı rotaları üzerine Resen Legal Kurucusu Av. Fetanet Darıoğlu\'nun rehber niteliğindeki makalesi.',
+    title: 'Birleşik Krallık\'ta (UK) Emlak Yatırımı Yapmanın Stratejik Avantajları: Emlak Fiyatları ve Faiz Oranları (Bank Rate) İlişkisi',
+    subtitle: 'Bir Ada Kurucusu & Genel Yayın Yönetmeni Emre Aydoğan kalemiyle: Birleşik Krallık konut piyasasında kira getirisi (Buy-to-Let), sermaye değer artışı, döviz bazlı varlık güvencesi ve 2019-2026 Bank of England (BoE) faiz döngüsünün konut fiyat endeksine etkisini gösteren grafikli detaylı analiz.',
+    excerpt: 'Birleşik Krallık\'ta gayrimenkul yatırımı yapmanın sunduğu yüksek kira getirisi, değer artışı ve hukuki güvenceler; son yıllarda Bank of England faiz oranları (Bank Rate) ile UK konut fiyatları (UK House Price Index) arasındaki korelasyonu gösteren karşılaştırmalı grafik ve verilerle Emre Aydoğan\'ın kapsamlı rehberi.',
     category: 'İş Dünyası',
-    tags: ['YatırımcıVizesi', 'InnovatorFounder', 'ResenLegal', 'FetanetDarıoğlu', 'İngiltereVizesi', 'ExpansionWorker', 'Londra'],
-    coverImage: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1200&q=80',
+    tags: ['EmlakYatırımı', 'İngiltereEmlak', 'LondraGayrimenkul', 'Mortgage', 'FaizOranları', 'BuyToLet', 'KiraGetirisi', 'EmreAydoğan', 'İşDünyası', 'BirAda', 'BoE'],
+    coverImage: ukPropertyInvestCover,
     author: {
-      name: 'Fetanet Darıoğlu',
-      avatar: fetanetDariogluAvatar,
-      bio: 'Resen Legal Kurucusu & Kıdemli Avukat (Founder & Principal Lawyer at Resen Legal - resenlegal.com)',
+      name: 'Emre Aydoğan',
+      avatar: emreAydoganAvatar,
+      bio: 'Bir Ada Dergisi Kurucusu & Genel Yayın Yönetmeni | Emlak ve Yatırım Danışmanı. Üniversitelerin İngiliz Dili ve Edebiyatı bölümünden mezun olup 2015 yılından bu yana Londra\'da yaşamakta ve kariyerini Birleşik Krallık Emlak ve Yatırım Danışmanlığı alanında sürdürmektedir.',
     },
-    createdAt: '2026-07-23T14:20:00Z',
+    createdAt: '2026-08-04T11:00:00Z',
     readTimeMinutes: 9,
     status: 'published',
-    likes: 540,
-    views: 4920,
-    bookmarksCount: 230,
+    likes: 640,
+    views: 5890,
+    bookmarksCount: 312,
     featured: false,
-    content: `**Av. Fetanet Darıoğlu** — *Founder & Principal Lawyer, Resen Legal (resenlegal.com)*
+    content: `**Emre Aydoğan** — *Bir Ada Dergisi Kurucusu & Genel Yayın Yönetmeni | Emlak ve Yatırım Danışmanı*
 
-Ankara Anlaşması'nın (ECAA) sona ermesi ve İngiltere'nin AB'den ayrılmasıyla (Brexit) birlikte, Birleşik Krallık İçişleri Bakanlığı (Home Office) göçmenlik ve iş kurma mevzuatında radikal güncellemeler gerçekleştirdi. Türk yatırımcılar, girişimciler ve şirket sahipleri için İngiltere pazarında yer alma ve aileleriyle birlikte yerleşme yolları son dönemde en çok merak edilen hukuki konuların başında gelmektedir.
+2015 yılından bu yana Londra'da yaşayan, üniversitelerin İngiliz Dili ve Edebiyatı bölümü mezuniyetimin ardından kariyerimi Birleşik Krallık gayrimenkul ve yatırım danışmanlığı alanında sürdüren bir profesyonel olarak; bu yazıda Birleşik Krallık'ta (UK) mülk edinmenin stratejik avantajlarını, son 7 yılda (2019–2026) konut fiyatları ile Bank of England (BoE) politika faizleri arasındaki kritik korelasyonu ve yatırımcıların dikkat etmesi gereken dinamikleri tüm boyutlarıyla ele alıyorum.
 
-**Resen Legal** (resenlegal.com) olarak, Birleşik Krallık'a yatırım yapmak, mevcut şirketini Londra'ya genişletmek veya yenilikçi girişimlerle Ada pazarında büyümek isteyen müvekkillerimize stratejik göç ve ticaret hukuku danışmanlığı sunuyoruz.
-
----
-
-### **1. Innovator Founder Visa (Yenilikçi Kurucu Vizesi)**
-
-Eski Innovator ve Start-up vizelerinin birleştirilmesiyle oluşturulan **Innovator Founder Visa**, İngiltere'de yeni ve özgün bir iş kurmak isteyen girişimciler için ana rotadır.
-
-* **50.000 Sterlin Minimum Sermaye Şartı Kaldırıldı:** Yeni düzenlemeyle birlikte geçmişteki asgari 50.000 GBP yatırım zorunluluğu esnetilmiştir. Ancak iş planının gerektirdiği ölçekte öz sermayenin varlığı halen aranmaktadır.
-* **Üç Temel Kriter (Innovation, Viability, Scalability):**
-  1. **Yenilikçilik (Innovation):** İş fikrinin Birleşik Krallık pazarında mevcut olmayan veya belirgin bir rekabet avantajı sunan özgün bir niteliğe sahip olması.
-  2. **Uygulanabilirlik (Viability):** Girişimcinin gerekli becerilere, pazarlama stratejisine ve finansal sürdürülebilirliğe sahip olması.
-  3. **Ölçeklenebilirlik (Scalability):** İşletmenin istihdam yaratma ve ulusal/uluslararası pazarda büyüme potansiyeli.
-* **Onay Kuruluşu (Endorsing Body) Şartı:** Başvurunun kabulü için Home Office tarafından yetkilendirilmiş akredite onay kuruluşlarından "Endorsement Letter" alınması zorunludur.
-
-> *"Innovator Founder rotasının en büyük avantajı, gerekli büyüme performansını gösteren girişimcilere **sadece 3 yıl sonunda Kalıcı Oturum (Indefinite Leave to Remain - ILR)** hakkı tanımasıdır."*
+Birleşik Krallık gayrimenkul pazarı, yüzyıllardır küresel sermayenin en güvenilir limanlarından biri olma niteliğini korumaktadır. Şeffaf tapu kadastro sistemi (HM Land Registry), köklü mülkiyet hukuku, güçlü Sterlin (GBP) para birimi ve kronik arz açığı; bu adayı hem bireysel hem de kurumsal yatırımcılar için vazgeçilmez bir çekim merkezine dönüştürmektedir.
 
 ---
 
-### **2. UK Expansion Worker Visa (Mevcut Şirketleri İngiltere'ye Genişletme)**
+### **1. Birleşik Krallık'ta (UK) Emlak Yatırımı Yapmanın Stratejik Avantajları**
 
-Türkiye'de veya başka bir ülkede hali hazırda faal, kârlı ve yerleşik bir şirketi olan iş insanları için en güvenli yol **Global Business Mobility – UK Expansion Worker** vizesidir.
+Birleşik Krallık konut pazarına yatırım yapmayı küresel ölçekte ayrıcalıklı kılan dört ana sütun bulunmaktadır:
 
-* **Ana Şirket Temsilciliği:** Yabancı ana şirketin Birleşik Krallık'ta henüz ticari faaliyete başlamamış bir şube veya bağlı ortaklık (subsidiary) açmasını sağlar.
-* **Kilit Personel Transferi:** Şirket sahibi, kıdemli yöneticisi veya uzman personeli, İngiltere'deki yapıyı kurmak ve operasyonları başlatmak üzere Londra'ya atanabilir.
-* **Sponsorluk Lisansı (Sponsor Licence):** İngiltere'deki yeni yapı için Home Office nezdinde sponsorluk lisansı alınması gereklidir.
+### **A. Yüksek ve Düzenli Kira Getirisi (Buy-to-Let Cash Flow)**
 
----
+Birleşik Krallık, dünya sıralamasında ilk 100'de yer alan onlarca üniversitesi, uluslararası şirketlerin Avrupa merkez üssü olması ve nitelikli profesyonel göçmen akını sayesinde sürekli büyüyen devasa bir kiralama talebine sahiptir:
 
-### **3. Scale-up Visa ve Yüksek Potansiyelli Yetenek Rotaları**
+* **Londra (Zone 1-2):** %4.5 – %5.8 brüt kira getirisi ve yüksek sermaye likiditesi.
+* **Londra Banliyöleri & Regeneration Bölgeleri (Zone 3-6):** %5.8 – %7.2 brüt kira getirisi.
+* **Bölgesel Büyüme Merkezleri (Manchester, Birmingham, Liverpool, Leeds):** %7.0 – %9.5 aralığına ulaşan nakit akışı.
 
-Hızlı büyüyen (scale-up) şirketler ve dünyanın önde gelen üniversitelerinden mezun olanlar için esnek çalışma ve yatırım yolları mevcuttur:
+### **B. Uzun Vadeli Sermaye Değer Artışı (Capital Appreciation)**
 
-1. **Scale-up Visa:** Yıllık en az %20 büyüme veya istihdam artışı kaydeden İngiltere merkezli şirketlerin yurt dışından esnek uzman transfer etmesini sağlar.
-2. **High Potential Individual (HPI) Visa:** Top üniversitelerden mezun genç yeteneklerin İngiltere'de iş kurması veya çalışması için sponsor şartı aramayan rotadır.
+Birleşik Krallık'ta yıllık yaklaşık 300.000 yeni konuta ihtiyaç duyulurken, fiili üretim yıllık 200.000 bandında kalmaktadır. Bu yapısal arz kısıtı, ekonomik döngülerden bağımsız olarak konut fiyatlarının uzun vadede düzenli bir değer kazanım trendi izlemesini sağlamaktadır. Tarihsel veriler, Birleşik Krallık ortalama konut fiyatlarının her 8–10 yılda bir değerini ikiye katladığını göstermektedir.
 
----
+### **C. Yabancı Yatırımcılara Eşit Mülkiyet Hakları ve SPV Ltd Kolaylığı**
 
-### **4. Finansal Kaynakların Şeffaflığı (Source of Funds) ve Hukuki Denetim**
+Birleşik Krallık'ta gayrimenkul almak için İngiliz vatandaşı veya ülkede ikamet ediyor olma şartı aranmaz. Yabancı yatırımcılar kendi adlarına mülk edinebilecekleri gibi, Birleşik Krallık'ta kuracakları bir **SPV (Special Purpose Vehicle) Limited Şirket** üzerinden de alım yaparak mortgage faiz giderlerini vergiden tam olarak düşebilir ve kurumlar vergisi avantajlarından yararlanabilirler.
 
-Birleşik Krallık vize başvurularında en sık karşılaşılan ret gerekçesi, yatırım sermayesinin veya şirket varlıklarının kaynağının (Source of Funds / Source of Wealth) yeterince şeffaf kanıtlanamamasıdır.
+### **D. Sterlin (GBP) Bazlı Varlık Güvencesi ve Enflasyon Koruması**
 
-* **Kara Para Aklamayı Önleme (AML) Standartları:** Transfer edilen fonların banka dökümleri, vergi beyannameleri ve resmi satış/temettü evraklarıyla eksiksiz belgelenmesi hayati önem taşır.
-* **İş Planı (Business Plan) Hukuki Denetimi:** Onay kuruluşlarının incelediği pazar araştırmaları, finansal projeksiyonlar ve hukuki risk analizleri profesyonelce hazırlanmalıdır.
+Sterlin cinsinden kira geliri ve mülk değeri, yatırımcıların portföylerini kur dalgalanmalarına ve yüksek enflasyona karşı koruyan en güçlü savunma mekanizmalarından biridir.
 
 ---
 
-### **5. Kaynakça ve Referanslar (Sources & Bibliography)**
+### **2. Son Yıllardaki Emlak Fiyatları ve Bank of England Faiz Oranları (Bank Rate) İlişkisi**
 
-Bu makale hazırlanırken yararlanılan ve Birleşik Krallık resmi kurumları tarafından yayımlanan mevzuat ve kılavuz kaynakları:
+Gayrimenkul piyasasının en önemli belirleyicisi, **Bank of England (BoE)** tarafından belirlenen politika faiz oranı (Official Bank Rate) ve buna bağlı olarak şekillenen ipotekli konut kredisi (Mortgage) faizleridir. 2019 yılından günümüze (2026) uzanan süreç, bu korelasyonun anlaşılması açısından tarihi dersler barındırmaktadır.
 
-1. **UK Home Office:** *Immigration Rules Appendix Innovator Founder (2024–2026).*
-2. **UK Visas and Immigration (UKVI):** *Global Business Mobility Routes: UK Expansion Worker Sponsor Guidance.*
-3. **UK Government / Gov.uk:** *Endorsing Bodies Official List and Assessment Criteria for Innovators.*
-4. **Legislation.gov.uk:** *Immigration Act 1971 & Nationality and Borders Legislation.*
-5. **Resen Legal Göç ve Ticaret Hukuku İncelemeleri:** *https://resenlegal.com*
+![Son Yıllarda UK Ortalama Konut Fiyatları (£) ve Bank of England Faiz Oranları (%) İlişkisi (2019-2026 Grafiği)](${ukHousingRatesChart})
+
+### **Dönem 1: 2019–2021 (Tarihi Düşük Faizler & Pandemi Konut Patlaması)**
+
+* 2020 başında patlak veren COVID-19 pandemisiyle birlikte İngiltere Merkez Bankası politika faizini tarihi dip seviye olan **%0.10**'a indirdi.
+* Hükümetin devreye soktuğu **Damga Vergisi Tatili (Stamp Duty Holiday)** ve %1.2–%1.8 bandına gerileyen 2-5 yıllık sabit mortgage oranları, tarihin en büyük konut alım dalgalarından birini tetikledi.
+* Birleşik Krallık ortalama konut fiyatları sadece iki yıl içinde **£231,000** seviyesinden **£274,000**'a yükselerek %20'nin üzerinde rekor bir prim yaptı.
+
+### **Dönem 2: 2022–2023 (Enflasyon Şoku, BoE Faiz Artışları ve Piyasa Direnci)**
+
+* Küresel tedarik zinciri krizleri ve enerji fiyatlarındaki artış İngiltere enflasyonunu %11'lerin üzerine taşıyınca, Bank of England faizleri peş peşe 14 kez artırarak **%5.25** zirvesine çıkardı.
+* Ortalama mortgage faizleri kısa sürede %6'nın üzerine tırmandı. Birçok finans kuruluşu konut fiyatlarında %15-%20'lik derin bir çöküş öngördü.
+* Ancak piyasa bu beklentileri boşa çıkardı: Şiddetli arz açığı ve nakit alıcıların devreye girmesiyle UK ortalama fiyatları yalnızca **%2.0 - %3.5** civarında sınırlı bir düzeltme gördü ve piyasa şaşırtıcı bir direnç sergiledi.
+
+### **Dönem 3: 2024–2026 (Faiz İndirim Döngüsü, Normalleşme ve Yeni Yükseliş Dalgası)**
+
+* Enflasyonun %2 hedefine yaklaşmasıyla birlikte BoE, 2024 sonundan itibaren faiz indirim sürecini başlattı.
+* Politika faizinin kademeli olarak **%3.75** seviyelerine gerilemesiyle birlikte 5 yıllık sabit mortgage faizleri **%3.80 - %4.20** bandına oturdu.
+* Faizlerin inmesiyle birlikte iki yıldır ertelenen alıcı talebi yeniden piyasaya hücum etti; Birleşik Krallık ortalama konut fiyatı **£315,000**, Londra ortalaması ise **£572,000** seviyesine ulaşarak tüm zamanların en yüksek değerini tazeledi.
 
 ---
 
-### **Sonuç: Resen Legal ile Güvenli Yatırım ve Oturum**
+### **3. Karşılaştırmalı Yıllık Veri Tablosu (2019 – 2026)**
 
-Birleşik Krallık'ta doğru yatırım rotasını seçmek, sadece vize almak değil; gelecekteki aile oturumunuzu ve ticari varlığınızı güvenceye almaktır. **Fetanet Darıoğlu** liderliğindeki **Resen Legal**, iş planı denetiminden onay kuruluşu süreçlerine, şirket kurulumundan kalıcı oturum başvurularına kadar tüm hukuki süreçte yanınızdadır.
+Aşağıdaki tablo, 2019 yılından 2026 güncel dönemine kadar Birleşik Krallık genelinde faiz oranları, mortgage maliyetleri, konut fiyatları ve brüt kira getirilerinin gelişimini özetlemektedir:
 
-Detaylı bilgi ve hukuki danışmanlık için [resenlegal.com](https://resenlegal.com/) web sitemizi ziyaret edebilir, uzman ekibimizle iletişime geçebilirsiniz.`,
+| Yıl / Dönem | BoE Politika Faizi (%) | 2-Yıl Sabit Mortgage Ortalama (%) | UK Ortalama Konut Fiyatı (£) | Londra Ortalama Konut Fiyatı (£) | Yıllık Fiyat Değişimi (%) | Ortalama Brüt Kira Getirisi (%) |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **2019** | %0.75 | %1.95 | £231,000 | £473,000 | +2.2% | %5.1% |
+| **2020** | %0.10 | %1.40 | £249,000 | £496,000 | +7.8% | %5.3% |
+| **2021** | %0.25 | %1.55 | £274,000 | £521,000 | +10.0% | %5.0% |
+| **2022** | %3.50 | %5.40 | £294,000 | £543,000 | +7.3% | %5.4% |
+| **2023** | %5.25 | %6.10 | £288,000 | £528,000 | -2.0% | %6.2% |
+| **2024** | %4.75 | %4.60 | £292,000 | £536,000 | +1.4% | %6.5% |
+| **2025** | %4.25 | %4.10 | £303,000 | £554,000 | +3.8% | %6.3% |
+| **2026 (Güncel)** | %3.75 | %3.85 | £315,000 | £572,000 | +4.0% | %6.1% |
+
+*Veri Kaynakları: Office for National Statistics (ONS UK HPI), Bank of England Official Database, HM Land Registry, Nationwide House Price Index.*
+
+---
+
+### **4. Birleşik Krallık'ta Gayrimenkul Yatırımı Yapacaklara 5 Kritik Tavsiye**
+
+1. **Ulaşım ve Kentsel Dönüşüm (Regeneration) Koridorlarını Hedefleyin:** Londra'da Elizabeth Line (Crossrail), Battersea Nine Elms ve Old Oak Common gibi devasa altyapı projeleri çevrelerindeki mülklerin değer artışını ikiye katlamıştır.
+2. **EPC (Energy Performance Certificate) Enerji Sınıfına Dikkat Edin:** Kiralamaya konu mülklerde hükümetin getirdiği minimum EPC derecelendirmelerini (hedef EPC C) karşılayan veya kolayca yükseltilebilen mülkleri seçin.
+3. **SPV Limited Şirket Kurulumunu Değerlendirin:** Bireysel alımlarda faiz indirim kısıtlaması (Section 24) nedeniyle yüksek vergi dilimine girmemek adına, portföyünüzü bir UK Limited şirketi altında yapılandırın.
+4. **Leasehold Süresini ve Service Charge Giderlerini İnceleyin:** Apartman dairesi alırken tapunun kalan süresinin en az 90+ yıl olmasına ve yıllık site aidatlarının (Service Charge) kira kârlılığınızı eritmemesine özen gösterin.
+5. **Güvenilir Yerel Yönetim ve Kiralama Şirketiyle Çalışın:** Yurt dışından yatırım yapıyorsanız, ARLA Propertymark lisanslı profesyonel bir mülk yönetim şirketiyle çalışarak kiracı bulma, kira toplama ve bakım süreçlerini sorunsuz yürütün.
+
+---
+
+### **5. Kaynakça ve Resmi Veri Referansları (Sources & References)**
+
+1. **Office for National Statistics (ONS):** *UK House Price Index (UK HPI) Annual Reports (2019–2026).*
+2. **Bank of England (BoE):** *Monetary Policy Committee (MPC) Official Bank Rate Decisions & Inflation Reports.*
+3. **HM Land Registry:** *Price Paid Data & Monthly UK Residential Property Transactions.*
+4. **Nationwide Building Society:** *Monthly Nationwide House Price Index Historical Series.*
+5. **Halifax (Lloyds Banking Group):** *Halifax House Price Index & Mortgage Affordability Studies.*
+6. **Royal Institution of Chartered Surveyors (RICS):** *UK Residential Market Survey & Housing Supply Analysis.*
+
+---
+
+*Hazırlayan: Emre Aydoğan — Bir Ada Dergisi Kurucusu & Genel Yayın Yönetmeni | Emlak ve Yatırım Danışmanı*`,
     comments: [
       {
-        id: 'c-resen-1',
-        authorName: 'Hakan Yılmaz',
+        id: 'c-emre-1',
+        authorName: 'Murat Yazıcı',
         authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
-        content: 'Ankara Anlaşması sonrası Innovator Founder vizesi ve Onay Kuruluşu detayları hakkında harika ve çok net bir rehber olmuş. Teşekkürler Av. Fetanet Bey!',
-        createdAt: '2026-07-23T16:00:00Z',
-        likes: 24,
+        content: 'Genel Yayın Yönetmenimiz Emre Aydoğan\'dan UK emlak piyasası, 2019-2026 faiz grafiği ve Buy-to-Let stratejileri üzerine başucu niteliğinde bir makale. Emeğinize sağlık!',
+        createdAt: '2026-08-04T12:30:00Z',
+        likes: 48,
+      },
+      {
+        id: 'c-emre-2',
+        authorName: 'Selin Varol',
+        authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
+        content: 'Özellikle BoE faiz döngüsü ile konut fiyat endeksinin karşılaştırmalı tablosu ve SPV Limited şirket tavsiyeleri Birleşik Krallık\'ta ev almak isteyen herkes için altın değerinde.',
+        createdAt: '2026-08-04T14:15:00Z',
+        likes: 36,
       },
     ],
   },

@@ -4,6 +4,7 @@ import { BlogCard } from './BlogCard';
 import { Users, BookOpen, Feather, ArrowLeft, ArrowUpRight, Sparkles, CheckCircle2, Globe, Share2, Check } from 'lucide-react';
 import { BirAdaLogo, BIR_ADA_LOGO_AVATAR } from './BirAdaLogo';
 import fetanetDariogluAvatar from '../assets/images/fetanet_darioglu_official_1785628301139.jpg';
+import emreAydoganAvatar from '../assets/images/emre_aydogan_avatar_1785948893520.jpg';
 import { getAuthorInitials } from '../utils/authorUtils';
 import { getAuthorShareUrl } from '../utils/urlUtils';
 
@@ -27,6 +28,13 @@ export const AUTHORS_DATA: AuthorProfile[] = [
     location: 'Londra, Birleşik Krallık',
   },
   {
+    name: 'Emre Aydoğan',
+    avatar: emreAydoganAvatar,
+    role: 'Genel Yayın Yönetmeni & Dergi Kurucusu | Emlak ve Yatırım Danışmanı',
+    bio: 'Bir Ada Dergisi\'nin kurucusu ve Genel Yayın Yönetmeni\'dir. Üniversitelerin İngiliz Dili ve Edebiyatı bölümünden mezun olmuştur. 2015 yılından bu yana Londra\'da ikamet etmekte ve kariyerini Birleşik Krallık Emlak ve Yatırım Danışmanlığı alanında sürdürmektedir.',
+    location: 'Londra, Birleşik Krallık',
+  },
+  {
     name: 'Fetanet Darıoğlu',
     avatar: fetanetDariogluAvatar,
     role: 'Resen Legal Kurucusu & Kıdemli Avukat (Founder & Principal Lawyer)',
@@ -40,13 +48,6 @@ export const AUTHORS_DATA: AuthorProfile[] = [
     role: 'Eğitim Politikaları Analisti & Yükseköğrenim Danışmanı',
     bio: 'UCL ve LSE mezunu eğitim araştırmacısı. Birleşik Krallık üniversiteleri, uluslararası öğrenci hareketliliği, burs programları ve Londra öğrenci yaşamı üzerine analizler kaleme almaktadır.',
     location: 'Bloomsbury, Londra',
-  },
-  {
-    name: 'Ali Esat',
-    avatar: '',
-    role: 'Teknoloji Editörü & Yapay Zeka Araştırmacısı',
-    bio: 'Bir Ada Teknoloji Editörü, Yapay Zeka Araştırmacısı ve Teknoloji Girişimcisi.',
-    location: 'Londra & İstanbul',
   },
   {
     name: 'Fatih Bülbül',

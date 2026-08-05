@@ -39,7 +39,6 @@ export interface BlogPost {
 }
 
 export type CategoryName = 
-  | 'Teknoloji'
   | 'Britanya\'dan Haberler'
   | 'Dünyadan Haberler'
   | 'UK Eventler'
@@ -51,7 +50,8 @@ export type CategoryName =
   | 'Kültür & Sanat'
   | 'Britanya Tarihi'
   | 'Sağlık'
-  | 'UK Gezi';
+  | 'UK Gezi'
+  | 'Dergi Tanıtımı';
 
 export interface CategoryOption {
   id: CategoryName;

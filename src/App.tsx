@@ -17,7 +17,7 @@ import { getArticleShareUrl, getAuthorShareUrl, getCleanHomeUrl } from './utils/
 export default function App() {
   // Posts state initialized with INITIAL_POSTS or updated local storage
   const [posts, setPosts] = useState<BlogPost[]>(() => {
-    const saved = localStorage.getItem('bir_ada_posts_v28');
+    const saved = localStorage.getItem('bir_ada_posts_v32');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -120,7 +120,7 @@ export default function App() {
 
   // Sync posts to LocalStorage
   useEffect(() => {
-    localStorage.setItem('bir_ada_posts_v27', JSON.stringify(posts));
+    localStorage.setItem('bir_ada_posts_v32', JSON.stringify(posts));
   }, [posts]);
 
   // Sync bookmarks to LocalStorage
@@ -240,8 +240,8 @@ export default function App() {
     return matchesCategory && matchesSearch;
   });
 
-  const featuredPost = posts.find((p) => p.featured) || posts[0];
-  const regularPosts = filteredPosts.filter((p) => p.id !== featuredPost?.id);
+  const featuredPost = posts.find((p) => p.pinned) || posts.find((p) => p.featured) || posts[0];
+  const regularPosts = filteredPosts.filter((p) => p.id !== featuredPost?.id && !p.pinned);
 
   const bookmarkedPostsList = posts.filter((p) => bookmarkedIds.includes(p.id));
 
@@ -288,7 +288,7 @@ export default function App() {
           isBookmarked={bookmarkedIds.includes(selectedPost.id)}
           onLikePost={handleLikePost}
           onAddComment={handleAddComment}
-          relatedPosts={posts.filter((p) => p.id !== selectedPost.id && p.category === selectedPost.category).slice(0, 2)}
+          relatedPosts={posts.filter((p) => p.id !== selectedPost.id && (selectedPost.pinned || selectedPost.category === 'Dergi Tanıtımı' ? !p.pinned : p.category === selectedPost.category)).slice(0, 2)}
           onSelectRelated={(p) => handleSelectPost(p)}
           onSelectAuthor={handleSelectAuthor}
         />

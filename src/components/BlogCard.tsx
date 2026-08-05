@@ -78,7 +78,9 @@ export const BlogCard: React.FC<BlogCardProps> = ({
       <article 
         onClick={() => onSelectPost(post)}
         id={`post-card-featured-${post.id}`}
-        className="group cursor-pointer bg-white rounded-3xl border border-[#1A1A1A]/10 overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 grid grid-cols-1 lg:grid-cols-12 gap-0 mb-12"
+        className={`group cursor-pointer bg-white rounded-3xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 grid grid-cols-1 lg:grid-cols-12 gap-0 mb-12 ${
+          post.pinned ? 'border-2 border-[#D4A373]/40 ring-1 ring-[#D4A373]/20' : 'border border-[#1A1A1A]/10'
+        }`}
       >
         <div className="lg:col-span-7 relative overflow-hidden min-h-[320px] lg:min-h-[440px]">
           <img
@@ -90,7 +92,7 @@ export const BlogCard: React.FC<BlogCardProps> = ({
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent lg:hidden" />
-          <span className="absolute top-4 left-4 bg-[#1A1A1A] text-white text-[10px] font-bold uppercase tracking-widest font-sans-inter px-3 py-1.5 rounded-full shadow-md flex items-center gap-1.5 border border-white/20">
+          <span className="absolute top-4 left-4 bg-[#1A1A1A] text-white text-[10px] font-bold uppercase tracking-widest font-sans-inter px-3 py-1.5 rounded-full shadow-md flex items-center gap-1.5 border border-[#D4A373]/40">
             {post.pinned ? (
               <>
                 <Pin className="w-3.5 h-3.5 text-[#D4A373] fill-current" /> Sabitlenmiş Yazı
@@ -106,8 +108,13 @@ export const BlogCard: React.FC<BlogCardProps> = ({
         <div className="lg:col-span-5 p-8 lg:p-10 flex flex-col justify-between bg-[#F9F7F2]">
           <div>
             <div className="flex items-center justify-between gap-2 mb-4">
-              <span className="text-[10px] font-bold font-sans-inter uppercase tracking-[0.2em] text-[#D4A373] bg-white px-3 py-1 rounded-full border border-[#1A1A1A]/10">
-                {post.category}
+              <span className={`text-[10px] font-bold font-sans-inter uppercase tracking-[0.2em] px-3 py-1 rounded-full border flex items-center gap-1.5 ${
+                post.pinned || post.category === 'Dergi Tanıtımı'
+                  ? 'bg-[#1A1A1A] text-[#D4A373] border-[#D4A373]/40 shadow-xs'
+                  : 'text-[#D4A373] bg-white border-[#1A1A1A]/10'
+              }`}>
+                {post.pinned && <Pin className="w-3 h-3 text-[#D4A373] fill-current" />}
+                <span>{post.pinned || post.category === 'Dergi Tanıtımı' ? 'Dergi Tanıtımı' : post.category}</span>
               </span>
               <div className="flex items-center gap-1 text-xs font-sans-inter text-[#1A1A1A]/50">
                 <Clock className="w-3.5 h-3.5 text-[#D4A373]" />
@@ -188,7 +195,9 @@ export const BlogCard: React.FC<BlogCardProps> = ({
     <article 
       onClick={() => onSelectPost(post)}
       id={`post-card-${post.id}`}
-      className="group cursor-pointer bg-white rounded-3xl border border-[#1A1A1A]/10 overflow-hidden shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
+      className={`group cursor-pointer bg-white rounded-3xl overflow-hidden shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col justify-between ${
+        post.pinned ? 'border-2 border-[#D4A373]/50 ring-1 ring-[#D4A373]/20 shadow-sm' : 'border border-[#1A1A1A]/10'
+      }`}
     >
       <div>
         <div className="relative aspect-[16/10] overflow-hidden bg-[#EBE8E0]">
@@ -200,8 +209,13 @@ export const BlogCard: React.FC<BlogCardProps> = ({
             }}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
           />
-          <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md text-[#1A1A1A] text-[10px] font-bold font-sans-inter uppercase tracking-[0.2em] px-3 py-1 rounded-full border border-[#1A1A1A]/10 shadow-xs">
-            {post.category}
+          <div className={`absolute top-3 left-3 text-[10px] font-bold font-sans-inter uppercase tracking-[0.2em] px-3 py-1 rounded-full shadow-xs flex items-center gap-1.5 backdrop-blur-md ${
+            post.pinned || post.category === 'Dergi Tanıtımı'
+              ? 'bg-[#1A1A1A]/95 text-[#D4A373] border border-[#D4A373]/40'
+              : 'bg-white/95 text-[#1A1A1A] border border-[#1A1A1A]/10'
+          }`}>
+            {post.pinned && <Pin className="w-3 h-3 text-[#D4A373] fill-current" />}
+            <span>{post.pinned || post.category === 'Dergi Tanıtımı' ? 'Dergi Tanıtımı' : post.category}</span>
           </div>
           <button
             onClick={(e) => onToggleBookmark(post.id, e)}

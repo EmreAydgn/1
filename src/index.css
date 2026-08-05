@@ -1,0 +1,147 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .font-serif-newsreader {
+    font-family: 'Newsreader', Georgia, serif;
+  }
+  .font-serif-cormorant {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+  }
+  .font-sans-body {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+  .font-mono-type {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+/* Paper Themes */
+.theme-warm {
+  --bg-main: #FAF8F5;
+  --bg-card: #FFFFFF;
+  --bg-subtle: #F3EFEA;
+  --border: #E8E2D9;
+  --text-main: #2C2825;
+  --text-muted: #736C65;
+  --accent: #8C6A43;
+  --accent-light: #F4ECE1;
+}
+
+.theme-dark {
+  --bg-main: #141312;
+  --bg-card: #1D1B1A;
+  --bg-subtle: #272422;
+  --border: #332F2C;
+  --text-main: #ECE8E3;
+  --text-muted: #9E968F;
+  --accent: #D4A373;
+  --accent-light: #2A241E;
+}
+
+.theme-paper {
+  --bg-main: #F4EAD3;
+  --bg-card: #FAF4E6;
+  --bg-subtle: #E8DCBF;
+  --border: #DDD0AE;
+  --text-main: #332B22;
+  --text-muted: #786C5A;
+  --accent: #7A4B29;
+  --accent-light: #EBE0C5;
+}
+
+.theme-clean {
+  --bg-main: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --bg-subtle: #F1F5F9;
+  --border: #E2E8F0;
+  --text-main: #0F172A;
+  --text-muted: #64748B;
+  --accent: #2563EB;
+  --accent-light: #EFF6FF;
+}
+
+/* Custom Drop-Cap for Editorial Reading */
+.drop-cap::first-letter {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.5rem;
+  line-height: 2.75rem;
+  float: left;
+  margin-top: 0.15rem;
+  margin-right: 0.65rem;
+  margin-bottom: -0.25rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+@media (max-width: 640px) {
+  .drop-cap::first-letter {
+    font-size: 2.75rem;
+    line-height: 2.2rem;
+    margin-right: 0.4rem;
+    margin-top: 0.1rem;
+  }
+}
+
+/* Smooth typography and focus transitions */
+::selection {
+  background-color: #E2D5BE;
+  color: #1A1612;
+}
+
+/* Hide scrollbar when distraction-free focus mode is active */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Print & PDF Export Optimizations */
+@media print {
+  @page {
+    margin: 1.5cm;
+    size: A4 portrait;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+    font-size: 12pt !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide unnecessary web chrome during printing */
+  header, 
+  footer, 
+  nav, 
+  .print\:hidden,
+  .print-hidden,
+  button:not(.printable-btn),
+  #reader-back-btn {
+    display: none !important;
+  }
+
+  /* Page breaks and clean containers */
+  .magazine-page {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    margin-bottom: 0 !important;
+    min-height: auto !important;
+  }
+
+  article {
+    page-break-inside: auto !important;
+  }
+
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid !important;
+  }
+}
+

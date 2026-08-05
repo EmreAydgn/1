@@ -94,15 +94,15 @@ export const INITIAL_POSTS: BlogPost[] = [
   {
     id: 'post-uk-sponsorship-visa-guide',
     title: 'İngiltere Sponsorluk Vizesi (Skilled Worker Visa) Nedir? Tüm Boyutlarıyla Avantajları ve Dezavantajları',
-    subtitle: 'Birleşik Krallık\'ta lisanslı bir işveren aracılığıyla yasal çalışma ve ikamet imkânı sunan Sponsorluk Vizesi\'nin (Skilled Worker) işleyişi, 5 yıllık süresiz oturum (ILR) ve vatandaşlık avantajları ile işverene bağımlılık, 60 gün kuralı ve yüksek maliyet dezavantajlarının derinlemesine analizi.',
-    excerpt: 'Birleşik Krallık Sponsorluk Vizesi (Skilled Worker Visa) hakkında bilmeniz gereken her şey: Sistemin nasıl çalıştığı, CoS belgesi, aile getirme ve vatandaşlık yolu gibi büyük avantajları ile şirkete bağımlılık, işten ayrılma riski ve yüksek harçlar gibi tüm dezavantajları.',
+    subtitle: 'Resen Legal Kurucusu Av. Fetanet Darıoğlu kalemiyle: Birleşik Krallık\'ta lisanslı bir işveren aracılığıyla yasal çalışma ve ikamet imkânı sunan Sponsorluk Vizesi\'nin (Skilled Worker) işleyişi, 5 yıllık süresiz oturum (ILR) ve vatandaşlık avantajları ile işverene bağımlılık, 60 gün kuralı ve yüksek maliyet dezavantajlarının derinlemesine analizi.',
+    excerpt: 'Birleşik Krallık Sponsorluk Vizesi (Skilled Worker Visa) hakkında bilmeniz gereken her şey: Sistemin nasıl çalıştığı, CoS belgesi, aile getirme ve vatandaşlık yolu gibi büyük avantajları ile şirkete bağımlılık, işten ayrılma riski ve yüksek harçlar gibi tüm dezavantajları. Resen Legal Kurucusu Av. Fetanet Darıoğlu analizi.',
     category: 'Toplum & Yaşam',
-    tags: ['İngiltere', 'SponsorlukVizesi', 'SkilledWorker', 'VizeRehberi', 'İşBulma', 'Oturumİzni', 'Londra', 'Kariyer', 'ILR'],
+    tags: ['İngiltere', 'SponsorlukVizesi', 'SkilledWorker', 'VizeRehberi', 'İşBulma', 'Oturumİzni', 'Londra', 'Kariyer', 'ILR', 'ResenLegal', 'FetanetDarıoğlu'],
     coverImage: ukSponsorshipVisaCover,
     author: {
-      name: 'Av. Deniz Demir',
-      avatar: '',
-      bio: 'Londra merkezli göçmenlik hukuku ve istihdam danışmanı. Birleşik Krallık Skilled Worker sponsorluk vizeleri, şirket sponsorluk lisansları, ILR süresiz oturum ve küresel yetenek vizeleri üzerine uzman.',
+      name: 'Fetanet Darıoğlu',
+      avatar: fetanetDariogluAvatar,
+      bio: 'Resen Legal Kurucusu & Kıdemli Avukat (Founder & Principal Lawyer at Resen Legal - resenlegal.com)',
     },
     createdAt: '2026-08-05T08:00:00Z',
     readTimeMinutes: 8,
@@ -216,7 +216,7 @@ Sponsorluk Vizesi sürecine girmeden önce şu 3 stratejik adımı mutlaka kontr
 2. **Sözleşmedeki "Clawback" Maddelerine Dikkat Edin:** Bazı şirketler işten erken ayrılmanız durumunda vize ve CoS masraflarını sizden geri talep eden geri ödeme (clawback) maddeleri koyabilir. Bu maddelerin İngiliz İş Hukuku'na uygunluğunu inceleyin.
 3. **Maaş ve Meslek Kodunuzu İnceleyin:** Size tahsis edilen CoS belgesindeki 4 haneli meslek kodunun (SOC Code) gerçek görev tanımınızla ve Home Office'in belirlediği rayiç maaşla (Going Rate) birebir örtüştüğünü teyit edin.
 
-*Hazırlayan: Av. Deniz Demir — Bir Ada Hukuk, İstihdam ve Göç Masası*`,
+*Hazırlayan: Av. Fetanet Darıoğlu — Resen Legal Kurucusu & Kıdemli Avukat (resenlegal.com)*`,
     comments: [
       {
         id: 'c-sponsor-1',
@@ -230,7 +230,7 @@ Sponsorluk Vizesi sürecine girmeden önce şu 3 stratejik adımı mutlaka kontr
         id: 'c-sponsor-2',
         authorName: 'Selin Varol',
         authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
-        content: 'Özellikle karşılaştırma tablosu ve CoS kontrol tavsiyeleri Birleşik Krallık\'ta iş arayan herkesin mutlaka kaydetmesi gereken bilgiler. Kaleminize sağlık Av. Deniz Bey.',
+        content: 'Özellikle karşılaştırma tablosu ve CoS kontrol tavsiyeleri Birleşik Krallık\'ta iş arayan herkesin mutlaka kaydetmesi gereken bilgiler. Kaleminize sağlık Av. Fetanet Hanım.',
         createdAt: '2026-08-05T09:10:00Z',
         likes: 31,
       }

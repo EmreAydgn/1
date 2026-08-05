@@ -27,11 +27,12 @@ export const AUTHORS_DATA: AuthorProfile[] = [
     location: 'Londra, Birleşik Krallık',
   },
   {
-    name: 'Av. Deniz Demir',
-    avatar: '',
-    role: 'İngiltere Göçmenlik Hukuku & İstihdam Danışmanı',
-    bio: 'Londra merkezli göçmenlik hukuku ve istihdam danışmanı. Birleşik Krallık Skilled Worker sponsorluk vizeleri, şirket sponsorluk lisansları, ILR süresiz oturum ve küresel yetenek vizeleri üzerine uzman.',
-    location: 'Holborn, Londra',
+    name: 'Fetanet Darıoğlu',
+    avatar: fetanetDariogluAvatar,
+    role: 'Resen Legal Kurucusu & Kıdemli Avukat (Founder & Principal Lawyer)',
+    bio: 'Resen Legal (resenlegal.com) kurucusu ve kıdemli avukatı. Birleşik Krallık ticaret hukuku, şirket kurulumu, veri merkezleri mevzuatı, sözleşmeler ve sınır ötesi hukuki danışmanlık alanlarında uzman.',
+    location: 'Londra & İstanbul (Resen Legal)',
+    website: 'https://resenlegal.com/',
   },
   {
     name: 'Dr. Aylin Yılmaz',
@@ -88,14 +89,6 @@ export const AUTHORS_DATA: AuthorProfile[] = [
     role: 'Bir Ada Haber Müdürü & Westminster Siyaset Analisti',
     bio: '15 yılı aşkın süredir Londra\'da yerleşik gazeteci. Avam Kamarası gelişmeleri, Birleşik Krallık iç siyaseti ve küresel diplomasi denklemını takip eder.',
     location: 'Westminster, Londra',
-  },
-  {
-    name: 'Fetanet Darıoğlu',
-    avatar: '',
-    role: 'Resen Legal Kurucusu & Kıdemli Avukat (Founder & Principal Lawyer)',
-    bio: 'Resen Legal (resenlegal.com) kurucusu ve kıdemli avukatı. Birleşik Krallık ticaret hukuku, şirket kurulumu, veri merkezleri mevzuatı, sözleşmeler ve sınır ötesi hukuki danışmanlık alanlarında uzman.',
-    location: 'Londra & İstanbul (Resen Legal)',
-    website: 'https://resenlegal.com/',
   },
   {
     name: 'Murat Yazıcı',

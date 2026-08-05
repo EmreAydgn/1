@@ -17,7 +17,7 @@ import { getArticleShareUrl, getAuthorShareUrl, getCleanHomeUrl } from './utils/
 export default function App() {
   // Posts state initialized with INITIAL_POSTS or updated local storage
   const [posts, setPosts] = useState<BlogPost[]>(() => {
-    const saved = localStorage.getItem('bir_ada_posts_v27');
+    const saved = localStorage.getItem('bir_ada_posts_v28');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);

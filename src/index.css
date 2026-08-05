@@ -99,15 +99,9 @@
 
 /* Print & PDF Export Optimizations */
 @media print {
-  @page {
-    margin: 1.5cm;
-    size: A4 portrait;
-  }
-
   body {
-    background: #ffffff !important;
-    color: #1a1a1a !important;
-    font-size: 12pt !important;
+    background: #FAF8F5 !important;
+    color: #1A1A1A !important;
     margin: 0 !important;
     padding: 0 !important;
     -webkit-print-color-adjust: exact !important;
@@ -118,6 +112,8 @@
   header, 
   footer, 
   nav, 
+  main,
+  #mobile-submit-fab,
   .print\:hidden,
   .print-hidden,
   button:not(.printable-btn),
@@ -126,13 +122,13 @@
   }
 
   /* Page breaks and clean containers */
-  .magazine-page {
+  .magazine-pdf-page {
     box-shadow: none !important;
-    border-radius: 0 !important;
     page-break-after: always !important;
     break-after: page !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
     margin-bottom: 0 !important;
-    min-height: auto !important;
   }
 
   article {

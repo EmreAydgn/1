@@ -499,19 +499,25 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
             allowTaint: false,
             logging: false,
             backgroundColor: '#FAF8F5',
+            width: 794,
+            height: 1123,
             windowWidth: 1024,
             scrollX: 0,
             scrollY: 0,
             imageTimeout: 10000,
           });
 
-          const imgData = canvas.toDataURL('image/jpeg', 0.95);
+          if (canvas && canvas.width > 0 && canvas.height > 0) {
+            const imgData = canvas.toDataURL('image/jpeg', 0.95);
 
-          if (i > 0) {
-            pdf.addPage('a4', 'portrait');
+            if (i > 0) {
+              pdf.addPage('a4', 'portrait');
+            }
+
+            pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
+          } else {
+            throw new Error(`Sayfa ${i + 1} tuval boyutu geçersiz.`);
           }
-
-          pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
         } catch (pageErr) {
           console.warn(`Sayfa ${i + 1} işlenirken uyarı:`, pageErr);
           if (i > 0) {
@@ -588,9 +594,11 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
             margin: 0 !important;
           }
           html, body {
+            width: 210mm !important;
+            height: 297mm !important;
             margin: 0 !important;
             padding: 0 !important;
-            background: #FFFFFF !important;
+            background: #FAF8F5 !important;
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
           }
@@ -619,14 +627,20 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
             break-after: page !important;
             break-inside: avoid !important;
             margin: 0 !important;
+            padding: 14mm 16mm !important;
             width: 210mm !important;
             height: 297mm !important;
-            max-width: none !important;
-            min-height: auto !important;
+            min-height: 297mm !important;
+            max-height: 297mm !important;
             border: 1px solid rgba(26, 26, 26, 0.15) !important;
             background-color: #FAF8F5 !important;
             box-shadow: none !important;
             box-sizing: border-box !important;
+            overflow: hidden !important;
+          }
+          .magazine-pdf-page:last-child {
+            page-break-after: auto !important;
+            break-after: auto !important;
           }
         }
       `}</style>
@@ -1078,7 +1092,7 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
             </div>
           )}
 
-          {/* ================= ARTICLES PAGES (Formatted in A5/A4 Pages) ================= */}
+          {/* ================= ARTICLES PAGES (Formatted in A4 Pages) ================= */}
           {(viewFilter === 'all' || viewFilter === 'articles') && (
             displayPages.map((page) => {
               const { post, articlePageIndex, totalArticlePages, overallPageNumber, pageType } = page;
@@ -1209,24 +1223,37 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
 
       {/* ========================================================================= */}
       {/* COMPLETE MAGAZINE BUFFER FOR 100% RELIABLE FULL A4 PDF EXPORT             */}
-      {/* Positioned off-screen without opacity:0 so html2canvas captures perfectly */}
+      {/* Positioned behind UI without offscreen clipping for perfect rendering    */}
       {/* ========================================================================= */}
       <div 
         id="pdf-full-magazine-render-container"
         ref={fullMagazineRenderRef}
         style={{
           position: 'fixed',
-          left: '-12000px',
+          left: '0px',
           top: '0px',
           width: '794px',
           zIndex: -9999,
           pointerEvents: 'none',
           backgroundColor: '#FAF8F5',
+          opacity: 1,
+          visibility: 'visible',
+          overflow: 'hidden',
         }}
         aria-hidden="true"
       >
         {/* Buffer Page 1: Cover */}
-        <div className="magazine-pdf-page-full bg-[#FAF8F5] text-[#1A1A1A] border-2 border-[#1A1A1A] p-10 w-[794px] min-h-[1123px] flex flex-col justify-between mb-8 box-border">
+        <div 
+          className="magazine-pdf-page-full bg-[#FAF8F5] text-[#1A1A1A] border-2 border-[#1A1A1A] p-10 w-[794px] h-[1123px] min-h-[1123px] max-h-[1123px] flex flex-col justify-between box-border overflow-hidden"
+          style={{
+            width: '794px',
+            height: '1123px',
+            minHeight: '1123px',
+            maxHeight: '1123px',
+            boxSizing: 'border-box',
+            overflow: 'hidden',
+          }}
+        >
           <div className="border-b-2 border-[#1A1A1A] pb-4 text-center">
             <div className="flex items-center justify-between text-[11px] font-sans uppercase tracking-[0.2em] font-bold text-[#1A1A1A]/70 mb-2">
               <span>LONDRA • EDINBURGH • CARDIFF</span>
@@ -1303,7 +1330,17 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
         </div>
 
         {/* Buffer Page 2: Table of Contents */}
-        <div className="magazine-pdf-page-full bg-[#FAF8F5] text-[#1A1A1A] border-2 border-[#1A1A1A] p-10 w-[794px] min-h-[1123px] flex flex-col justify-between mb-8 box-border">
+        <div 
+          className="magazine-pdf-page-full bg-[#FAF8F5] text-[#1A1A1A] border-2 border-[#1A1A1A] p-10 w-[794px] h-[1123px] min-h-[1123px] max-h-[1123px] flex flex-col justify-between box-border overflow-hidden"
+          style={{
+            width: '794px',
+            height: '1123px',
+            minHeight: '1123px',
+            maxHeight: '1123px',
+            boxSizing: 'border-box',
+            overflow: 'hidden',
+          }}
+        >
           <div className="flex items-center justify-between border-b border-[#1A1A1A] pb-3 text-[11px] font-sans uppercase tracking-wider text-[#1A1A1A]/70">
             <span className="font-bold text-[#8C6A43]">BİR ADA AYLIK DERGİ</span>
             <span>AĞUSTOS 2026 • SAYI 01 • DERGİ DİZİNİ</span>
@@ -1365,7 +1402,15 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
           return (
             <div
               key={`buffer-${post.id}-page-${articlePageIndex}`}
-              className="magazine-pdf-page-full bg-[#FAF8F5] text-[#1A1A1A] border-2 border-[#1A1A1A] p-10 w-[794px] min-h-[1123px] flex flex-col justify-between mb-8 box-border"
+              className="magazine-pdf-page-full bg-[#FAF8F5] text-[#1A1A1A] border-2 border-[#1A1A1A] p-10 w-[794px] h-[1123px] min-h-[1123px] max-h-[1123px] flex flex-col justify-between box-border overflow-hidden"
+              style={{
+                width: '794px',
+                height: '1123px',
+                minHeight: '1123px',
+                maxHeight: '1123px',
+                boxSizing: 'border-box',
+                overflow: 'hidden',
+              }}
             >
               <div className="flex items-center justify-between border-b border-[#1A1A1A] pb-2 text-[11px] font-sans uppercase tracking-wider text-[#1A1A1A]/70 shrink-0">
                 <span className="font-bold text-[#8C6A43]">{post.category}</span>

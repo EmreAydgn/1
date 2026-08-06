@@ -97,13 +97,20 @@
   scrollbar-width: none;
 }
 
-/* Print & PDF Export Optimizations */
+/* Print & PDF Export Optimizations (Strictly A4 Paper Dimensions) */
 @media print {
-  body {
-    background: #FAF8F5 !important;
-    color: #1A1A1A !important;
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  html, body {
+    width: 210mm;
+    height: 297mm;
     margin: 0 !important;
     padding: 0 !important;
+    background: #FAF8F5 !important;
+    color: #1A1A1A !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
@@ -121,14 +128,30 @@
     display: none !important;
   }
 
-  /* Page breaks and clean containers */
-  .magazine-pdf-page {
+  /* Page breaks and clean containers specifically for A4 to prevent blank page generation */
+  .magazine-pdf-page,
+  .magazine-pdf-page-full {
     box-shadow: none !important;
     page-break-after: always !important;
     break-after: page !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
-    margin-bottom: 0 !important;
+    margin: 0 !important;
+    padding: 14mm 16mm !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    min-height: 297mm !important;
+    max-height: 297mm !important;
+    box-sizing: border-box !important;
+    background-color: #FAF8F5 !important;
+    overflow: hidden !important;
+  }
+
+  /* Ensure the final page does not create an empty trailing page */
+  .magazine-pdf-page:last-child,
+  .magazine-pdf-page-full:last-child {
+    page-break-after: auto !important;
+    break-after: auto !important;
   }
 
   article {

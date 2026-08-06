@@ -82,7 +82,7 @@ export const BlogCard: React.FC<BlogCardProps> = ({
           post.pinned ? 'border-2 border-[#D4A373]/40 ring-1 ring-[#D4A373]/20' : 'border border-[#1A1A1A]/10'
         }`}
       >
-        <div className="lg:col-span-7 relative overflow-hidden min-h-[320px] lg:min-h-[440px]">
+        <div className="lg:col-span-7 relative overflow-hidden min-h-[360px] lg:min-h-[460px] flex flex-col justify-between">
           <img
             src={post.coverImage}
             alt={post.title}
@@ -90,20 +90,70 @@ export const BlogCard: React.FC<BlogCardProps> = ({
             onError={(e) => {
               (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=1200&q=80';
             }}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent lg:hidden" />
-          <span className="absolute top-4 left-4 bg-[#1A1A1A] text-white text-[10px] font-bold uppercase tracking-widest font-sans-inter px-3 py-1.5 rounded-full shadow-md flex items-center gap-1.5 border border-[#D4A373]/40">
-            {post.pinned ? (
-              <>
-                <Pin className="w-3.5 h-3.5 text-[#D4A373] fill-current" /> Sabitlenmiş Yazı
-              </>
-            ) : (
-              <>
+
+          {/* Magazine Cover Overlay for Manifesto / 1. Sayı Dergi */}
+          {post.id === 'post-pin-manifesto' || post.category === 'Dergi Tanıtımı' || post.pinned ? (
+            <>
+              {/* Balanced Editorial Contrast Gradient */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/20 to-black/85 pointer-events-none" />
+
+              {/* Magazine Framing Passepartout Border */}
+              <div className="absolute inset-3 sm:inset-4 border border-white/40 sm:border-white/50 rounded-2xl pointer-events-none z-10 flex flex-col justify-between p-3.5 sm:p-5">
+                
+                {/* Top Masthead Header */}
+                <div>
+                  <div className="flex items-center justify-between text-white/90 pb-2 border-b border-white/30 text-[9px] sm:text-[11px] font-sans-inter uppercase tracking-[0.18em] font-bold">
+                    <span className="text-[#FCD34D] drop-shadow-xs flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#FCD34D] animate-pulse" />
+                      BRİTANYA - TÜRK TOPLUMU DERGİSİ
+                    </span>
+                    <span className="bg-[#D4A373] text-[#1A1A1A] px-2 sm:px-2.5 py-0.5 rounded text-[8.5px] sm:text-[10px] font-black uppercase tracking-wider shadow-xs">
+                      1. SAYI
+                    </span>
+                  </div>
+
+                  {/* Main Magazine Title */}
+                  <div className="pt-2 sm:pt-3 text-center sm:text-left">
+                    <h1 className="font-serif-playfair text-3xl sm:text-5xl lg:text-5xl font-black tracking-[0.14em] text-white uppercase drop-shadow-lg leading-none">
+                      BİR ADA
+                    </h1>
+                    <p className="font-serif-playfair italic text-white/90 text-[11px] sm:text-xs tracking-wide mt-1.5 drop-shadow-sm">
+                      "Bir Arada, Bir Ada'da" • İlk Baskı &amp; Özel Sayı
+                    </p>
+                  </div>
+                </div>
+
+                {/* Bottom Cover Headlines & Barcode / Issue details */}
+                <div>
+                  <div className="bg-black/45 backdrop-blur-xs p-2.5 sm:p-3 rounded-xl border border-white/20 mb-2">
+                    <span className="text-[#FCD34D] text-[9px] sm:text-[10px] font-extrabold uppercase tracking-widest block font-sans-inter mb-0.5">
+                      ÖZEL KAPAK DOSYASI
+                    </span>
+                    <h3 className="font-serif-playfair text-white text-sm sm:text-base lg:text-lg font-bold leading-snug drop-shadow-sm">
+                      Britanya'da Yaşayan Türk Toplumunun Bağımsız Sesi
+                    </h3>
+                    <p className="text-white/80 text-[10px] sm:text-[11px] font-sans-inter line-clamp-1 mt-0.5">
+                      Londra, Edinburgh, Cardiff • Göç, Yaşam, Sanat ve Toplum
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between text-white/70 text-[8px] sm:text-[9.5px] font-sans-inter pt-1 border-t border-white/20">
+                    <span className="font-mono tracking-wider">ISSN 2814-9921 • SAYI: 01</span>
+                    <span className="uppercase tracking-widest font-semibold text-white/90">LONDRA • AĞUSTOS 2026</span>
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent lg:hidden" />
+              <span className="absolute top-4 left-4 bg-[#1A1A1A] text-white text-[10px] font-bold uppercase tracking-widest font-sans-inter px-3 py-1.5 rounded-full shadow-md flex items-center gap-1.5 border border-[#D4A373]/40 z-10">
                 <Sparkles className="w-3.5 h-3.5 text-[#D4A373]" /> Öne Çıkan Makale
-              </>
-            )}
-          </span>
+              </span>
+            </>
+          )}
         </div>
 
         <div className="lg:col-span-5 p-8 lg:p-10 flex flex-col justify-between bg-[#F9F7F2]">

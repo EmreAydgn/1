@@ -937,7 +937,7 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
 
                 <div className="relative rounded-xl overflow-hidden border border-[#1A1A1A]/20 shadow-md">
                   <img
-                    src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=80"
+                    src={orderedPosts[0]?.coverImage || "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=80"}
                     alt="Londra Dergi Kapağı"
                     crossOrigin="anonymous"
                     className="w-full h-32 sm:h-48 md:h-52 object-cover"
@@ -947,7 +947,7 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
                   />
                   <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-1.5 sm:p-2 text-white">
                     <p className="font-serif-cormorant italic text-[9.5px] sm:text-xs text-center">
-                      Thames Nehri ve Westminster • 2026 Koleksiyonu
+                      Londra Panoraması &amp; Westminster • 1. Sayı Özel Koleksiyonu
                     </p>
                   </div>
                 </div>

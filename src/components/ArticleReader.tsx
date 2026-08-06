@@ -532,7 +532,7 @@ export const ArticleReader: React.FC<ArticleReaderProps> = ({
 
         {/* Cover Image Banner */}
         {post.coverImage && (
-          <div className="mb-8 sm:mb-12 rounded-xl sm:rounded-2xl overflow-hidden shadow-md">
+          <div className="mb-8 sm:mb-12 rounded-xl sm:rounded-2xl overflow-hidden shadow-md relative">
             <img
               src={post.coverImage}
               alt={post.title}
@@ -540,8 +540,29 @@ export const ArticleReader: React.FC<ArticleReaderProps> = ({
               onError={(e) => {
                 (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=1200&q=80';
               }}
-              className="w-full max-h-[280px] sm:max-h-[480px] object-cover"
+              className="w-full max-h-[340px] sm:max-h-[500px] object-cover"
             />
+            {(post.id === 'post-pin-manifesto' || post.category === 'Dergi Tanıtımı') && (
+              <>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/70 pointer-events-none" />
+                <div className="absolute inset-3 sm:inset-5 border border-white/40 rounded-xl pointer-events-none flex flex-col justify-between p-3.5 sm:p-6">
+                  <div className="flex items-center justify-between text-white/90 text-[9px] sm:text-xs font-sans-inter uppercase tracking-[0.2em] font-bold">
+                    <span className="text-[#FCD34D]">BRİTANYA - TÜRK TOPLUMU DERGİSİ</span>
+                    <span className="bg-[#D4A373] text-[#1A1A1A] px-2.5 py-0.5 rounded text-[8.5px] sm:text-[10px] font-black tracking-wider">
+                      1. SAYI
+                    </span>
+                  </div>
+                  <div>
+                    <h2 className="font-serif-playfair text-2xl sm:text-4xl lg:text-5xl font-black text-white uppercase tracking-[0.12em] drop-shadow-md leading-none">
+                      BİR ADA
+                    </h2>
+                    <p className="font-serif-playfair italic text-white/90 text-xs sm:text-sm mt-1">
+                      "Bir Arada, Bir Ada'da" • İlk Baskı &amp; Kuruluş Manifestosu
+                    </p>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         )}
 

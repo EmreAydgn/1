@@ -2,16 +2,13 @@ import React, { useState } from 'react';
 import { BlogPost } from '../types';
 import { BlogCard } from './BlogCard';
 import { Users, BookOpen, Feather, ArrowLeft, ArrowUpRight, Sparkles, CheckCircle2, Globe, Share2, Check } from 'lucide-react';
-import { BirAdaLogo, BIR_ADA_LOGO_AVATAR } from './BirAdaLogo';
-import emreAydoganAvatar from '../assets/images/emre_aydogan_avatar_1785948893520.jpg';
-import fetanetDariogluAvatar from '../assets/images/fetanet_darioglu_official_1785628301139.jpg';
-import mehmetKaratekeAvatar from '../assets/images/mehmet_karateke_avatar_1786013433247.jpg';
+import { BirAdaLogo } from './BirAdaLogo';
 import { getAuthorInitials } from '../utils/authorUtils';
 import { getAuthorShareUrl } from '../utils/urlUtils';
 
 export interface AuthorProfile {
   name: string;
-  avatar: string;
+  avatar?: string;
   role: string;
   bio: string;
   location: string;
@@ -23,21 +20,18 @@ export { getAuthorInitials };
 export const AUTHORS_DATA: AuthorProfile[] = [
   {
     name: 'Bir Ada Yayın Kurulu',
-    avatar: BIR_ADA_LOGO_AVATAR,
     role: 'Bağımsız Yayın & Editör Kurulu',
     bio: 'Britanya\'da yaşayan Türk toplumunun ortak sesi; bağımsız kültür, yaşam, gezi ve haber platformu yayın kurulu.',
     location: 'Londra, Birleşik Krallık',
   },
   {
     name: 'Emre Aydoğan',
-    avatar: emreAydoganAvatar,
     role: 'Genel Yayın Yönetmeni & Dergi Kurucusu | Emlak ve Yatırım Danışmanı',
     bio: 'Bir Ada Dergisi\'nin kurucusu ve Genel Yayın Yönetmeni\'dir. Üniversitelerin İngiliz Dili ve Edebiyatı bölümünden mezun olmuştur. 2015 yılından bu yana Londra\'da ikamet etmekte ve kariyerini Birleşik Krallık Emlak ve Yatırım Danışmanlığı alanında sürdürmektedir.',
     location: 'Londra, Birleşik Krallık',
   },
   {
     name: 'Fetanet Darıoğlu',
-    avatar: fetanetDariogluAvatar,
     role: 'Resen Legal Kurucusu & Kıdemli Avukat',
     bio: 'Resen Legal Kurucusu & Kıdemli Avukat (resenlegal.com). Birleşik Krallık şirketler hukuku, ticari sözleşmeler, uluslararası yükseköğrenim mevzuatı ve Londra pazarında kariyer & vize geçiş stratejileri üzerine uzman danışmanlık sunmaktadır.',
     location: 'Londra & İstanbul',
@@ -45,70 +39,60 @@ export const AUTHORS_DATA: AuthorProfile[] = [
   },
   {
     name: 'Av. Ahmet Hüsrev',
-    avatar: 'https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=200&q=80',
     role: 'Londra Göçmenlik & Vize Avukatı | Lease Yenileme ve Uzatma Uzmanı',
     bio: 'Londra merkezli göçmenlik ve vize avukatı. Birleşik Krallık vize türleri, Skilled Worker sponsorluk lisansları, süresiz oturum (ILR), vatandaşlık başvuruları ile konut ve ticari gayrimenkullerde Lease yenileme ve uzatma (Lease Extension & Leasehold Reform) hukuku alanında uzman danışmanlık hizmeti sunmaktadır.',
     location: 'Londra, Birleşik Krallık',
   },
   {
     name: 'Dr. Aylin Yılmaz',
-    avatar: '',
     role: 'Eğitim Politikaları Analisti & Yükseköğrenim Danışmanı',
     bio: 'UCL ve LSE mezunu eğitim araştırmacısı. Birleşik Krallık üniversiteleri, uluslararası öğrenci hareketliliği, burs programları ve Londra öğrenci yaşamı üzerine analizler kaleme almaktadır.',
     location: 'Bloomsbury, Londra',
   },
   {
     name: 'Fatih Bülbül',
-    avatar: '',
     role: 'Dış Haberler Editörü & Uluslararası İlişkiler Analisti',
     bio: 'Küresel jeopolitik, enerji koridorları ve uluslararası ilişkiler alanlarında analizler hazırlayan dış haberler yazarı.',
     location: 'Londra, Birleşik Krallık',
   },
   {
     name: 'Emre Çakmak',
-    avatar: '',
     role: 'UK Etkinlik, Kültür & Sahne Sanatları Yazarı',
     bio: 'Londra ve Birleşik Krallık genelindeki Türk konserleri, tiyatro turneleri, kültür festivalleri ve networking buluşmalarını takip eden etkinlik ve kültür yazarı.',
     location: 'Londra, Birleşik Krallık',
   },
   {
     name: 'Dr. Selin Karan',
-    avatar: '',
     role: 'Tarih Araştırmacısı & Oxford Üniversitesi Akademisyeni',
     bio: 'Oxford Üniversitesi Tarih Fakültesi akademisyeni. Tudor dönemi İngiltere tarihi, Oxford şehitleri ve vicdan özgürlüğü mücadeleleri üzerine yazılar kaleme alır.',
     location: 'Oxford, Birleşik Krallık',
   },
   {
     name: 'Ece Aydın',
-    avatar: '',
     role: 'Sanat Eleştirmeni & Londra Sanat Rotası Yazarı',
     bio: 'Courtauld Institute of Art mezunu sanat tarihçisi. Tate Modern, West End sahnesi ve Londra galerilerindeki çağdaş sergiler hakkında eleştirel incelemeler sunar.',
     location: 'Londra, Birleşik Krallık',
   },
   {
     name: 'Dr. Mehmet Soylu',
-    avatar: '',
     role: 'NHS Onkoloji Uzmanı & Sağlık Teknolojileri Yazarı',
     bio: 'Imperial College London ve NHS bünyesinde görev yapan tıp doktoru. Kanser immünoterapisi, kişiselleştirilmiş mRNA aşıları ve koruyucu sağlık üzerine makaleler yayımlamaktadır.',
     location: 'Londra / Cambridge',
   },
   {
     name: 'Mehmet Karateke',
-    avatar: mehmetKaratekeAvatar,
     role: 'Kamu Görevlisi & Siyaset ve Ekonomi Analisti | Eski Eğitimci',
     bio: 'Üniversitelerin İngilizce bölümünden mezun olup Türkçe, İngilizce, Arnavutça ve İtalyancayı çok iyi derecede konuşabilmektedir. Yıllarca eğitimcilik yapmış olup şu anda Birleşik Krallık\'ta memur olarak çalışmakta ve İngiltere siyasetini ve ekonomi politikalarını yakından takip etmektedir.',
     location: 'Londra, Birleşik Krallık',
   },
   {
     name: 'Murat Yazıcı',
-    avatar: '',
     role: 'Finans Analisti & Gayrimenkul Yatırım Danışmanı',
     bio: 'LSE Ekonomi mezunu finans analisti. Birleşik Krallık\'ta varlık yönetimi, ISA fonları, sterlin bazlı yatırımlar ve Londra gayrimenkul piyasası rehberleri hazırlar.',
     location: 'Londra, Birleşik Krallık',
   },
   {
     name: 'Merve Karan',
-    avatar: '',
     role: 'Seyahat Yazarı & Fotoğrafçı',
     bio: 'Britanya\'nın saklı gezi rotalarını keşfeden seyahat yazarı. Cotswolds, İskoçya Yaylaları, Galler sahilleri ve Londra sokak rehberlerinin mimarı.',
     location: 'Edinburgh & Londra',
@@ -246,23 +230,9 @@ export const AuthorsView: React.FC<AuthorsViewProps> = ({
         <div className="space-y-10">
           {/* Author Profile Banner */}
           <div className="bg-[#FAF8F5] p-6 sm:p-8 rounded-3xl border border-[#1A1A1A]/10 flex flex-col sm:flex-row items-center gap-6">
-            {activeAuthor.name === 'Bir Ada Yayın Kurulu' || activeAuthor.avatar === BIR_ADA_LOGO_AVATAR ? (
-              <img
-                src={BIR_ADA_LOGO_AVATAR}
-                alt={activeAuthor.name}
-                className="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover border-4 border-white shadow-md bg-white p-1 shrink-0"
-              />
-            ) : activeAuthor.avatar ? (
-              <img
-                src={activeAuthor.avatar}
-                alt={activeAuthor.name}
-                className="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover border-4 border-white shadow-md bg-white shrink-0"
-              />
-            ) : (
-              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-[#FAF6EE] text-[#0F2C59] font-bold font-serif-playfair text-2xl sm:text-3xl flex items-center justify-center border-4 border-white shadow-md shrink-0">
-                {getAuthorInitials(activeAuthor.name)}
-              </div>
-            )}
+            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-[#FAF6EE] text-[#0F2C59] font-bold font-serif-playfair text-2xl sm:text-3xl flex items-center justify-center border-4 border-white shadow-md shrink-0">
+              {getAuthorInitials(activeAuthor.name)}
+            </div>
             <div className="text-center sm:text-left flex-1">
               <div className="flex items-center justify-center sm:justify-start gap-2 mb-1">
                 <h2 className="font-serif-playfair text-2xl font-bold text-[#1A1A1A]">{activeAuthor.name}</h2>
@@ -347,23 +317,9 @@ export const AuthorsView: React.FC<AuthorsViewProps> = ({
               >
                 <div>
                   <div className="relative mb-4 text-center">
-                    {author.name === 'Bir Ada Yayın Kurulu' || author.avatar === BIR_ADA_LOGO_AVATAR ? (
-                      <img
-                        src={BIR_ADA_LOGO_AVATAR}
-                        alt={author.name}
-                        className="w-20 h-20 rounded-full object-cover mx-auto border-2 border-[#1A1A1A]/10 group-hover:border-[#D4A373] transition-colors shadow-xs bg-white p-1 shrink-0"
-                      />
-                    ) : author.avatar ? (
-                      <img
-                        src={author.avatar}
-                        alt={author.name}
-                        className="w-20 h-20 rounded-full object-cover mx-auto border-2 border-[#1A1A1A]/10 group-hover:border-[#D4A373] transition-colors shadow-xs bg-white shrink-0"
-                      />
-                    ) : (
-                      <div className="w-20 h-20 rounded-full bg-[#FAF6EE] text-[#0F2C59] font-bold font-serif-playfair text-xl flex items-center justify-center mx-auto border-2 border-[#1A1A1A]/10 group-hover:border-[#D4A373] transition-colors shadow-xs shrink-0">
-                        {getAuthorInitials(author.name)}
-                      </div>
-                    )}
+                    <div className="w-20 h-20 rounded-full bg-[#FAF6EE] text-[#0F2C59] font-bold font-serif-playfair text-xl flex items-center justify-center mx-auto border-2 border-[#1A1A1A]/10 group-hover:border-[#D4A373] transition-colors shadow-xs shrink-0">
+                      {getAuthorInitials(author.name)}
+                    </div>
                     <span className="absolute bottom-0 right-1/2 translate-x-8 translate-y-1 bg-[#1A1A1A] text-white text-[9px] font-bold px-2 py-0.5 rounded-full border border-white">
                       {authorPostCount} Yazı
                     </span>

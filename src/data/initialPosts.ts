@@ -6,7 +6,9 @@ import ukWindSolarEnergy from '../assets/images/uk_wind_solar_energy_17856285615
 import ukEconomicReformsCover from '../assets/images/uk_economic_reforms_1786013419108.jpg';
 import mehmetKaratekeAvatar from '../assets/images/mehmet_karateke_avatar_1786013433247.jpg';
 import britishAppleJuice from '../assets/images/british_apple_juice_1785628805063.jpg';
-import birAdaManifestoCover from '../assets/images/london_distant_skyline_panoramic_1786015473110.jpg';
+import ukHeatwave2026Cover from '../assets/images/uk_heatwave_2026_1786019783378.jpg';
+import drCelalGorguluAvatar from '../assets/images/dr_celal_gorgulu_avatar_1786019795183.jpg';
+import birAdaManifestoCover from '../assets/images/bright_london_panorama_1786016549396.jpg';
 import londonStudentsCover from '../assets/images/london_students_analysis_1785937267430.jpg';
 import fetanetDariogluAvatar from '../assets/images/fetanet_darioglu_official_1785628301139.jpg';
 import ukSponsorshipVisaCover from '../assets/images/uk_sponsorship_visa_1785940746279.jpg';
@@ -181,6 +183,138 @@ Birbirimizin sesi olalım.
         content: 'Hoş bulduk! Britanya\'da böyle birlik sağlayan bağımsız bir platforma ihtiyacımız vardı.',
         createdAt: '2026-07-24T11:00:00Z',
         likes: 35,
+      },
+    ],
+  },
+  {
+    id: 'post-uk-heatwave-2026-dr-celal-gorgulu',
+    title: 'Britanya\'da 2026 Yazı Aşırı Sıcak Dalgaları ve Çok Boyutlu Etkileri: İklim Kırılganlığı, NHS Sağlık Yükü ve Adli-Toplumsal Risk Haritası',
+    subtitle: 'Adli Tıp Uzmanı & Britanya Gündemi Analisti Dr. Celal Görgülü kalemiyle: 40°C eşiğini zorlayan rekor sıcaklıklar, Britanya\'nın tuğla-yalıtım mimarisinin termal tuzağı, aşırı sıcak kaynaklı mortalite ve morbidite dinamikleri, demiryolu ve su altyapısı baskısı ile toplum sağlığında acil uyum stratejileri.',
+    excerpt: '2026 yazında Birleşik Krallık genelinde hissedilen rekor sıcak dalgaları Ada\'nın iklim, sağlık ve altyapı gerçeklerini yeniden şekillendiriyor. 40°C\'yi zorlayan termometreler, NHS acil servislerindeki sıcak çarpması ve kardiyovasküler baskılar, ada konutlarının ısı hapsi riski ile toplum sağlığı ve adli tıp perspektifinden aşırı sıcakların doğrudan ve dolaylı etkileri üzerine Dr. Celal Görgülü\'nün derinlikli analizi.',
+    category: 'Britanya\'dan Haberler',
+    tags: ['Britanya\'dan Haberler', 'AşırıSıcaklar', 'İklimDeğişikliği', 'BirleşikKrallık', 'LondraSıcaklık', 'DrCelalGörgülü', 'NHSSağlık', 'AdliTıp', 'HalkSağlığı', 'BritanyaHaberleri', '2026Yazı'],
+    coverImage: ukHeatwave2026Cover,
+    author: {
+      name: 'Dr. Celal Görgülü',
+      avatar: drCelalGorguluAvatar,
+      bio: 'Adli Tıp Uzmanı Doktor (Forensic Medicine Specialist / MD). Uzun yıllara dayanan adli tıp ve klinik tecrübesinin yanı sıra Britanya gündemini, ada iklimini, halk sağlığı dinamiklerini ve toplum sağlığı risklerini yakından takip eden araştırmacı yazar.',
+    },
+    createdAt: '2026-08-06T10:00:00Z',
+    readTimeMinutes: 9,
+    status: 'published',
+    likes: 685,
+    views: 5920,
+    bookmarksCount: 318,
+    featured: true,
+    pinned: false,
+    content: `# Britanya'da 2026 Yazı Aşırı Sıcak Dalgaları ve Çok Boyutlu Etkileri: İklim Kırılganlığı, NHS Sağlık Yükü ve Adli-Toplumsal Risk Haritası
+
+**Yazar: Dr. Celal Görgülü** — *Adli Tıp Uzmanı Doktor (Forensic Medicine Specialist / MD) & Britanya Gündemi Analisti*
+
+Birleşik Krallık, tarihsel olarak serin yazları, ılıman denizel iklimi ve aralıksız gri bulutlarıyla tanımlanan bir coğrafya olarak bilinirdi. Ancak **2026 yaz mevsimi**, Londra'dan Manchester'a, Birmingham'dan Cardiff'e kadar Ada genelinde termometrelerin peş peşe 38°C – 40°C bandını zorlamasıyla bu ezberi bir kez daha kökünden sarstı. Met Office (Birleşik Krallık Meteoroloji Ofisi) tarafından peş peşe yayımlanan **Kırmızı (Red - Extreme Heat)** ve Kehribar (Amber) düzeyindeki aşırı sıcak uyarıları, yalnızca meteorolojik bir rekor bülteni değil; toplum sağlığı, kamu altyapısı ve kentsel yaşam açısından topyekûn bir sınav anlamına geliyor.
+
+Aslen mesleğim gereği ölümün ve ağır travmaların biyolojik, çevresel ve sistemik nedenlerini inceleyen bir **Adli Tıp Hekimi** olarak; aşırı sıcak dalgalarını yalnızca havanın "güzel ve güneşli" olması şeklinde okuyan yüzeysel bakış açısının ardındaki görünmeyen tıbbi ve adli riskleri masaya yatırmanın hayati bir toplumsal görev olduğuna inanıyorum. Çünkü aşırı sıcaklık, insan fizyolojisi için sinsi bir stres faktörüdür ve Britanya gibi altyapısı soğuğu içeride tutmak üzere kurgulanmış bir ülkede bu stres katlanarak büyümektedir.
+
+Bu kapsamlı analizde; 2026 yazında Birleşik Krallık'ta yaşanan aşırı sıcak dalgalarının tıbbi ve adli boyutlarını, konut mimarisinin termal açmazını, NHS üzerindeki olağanüstü yükü ve toplumumuzun her bir ferdinin alması gereken hayati önlemleri inceliyoruz.
+
+---
+
+## 1. 2026 Yazı Sıcaklık Dalgaları: Rekorlar ve İklimsel Dönüşüm
+
+2022 yazında Coningsby'de kaydedilen 40.3°C'lik tarihi rekorun ardından, 2026 yılı Birleşik Krallık iklim projeksiyonlarında "aşırı sıcakların istisna olmaktan çıkıp periyodik bir gerçekliğe dönüştüğü" yıl olarak kayıtlara geçmektedir:
+
+- **Tropikal Geceler (Tropical Nights):** Londra ve güneydoğu İngiltere'de gece sıcaklıklarının 22°C'nin altına düşmediği gün sayısı son 10 yılın en yüksek seviyesine ulaştı. Gece vücudun kendini soğutamaması, kümülatif termal yorgunluğu zirveye taşımaktadır.
+- **Kentsel Isı Adası Etkisi (Urban Heat Island - UHI):** Londra merkezindeki yoğun asfalt, betonarme yapılar ve yetersiz hava koridorları nedeniyle şehir merkezi ile kırsal banliyöler arasındaki sıcaklık farkı 7°C ila 9°C'ye kadar açılmaktadır.
+- **Güneydoğu ve Doğu İngiltere Kuraklığı:** Thames Water ve Southern Water bölgelerinde nehir debilerinin kritik seviyelere inmesi ve zemin kuruluğunun tarım ile ekosistem üzerindeki baskısı.
+
+---
+
+## 2. Tıbbi ve Adli Tıp Perspektifi: Görünmeyen Mortalite ve Biyolojik Yıkım
+
+Adli tıp ve halk sağlığı literatüründe aşırı sıcak dalgaları **"Sessiz Katil" (Silent Killer)** olarak adlandırılır. Deprem veya sel gibi görsel yıkım yaratmaz; ancak ölüm istatistiklerinde geriye dönük **"Aşırı Mortalite" (Excess Deaths)** grafikleri incelendiğinde sıcak dalgalarının trajik faturası netleşir:
+
+### A) Fizyolojik Mekanizma: Termoregülasyon Yetmezliği
+İnsan vücudu çekirdek sıcaklığını 36.5°C – 37.5°C aralığında sabit tutmak zorundadır. Çevre sıcaklığı vücut sıcaklığını aştığında terleme yoluyla buharlaşma (evaporasyon) tek soğuma mekanizması haline gelir:
+1. **Yoğun Dehidrasyon ve Elektrolit Kaybı:** Terleme ile birlikte sodyum, potasyum ve su hızla kaybedilir; kanın akışkanlığı (viskozitesi) artar ve pıhtılaşma eğilimi yükselir.
+2. **Kardiyovasküler Aşırı Yük:** Kalp, derideki damarları genişleterek kanı yüzeye pompalamak için nabzı dramatik biçimde artırır. Bu durum koroner arter hastalığı veya kalp yetmezliği olan bireylerde kalp krizini (miyokard enfarktüsü) tetikler.
+3. **Isı Çarpması (Heatstroke):** Çekirdek sıcaklığının 40.5°C üzerine çıkmasıyla hücresel proteinler denatüre olur, merkezi sinir sistemi etkilenir (bilinç bulanıklığı, deliryum) ve çoklu organ yetmezliği gelişir. Adli tıp otopsilerinde sıcak çarpmasına bağlı yaygın serebral ödem ve mikrovasküler trombozlar tipik bulgulardır.
+
+### B) Risk Grupları Karşılaştırma Tablosu
+
+| Risk Grubu | Birincil Biyolojik / Sosyal Neden | Kritik Tehlike |
+| :--- | :--- | :--- |
+| **65 Yaş Üzeri Bireyler** | Yaşlanmaya bağlı susuzluk hissinin körelmesi ve ter bezi atrofisi. | Ağır dehidrasyon, kardiyak arrest ve evde yalnız fenalaşma. |
+| **Kronik Kalp ve Böbrek Hastaları** | Diüretik (idrar söktürücü) ve antihipertansif ilaç kullanımı. | Ani hipotansiyon, akut böbrek yetmezliği (AKI) ve aritmiler. |
+| **Bebekler ve Küçük Çocuklar** | Vücut yüzey/hacim oranının yüksek olması ve yetersiz termoregülasyon. | Hızlı hipertermi ve konvülsiyonlar (febril nöbet). |
+| **Açık Alanda Çalışan İşçiler** | İnşaat, teslimat ve gastronomi mutfaklarında çalışan emekçiler. | Isı bitkinliği (Heat exhaustion), bayılma ve iş kazaları. |
+
+---
+
+## 3. Britanya'nın Yapısal Paradoksu: Isıyı Hapsetmek İçin Tasarlanan Evler
+
+Birleşik Krallık konut stoğu, asırlardır nemli ve dondurucu kış soğuklarına karşı korunmak üzere geliştirilmiştir:
+
+- **Kalın Kırmızı Tuğla ve Çift Kat Yalıtım:** Viktorya ve Edward dönemi teras evleri (terraced houses) ile modern standartlardaki yüksek yalıtımlı daireler, kışın ısıyı mükemmel şekilde içeride tutar. Ancak 35°C üzeri sıcaklıklarda bu yapılar **adeta birer fırına (heat trap)** dönüşür; içeri giren ısı gece boyunca tahliye edilemez.
+- **Klima (AC) Yoksunluğu:** Britanya'daki konutların **yalnızca %5'inde** merkezi veya split klima bulunmaktadır. Çoğu insan yalnızca masaj tipi küçük vantilatörlere bağımlıdır; oysa 35°C üzeri ortamda vantilatörün kuru sıcak havayı sirküle etmesi dehidrasyonu daha da hızlandırabilir.
+- **Toplu Taşıma Fırını:** Londra Metrosu'nun (Tube) derin hatlarında (özellikle Central, Northern ve Bakerloo hatlarında) klima bulunmaması, vagon içi sıcaklıkları 40°C'nin üzerine çıkarmaktadır.
+
+---
+
+## 4. NHS, Ulaşım ve Kamu Altyapısı Üzerindeki Kriz
+
+Aşırı sıcaklar yalnızca insan bedenini değil, İngiltere'nin çelik ve beton altyapısını da zorlamaktadır:
+
+1. **NHS Acil Servisleri ve 999 Çağrıları:** Ambulans servislerine gelen nefes darlığı, göğüs ağrısı, bayılma ve sıcak çarpması çağrıları kış aylarındaki grip dalgalarını aratmayacak yoğunluğa ulaşmaktadır.
+2. **Demiryolu Raylarının Bükülmesi (Track Buckling):** Doğrudan güneş altındaki çelik rayların sıcaklığı hava sıcaklığından 20°C daha fazla (60°C+) olabilmektedir. Network Rail, rayların esnemesini önlemek amacıyla tren hızlarını sınırlandırmakta veya sefer iptallerine gitmektedir.
+3. **Şebeke Suyu Tüketimi ve Su Kısıtlamaları (Hosepipe Ban):** Bahçe sulama ve havuz doldurma yasakları devreye girmekte, baraj doluluk oranları kritik rezerv altına gerilemektedir.
+
+---
+
+## 5. Dr. Celal Görgülü’den Hayat Kurtaran Tıbbi ve Pratik Uyum Rehberi
+
+Aşırı sıcak dalgaları süresince toplumumuzun her bir ferdinin uygulayabileceği temel prensipler:
+
+### 1. "Gündüz Kapat, Gece Aç" Havalandırma Kuralı
+- Güneş doğduktan sonra (özellikle 09:00 - 19:00 arası) güneş gören cephelerdeki tüm pencereleri, panjurları ve kalın perdeleri **sımsıkı kapalı tutun**. Dışarıdaki 38°C'lik sıcak havanın içeri girmesini engelleyin.
+- Akşam hava sıcaklığı oda sıcaklığının altına düştüğünde karşılıklı pencereleri açarak cereyan (çapraz havalandırma) sağlayın.
+
+### 2. Su ve Elektrolit Yönetimi
+- **Susuzluk Hissini Beklemeyin:** Saat başı en az bir bardak su için.
+- **Kafein ve Alkolden Kaçının:** Aşırı çay, kahve ve alkol tüketimi idrar söktürücü (diüretik) etkisiyle vücuttan su ve tuz atımını hızlandırır. Ayran, maden suyu veya taze limonlu su tercih edin.
+
+### 3. Tıbbi İlaç Saklama Koşulları
+- İnsülin, astım spreyleri, tansiyon ve antibiyotik ilaçların çoğunun 25°C üzerinde bozulabileceğini unutmayın; ilaçlarınızı evin en serin, karanlık köşesinde veya hekiminizin önerisiyle buzdolabında muhafaza edin.
+
+### 4. Toplumsal Dayanışma ve Komşu Kontrolü
+- Britanya'da yalnız yaşayan yaşlı komşularınızı, kronik rahatsızlığı bulunan akraba ve dostlarınızı günde en az iki kez telefonla arayın veya kapılarını çalarak durumlarını kontrol edin.
+
+---
+
+## 6. Sonuç: Yeni Britanya Gerçeğine Hazırlıklı Olmak
+
+2026 yazı bize açıkça göstermektedir ki; küresel iklim krizi Britanya'nın serin coğrafya lüksünü geride bırakmıştır. Artık şehir planlamasından bina izolasyon kodlarına, NHS'in yaz acil eylem planlarından iş kanunlarındaki maksimum çalışma sıcaklığı düzenlemelerine kadar kapsamlı bir yapısal dönüşüm kaçınılmazdır.
+
+Bir Ada ailesi olarak sağlığınızı, sevdiklerinizi ve toplumsal dayanışmamızı koruyarak bu sıcak yaz günlerini en güvenli şekilde geçirmenizi diliyorum.
+
+---
+
+*Yazar: Dr. Celal Görgülü — Adli Tıp Uzmanı Doktor & Britanya Gündemi Analisti*`,
+    comments: [
+      {
+        id: 'c-heat-1',
+        authorName: 'Hakan Yılmaz',
+        authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
+        content: 'İngiltere evlerinin sıcağı hapsetmesi ve Central Line metrosundaki sıcaklık gerçekten dayanılmaz boyutta. Bir adli tıp hekiminin gözünden biyolojik risklerin ve dehidrasyonun anlatılması çok ufuk açıcı bir yazı olmuş. Dr. Celal Bey\'e teşekkürler.',
+        createdAt: '2026-08-06T10:30:00Z',
+        likes: 36,
+      },
+      {
+        id: 'c-heat-2',
+        authorName: 'Zeynep Aksoy',
+        authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
+        content: '"Gündüz kapat, gece aç" kuralını uyguluyoruz, evin içi çok daha serin kaldı. Kronik hastalar için ilaç saklama uyarısı da çok hayati. Emeğinize sağlık!',
+        createdAt: '2026-08-06T11:15:00Z',
+        likes: 28,
       },
     ],
   },
@@ -593,8 +727,8 @@ Londra, Manchester, Birmingham ve Cambridge'deki araştırma merkezlerinde başl
     title: 'İngiltere\'nin Son 5 Yıldaki Ekonomik Reformları ve Jeopolitik Güç Projeksiyonu (2021 – 2026): Maliye Politikaları, Ukrayna ve İran Savaşlarındaki Britanya Stratejisi',
     subtitle: 'Kamu Görevlisi & Eski Eğitimci Mehmet Karateke kalemiyle: Super-deduction ve vergi dönüşümlerinden savunma bütçesi %2.5 hedefine; Londra\'nın Ukrayna\'daki askeri-istihbari liderliği, Storm Shadow ve yaptırım rejimi ile İran, Kızıldeniz ve Hürmüz krizlerindeki caydırıcılık, hava savunma ve seyrüsefer güvenliği politikalarının derinlemesine analizi.',
     excerpt: 'Birleşik Krallık ekonomisini son 5 yılda dönüştüren yapısal reformlar ve küresel krizlerdeki jeopolitik duruş: Pandemi sonrası maliye dönüşümü, Full Expensing, serbest limanlar (Freeports); İngiltere\'nin Ukrayna Savaşı\'nda üstlendiği öncü askeri-mali liderlik, Rus varlıklarına yönelik City of London yaptırımları ile İran, Kızıldeniz ve Hürmüz eksenindeki savunma, hava devriyesi ve vekil güçlerle mücadele stratejisi üzerine Mehmet Karateke\'nin kapsamlı incelemesi.',
-    category: 'Britanya\'dan Haberler',
-    tags: ['İngiltereEkonomisi', 'EkonomikReformlar', 'BirleşikKrallık', 'UkraynaSavaşı', 'İranPolitikası', 'Kızıldeniz', 'HMTreasury', 'SavunmaSanayii', 'MehmetKarateke', 'BritanyaHaberleri', 'Siyaset'],
+    category: 'Siyaset & Aktüel',
+    tags: ['Siyaset & Aktüel', 'İngiltereEkonomisi', 'EkonomikReformlar', 'BirleşikKrallık', 'UkraynaSavaşı', 'İranPolitikası', 'Kızıldeniz', 'HMTreasury', 'SavunmaSanayii', 'MehmetKarateke', 'Siyaset'],
     coverImage: ukEconomicReformsCover,
     author: {
       name: 'Mehmet Karateke',
@@ -893,29 +1027,6 @@ Aşağıdaki tablo, 2019 yılından 2026 güncel dönemine kadar Birleşik Krall
         likes: 36,
       },
     ],
-  },
-  {
-    id: 'post-3',
-    title: 'Westminster Koridorlarından Global Sahneye: Britanya Siyaseti ve Diplomasi Denklemı',
-    subtitle: 'Avam Kamarası kararları, Birleşik Krallık iç politikası ve küresel diplomasi denkleminde Londra\'nın konumu',
-    excerpt: 'Westminster Sarayı\'nda alınan kararlar, yalnızca Birleşik Krallık halkını değil; küresel piyasaları ve Avrupa diplomasisini yakından etkiliyor.',
-    category: 'Siyaset & Aktüel',
-    tags: ['Siyaset', 'Westminster', 'Britanya', 'Gündem', 'Londra'],
-    coverImage: 'https://images.unsplash.com/photo-1529655683826-aba9b3e77383?auto=format&fit=crop&w=1200&q=80',
-    author: {
-      name: 'Kemal Ertürk',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
-      bio: 'Westminster kayıtlı Siyaset Analisti ve Londra Yorumcusu.',
-    },
-    createdAt: '2026-07-22T11:00:00Z',
-    readTimeMinutes: 7,
-    status: 'published',
-    likes: 245,
-    views: 2800,
-    bookmarksCount: 112,
-    featured: false,
-    content: `Birleşik Krallık politikası, asırlık meşruti monarşi gelenekleri ile günümüz küresel jeopolitiğinin kesişim noktasında şekilleniyor. Prime Minister's Questions (PMQs) oturumlarından Avam Kamarası komitelerine kadar parlamenter demokrasinin işleyişi.`,
-    comments: [],
   },
   {
     id: 'post-5',

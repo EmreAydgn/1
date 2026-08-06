@@ -17,16 +17,13 @@ import {
   FileText, 
   Sparkles,
   Layers,
-  ArrowRight,
-  Columns,
-  LayoutGrid
+  ArrowRight
 } from 'lucide-react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { BlogPost } from '../types';
 import { getAuthorInitials, getAuthorWritingPosition } from '../utils/authorUtils';
 import { BirAdaLogo } from './BirAdaLogo';
-import { MagazineVisualEnrichment } from './MagazineVisualEnrichment';
 
 interface PdfMagazineModalProps {
   isOpen: boolean;
@@ -34,7 +31,6 @@ interface PdfMagazineModalProps {
   posts: BlogPost[];
 }
 
-export type MagazineColumnLayout = 'newspaper' | 'hybrid' | 'classic';
 type ViewFilter = 'all' | 'cover' | 'toc' | 'articles';
 type DeviceMode = 'desktop' | 'tablet' | 'mobile';
 
@@ -136,14 +132,14 @@ const renderMarkdownTable = (tableLines: string[], keyPrefix: string) => {
   );
 };
 
-// Comprehensive Markdown Chunk Renderer tailored for high-density, crisp magazine & newspaper pages
+// Comprehensive Markdown Chunk Renderer tailored for clean, high-legibility single-column magazine pages
 const renderMagazineMarkdownChunk = (
   content: string, 
   chunkKey: string,
-  options: { isTwoColumn?: boolean; enableDropCap?: boolean } = {}
+  options: { enableDropCap?: boolean } = {}
 ) => {
   if (!content) return null;
-  const { isTwoColumn = false, enableDropCap = false } = options;
+  const { enableDropCap = false } = options;
 
   const lines = content.split('\n');
   const elements: React.ReactNode[] = [];
@@ -157,7 +153,7 @@ const renderMagazineMarkdownChunk = (
   const flushTable = (idx: number) => {
     if (tableBuffer.length > 0) {
       elements.push(
-        <div key={`${chunkKey}-tbl-wrap-${idx}`} className="break-inside-avoid my-2">
+        <div key={`${chunkKey}-tbl-wrap-${idx}`} className="break-inside-avoid my-2.5">
           {renderMarkdownTable(tableBuffer, `${chunkKey}-tbl-${idx}`)}
         </div>
       );
@@ -170,7 +166,7 @@ const renderMagazineMarkdownChunk = (
     if (listBuffer.length > 0) {
       elements.push(
         listType === 'ul' ? (
-          <ul key={`${chunkKey}-ul-${idx}`} className="my-1.5 sm:my-2 space-y-0.5 sm:space-y-1 pl-3 text-[10px] sm:text-[11px] leading-snug font-serif-newsreader text-[#1A1A1A]/90 break-inside-avoid">
+          <ul key={`${chunkKey}-ul-${idx}`} className="my-2 space-y-1 pl-4 text-[11px] sm:text-[12.5px] leading-relaxed font-serif-lora text-[#1A1A1A]/90 break-inside-avoid">
             {listBuffer.map((item, li) => (
               <li key={li} className="relative pl-3 before:content-['•'] before:absolute before:left-0 before:text-[#D4A373] before:font-bold">
                 {parseInlineMarkdown(item)}
@@ -178,7 +174,7 @@ const renderMagazineMarkdownChunk = (
             ))}
           </ul>
         ) : (
-          <ol key={`${chunkKey}-ol-${idx}`} className="my-1.5 sm:my-2 space-y-0.5 sm:space-y-1 pl-4 text-[10px] sm:text-[11px] leading-snug font-serif-newsreader text-[#1A1A1A]/90 list-decimal break-inside-avoid">
+          <ol key={`${chunkKey}-ol-${idx}`} className="my-2 space-y-1 pl-5 text-[11px] sm:text-[12.5px] leading-relaxed font-serif-lora text-[#1A1A1A]/90 list-decimal break-inside-avoid">
             {listBuffer.map((item, li) => (
               <li key={li} className="pl-1">
                 {parseInlineMarkdown(item)}
@@ -235,39 +231,39 @@ const renderMagazineMarkdownChunk = (
     // Check Headers
     if (trimmed.startsWith('# ')) {
       elements.push(
-        <h2 key={`${chunkKey}-h1-${idx}`} className="text-sm sm:text-base font-serif-playfair font-bold text-[#141414] mt-2 mb-1 leading-snug tracking-tight border-b border-[#1A1A1A]/15 pb-0.5 break-inside-avoid">
+        <h2 key={`${chunkKey}-h1-${idx}`} className="text-base sm:text-lg md:text-xl font-serif-playfair font-bold text-[#141414] mt-3.5 mb-1.5 leading-snug tracking-tight border-b border-[#1A1A1A]/15 pb-1 break-inside-avoid">
           {parseInlineMarkdown(trimmed.replace(/^#\s*/, ''))}
         </h2>
       );
     } else if (trimmed.startsWith('## ')) {
       elements.push(
-        <h3 key={`${chunkKey}-h2-${idx}`} className="text-[11.5px] sm:text-[13px] font-serif-lora font-bold text-[#141414] mt-2 mb-0.5 leading-snug flex items-center gap-1.5 break-inside-avoid border-t border-[#1A1A1A]/10 pt-1">
+        <h3 key={`${chunkKey}-h2-${idx}`} className="text-[13px] sm:text-[14.5px] md:text-[15px] font-serif-lora font-bold text-[#141414] mt-3 mb-1 leading-snug flex items-center gap-2 break-inside-avoid border-t border-[#1A1A1A]/10 pt-2">
           <span className="w-1.5 h-1.5 rounded-full bg-[#D4A373] shrink-0" />
           <span>{parseInlineMarkdown(trimmed.replace(/^##\s*/, ''))}</span>
         </h3>
       );
     } else if (trimmed.startsWith('### ')) {
       elements.push(
-        <h4 key={`${chunkKey}-h3-${idx}`} className="text-[10.5px] sm:text-[12px] font-serif-lora font-bold text-[#8C6A43] mt-1.5 mb-0.5 leading-snug break-inside-avoid">
+        <h4 key={`${chunkKey}-h3-${idx}`} className="text-[12px] sm:text-[13px] md:text-[14px] font-serif-lora font-bold text-[#8C6A43] mt-2.5 mb-1 leading-snug break-inside-avoid">
           {parseInlineMarkdown(trimmed.replace(/^###\s*/, ''))}
         </h4>
       );
     } else if (trimmed.startsWith('#### ')) {
       elements.push(
-        <h5 key={`${chunkKey}-h4-${idx}`} className="text-[9.5px] sm:text-[10.5px] font-sans-body font-bold text-[#141414] mt-1 mb-0.5 leading-snug flex items-center gap-1 break-inside-avoid">
+        <h5 key={`${chunkKey}-h4-${idx}`} className="text-[11px] sm:text-[12px] font-sans-body font-bold text-[#141414] mt-2 mb-0.5 leading-snug flex items-center gap-1 break-inside-avoid">
           <span className="w-1 h-1 rounded-full bg-[#8C6A43] shrink-0" />
           <span>{parseInlineMarkdown(trimmed.replace(/^####\s*/, ''))}</span>
         </h5>
       );
     } else if (trimmed.startsWith('##### ')) {
       elements.push(
-        <h6 key={`${chunkKey}-h5-${idx}`} className="text-[9px] sm:text-[10px] font-sans-body font-semibold text-[#443E38] mt-1 mb-0.5 leading-snug break-inside-avoid">
+        <h6 key={`${chunkKey}-h5-${idx}`} className="text-[10px] sm:text-[11px] font-sans-body font-semibold text-[#443E38] mt-1.5 mb-0.5 leading-snug break-inside-avoid">
           {parseInlineMarkdown(trimmed.replace(/^#####\s*/, ''))}
         </h6>
       );
     } else if (trimmed.startsWith('> ')) {
       elements.push(
-        <blockquote key={`${chunkKey}-quote-${idx}`} className="my-1.5 py-1.5 px-3 bg-[#1A1A1A]/[0.04] border-l-2.5 border-[#D4A373] italic font-serif-lora text-[10.5px] sm:text-[11.5px] text-[#1E1B18] rounded-r break-inside-avoid leading-relaxed">
+        <blockquote key={`${chunkKey}-quote-${idx}`} className="my-2.5 py-2 px-4 bg-[#1A1A1A]/[0.03] border-l-3 border-[#D4A373] italic font-serif-lora text-[11.5px] sm:text-[13px] text-[#1E1B18] rounded-r break-inside-avoid leading-relaxed">
           {parseInlineMarkdown(trimmed.replace(/^>\s*/, ''))}
         </blockquote>
       );
@@ -277,15 +273,15 @@ const renderMagazineMarkdownChunk = (
         const alt = match[1];
         const src = match[2];
         elements.push(
-          <div key={`${chunkKey}-img-${idx}`} className="my-1.5 rounded-lg overflow-hidden border border-[#1A1A1A]/15 bg-[#FDFBF7] break-inside-avoid">
-            <img src={src} alt={alt} crossOrigin="anonymous" referrerPolicy="no-referrer" className="w-full h-auto max-h-[110px] sm:max-h-[130px] object-cover" />
-            {alt && <p className="text-[8px] sm:text-[8.5px] font-sans italic text-[#1A1A1A]/75 text-center py-0.5 bg-[#F5EFEB]/50 border-t border-[#1A1A1A]/10">{alt}</p>}
+          <div key={`${chunkKey}-img-${idx}`} className="my-2.5 rounded-lg overflow-hidden border border-[#1A1A1A]/15 bg-[#FDFBF7] break-inside-avoid">
+            <img src={src} alt={alt} crossOrigin="anonymous" referrerPolicy="no-referrer" className="w-full h-auto max-h-[220px] object-cover" />
+            {alt && <p className="text-[8.5px] sm:text-[9.5px] font-sans italic text-[#1A1A1A]/75 text-center py-1 bg-[#F5EFEB]/50 border-t border-[#1A1A1A]/10">{alt}</p>}
           </div>
         );
       }
     } else if (trimmed.startsWith('---') || trimmed.startsWith('***')) {
       elements.push(
-        <div key={`${chunkKey}-hr-${idx}`} className="my-1.5 flex items-center justify-center gap-2 text-[#D4A373]/50 break-inside-avoid">
+        <div key={`${chunkKey}-hr-${idx}`} className="my-2 flex items-center justify-center gap-2 text-[#D4A373]/50 break-inside-avoid">
           <span className="h-px bg-[#1A1A1A]/10 flex-1" />
           <span className="text-[8px]">✦</span>
           <span className="h-px bg-[#1A1A1A]/10 flex-1" />
@@ -299,9 +295,9 @@ const renderMagazineMarkdownChunk = (
       elements.push(
         <p 
           key={`${chunkKey}-p-${idx}`} 
-          className={`my-1 text-[10px] sm:text-[11.5px] leading-[1.65] font-serif-lora text-[#181818] text-justify hyphens-auto break-inside-avoid tracking-normal ${
+          className={`my-2 text-[11px] sm:text-[12.5px] md:text-[13.5px] leading-[1.68] font-serif-lora text-[#181818] text-justify hyphens-auto tracking-normal ${
             applyDropCap 
-              ? "first-letter:text-3xl first-letter:font-serif-playfair first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:text-[#8C6A43] first-letter:leading-none"
+              ? "first-letter:text-3xl sm:first-letter:text-4xl first-letter:font-serif-playfair first-letter:font-bold first-letter:float-left first-letter:mr-2.5 first-letter:text-[#8C6A43] first-letter:leading-none"
               : ""
           }`}
         >
@@ -317,15 +313,135 @@ const renderMagazineMarkdownChunk = (
   return elements;
 };
 
+// Helper to estimate visual height (in approximate pixels) of a markdown block in single-column layout
+const estimateBlockHeight = (block: string): number => {
+  if (!block) return 0;
+  const trimmed = block.trim();
+  if (trimmed.startsWith('# ')) return 52;
+  if (trimmed.startsWith('## ')) return 44;
+  if (trimmed.startsWith('### ')) return 36;
+  if (trimmed.startsWith('#### ') || trimmed.startsWith('##### ')) return 30;
+  if (trimmed.startsWith('> ')) {
+    const lines = Math.ceil(trimmed.length / 85);
+    return lines * 24 + 32;
+  }
+  if (trimmed.startsWith('|')) {
+    const rows = trimmed.split('\n').filter(l => l.trim().length > 0).length;
+    return 36 + rows * 26 + 18;
+  }
+  if (trimmed.startsWith('![')) {
+    return 210;
+  }
+  if (trimmed.startsWith('- ') || trimmed.startsWith('* ') || /^\d+\.\s/.test(trimmed)) {
+    const items = trimmed.split('\n').filter(l => l.trim().length > 0).length;
+    return items * 24 + 16;
+  }
+  // Standard paragraph in single-column layout (approx 90-95 chars per line @ 13px font)
+  const lines = Math.ceil(trimmed.length / 92);
+  return lines * 24 + 14;
+};
+
+// Helper to split a very long paragraph (> 1200 chars) into natural sentences
+const breakLargeParagraph = (paragraph: string, maxChunkLength: number = 900): string[] => {
+  if (paragraph.length <= maxChunkLength || paragraph.startsWith('#') || paragraph.startsWith('|') || paragraph.startsWith('![')) {
+    return [paragraph];
+  }
+  const sentences = paragraph.match(/[^.!?]+[.!?]+(\s+|$)/g) || [paragraph];
+  const chunks: string[] = [];
+  let cur = '';
+
+  for (const s of sentences) {
+    if (cur && cur.length + s.length > maxChunkLength) {
+      chunks.push(cur.trim());
+      cur = s;
+    } else {
+      cur += s;
+    }
+  }
+  if (cur.trim()) {
+    chunks.push(cur.trim());
+  }
+  return chunks.length > 0 ? chunks : [paragraph];
+};
+
+// Helper to paginate article content cleanly for continuous single-column A4 pages
+const paginateArticleBlocks = (content: string, hasCoverImage: boolean): string[] => {
+  if (!content) return [''];
+  
+  const rawParagraphs = content
+    .split(/\n\s*\n/)
+    .map(b => b.trim())
+    .filter(Boolean);
+
+  if (rawParagraphs.length === 0) return [content];
+
+  // Flatten and break down any oversized paragraphs so text flows seamlessly
+  const rawBlocks: string[] = [];
+  rawParagraphs.forEach(p => {
+    const subBlocks = breakLargeParagraph(p, 950);
+    rawBlocks.push(...subBlocks);
+  });
+
+  // Single-Column A4 Page Height Budget (in px):
+  // Page 1 contains Running Header, Category/Date Badges, Title H1/H2, Subtitle, Author Byline, optional Cover Image
+  // Available body space: ~620px (with cover image) or ~820px (without cover image)
+  // Subsequent pages (Page 2+): full A4 text column ~940px
+  const page1Capacity = hasCoverImage ? 620 : 820;
+  const subsequentCapacity = 940;
+
+  // Calculate total article weight to see if it fits on a single page
+  const totalArticleWeight = rawBlocks.reduce((acc, b) => acc + estimateBlockHeight(b), 0);
+  if (totalArticleWeight <= page1Capacity + 60) {
+    return [rawBlocks.join('\n\n')];
+  }
+
+  const pages: string[] = [];
+  let currentBlocks: string[] = [];
+  let currentHeight = 0;
+  let isPage1 = true;
+
+  for (let i = 0; i < rawBlocks.length; i++) {
+    const block = rawBlocks[i];
+    const blockHeight = estimateBlockHeight(block);
+    const capacity = isPage1 ? page1Capacity : subsequentCapacity;
+
+    if (currentBlocks.length > 0 && currentHeight + blockHeight > capacity) {
+      // Check if last block on current page is an orphan heading:
+      const lastBlock = currentBlocks[currentBlocks.length - 1];
+      const isHeading = lastBlock.startsWith('#');
+
+      if (isHeading) {
+        currentBlocks.pop();
+        pages.push(currentBlocks.join('\n\n'));
+        currentBlocks = [lastBlock, block];
+        currentHeight = estimateBlockHeight(lastBlock) + blockHeight;
+      } else {
+        pages.push(currentBlocks.join('\n\n'));
+        currentBlocks = [block];
+        currentHeight = blockHeight;
+      }
+      isPage1 = false;
+    } else {
+      currentBlocks.push(block);
+      currentHeight += blockHeight;
+    }
+  }
+
+  if (currentBlocks.length > 0) {
+    pages.push(currentBlocks.join('\n\n'));
+  }
+
+  return pages;
+};
+
 // Represents a structured page inside the magazine
 interface FormattedMagazinePage {
-  pageType: 'article-lead' | 'article-body' | 'article-conclusion';
+  pageType: 'article-lead' | 'article-body';
   post: BlogPost;
   articlePageIndex: number;
   totalArticlePages: number;
   overallPageNumber: number;
-  leadContent?: string;
-  bodyContent?: string;
+  content: string;
 }
 
 export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
@@ -334,7 +450,6 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
   posts,
 }) => {
   const [deviceMode, setDeviceMode] = useState<DeviceMode>('desktop');
-  const [columnLayout, setColumnLayout] = useState<MagazineColumnLayout>('newspaper');
   const [viewFilter, setViewFilter] = useState<ViewFilter>('all');
   const [selectedPostId, setSelectedPostId] = useState<string>('all');
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
@@ -364,88 +479,21 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
     sortedPosts.forEach((post) => {
       mapping[post.id] = currentPage;
       const cleanContent = post.content || '';
-      
-      // Split content by major sections (H1 / H2 headers)
-      const rawSections = cleanContent.split(/\n(?=##?\s+)/g).map(s => s.trim()).filter(Boolean);
+      const hasCoverImage = Boolean(post.coverImage);
+      const articleChunks = paginateArticleBlocks(cleanContent, hasCoverImage);
+      const totalPagesForArticle = articleChunks.length;
 
-      if (rawSections.length <= 1 && cleanContent.length < 1000) {
-        // Single-page short article
+      articleChunks.forEach((chunkText, idx) => {
+        const pageNum1Based = idx + 1;
         pages.push({
-          pageType: 'article-lead',
+          pageType: pageNum1Based === 1 ? 'article-lead' : 'article-body',
           post,
-          articlePageIndex: 1,
-          totalArticlePages: 1,
+          articlePageIndex: pageNum1Based,
+          totalArticlePages: totalPagesForArticle,
           overallPageNumber: currentPage++,
-          leadContent: cleanContent,
+          content: chunkText,
         });
-      } else {
-        const articlePageChunks: { type: 'lead' | 'body' | 'conclusion'; content: string }[] = [];
-
-        // Page 1 Chunk: Lead Section
-        const leadSection = rawSections[0] || '';
-        let nextIndex = 1;
-        let leadCombined = leadSection;
-
-        if (rawSections.length > 1 && leadSection.length < 400 && rawSections[1].length < 500 && !rawSections[1].includes('|')) {
-          leadCombined = `${leadSection}\n\n${rawSections[1]}`;
-          nextIndex = 2;
-        }
-
-        articlePageChunks.push({
-          type: 'lead',
-          content: leadCombined,
-        });
-
-        // Subsequent page chunks
-        let currentBodyChunk = '';
-        
-        for (let i = nextIndex; i < rawSections.length; i++) {
-          const section = rawSections[i];
-          const hasTable = section.includes('|');
-          const hasImage = section.includes('![');
-          const sectionWeight = section.length + (hasTable ? 600 : 0) + (hasImage ? 400 : 0);
-
-          if (!currentBodyChunk) {
-            currentBodyChunk = section;
-          } else {
-            const currentWeight = currentBodyChunk.length + (currentBodyChunk.includes('|') ? 600 : 0);
-            if (currentWeight + sectionWeight > 1600 || (hasTable && currentWeight > 600)) {
-              articlePageChunks.push({
-                type: 'body',
-                content: currentBodyChunk,
-              });
-              currentBodyChunk = section;
-            } else {
-              currentBodyChunk += `\n\n${section}`;
-            }
-          }
-        }
-
-        if (currentBodyChunk) {
-          articlePageChunks.push({
-            type: 'conclusion',
-            content: currentBodyChunk,
-          });
-        }
-
-        const totalPagesForArticle = articlePageChunks.length;
-
-        articlePageChunks.forEach((chunk, pageIdx) => {
-          const pageIndex1Based = pageIdx + 1;
-          const isFirstPage = pageIndex1Based === 1;
-          const isLastPage = pageIndex1Based === totalPagesForArticle;
-
-          pages.push({
-            pageType: isFirstPage ? 'article-lead' : (isLastPage ? 'article-conclusion' : 'article-body'),
-            post,
-            articlePageIndex: pageIndex1Based,
-            totalArticlePages: totalPagesForArticle,
-            overallPageNumber: currentPage++,
-            leadContent: isFirstPage ? chunk.content : undefined,
-            bodyContent: !isFirstPage ? chunk.content : undefined,
-          });
-        });
-      }
+      });
     });
 
     return {
@@ -709,52 +757,6 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
 
           {/* Action & Filter Toolbar */}
           <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-white/10">
-            
-            {/* Format Badge (A4 Standard) */}
-            <div className="flex items-center gap-1.5 px-3 py-1 bg-white/10 rounded-full text-xs font-sans text-white/90 border border-white/10 shrink-0">
-              <FileText className="w-3.5 h-3.5 text-[#D4A373]" />
-              <span className="font-bold text-[11px] sm:text-xs">A4 Dergi (210×297 mm)</span>
-            </div>
-
-            {/* Newspaper / Column Layout Selector */}
-            <div className="flex items-center gap-1 bg-white/10 p-0.5 sm:p-1 rounded-full text-xs font-sans">
-              <button
-                onClick={() => setColumnLayout('newspaper')}
-                className={`px-2 sm:px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-medium transition-all cursor-pointer flex items-center gap-1 ${
-                  columnLayout === 'newspaper'
-                    ? 'bg-[#D4A373] text-[#1A1A1A] font-bold shadow-xs'
-                    : 'text-white/70 hover:text-white'
-                }`}
-                title="2 Sütunlu Gazete ve Dergi Düzeni"
-              >
-                <Columns className="w-3.5 h-3.5" />
-                <span>Gazete (2 Sütun)</span>
-              </button>
-              <button
-                onClick={() => setColumnLayout('hybrid')}
-                className={`px-2 sm:px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-medium transition-all cursor-pointer flex items-center gap-1 ${
-                  columnLayout === 'hybrid'
-                    ? 'bg-[#D4A373] text-[#1A1A1A] font-bold shadow-xs'
-                    : 'text-white/70 hover:text-white'
-                }`}
-                title="Giriş Tek Sütun, Gövde Analizleri 2 Sütun"
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Hibrit</span>
-              </button>
-              <button
-                onClick={() => setColumnLayout('classic')}
-                className={`px-2 sm:px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-medium transition-all cursor-pointer flex items-center gap-1 ${
-                  columnLayout === 'classic'
-                    ? 'bg-white text-[#1A1A1A] font-bold shadow-xs'
-                    : 'text-white/70 hover:text-white'
-                }`}
-                title="Tek Sütunlu Klasik Düzen"
-              >
-                <FileText className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Klasik</span>
-              </button>
-            </div>
 
             {/* Device Layout Mode Selector */}
             <div className="flex items-center gap-1 bg-white/10 p-0.5 sm:p-1 rounded-full text-xs font-sans">
@@ -1163,7 +1165,6 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
             displayPages.map((page) => {
               const { post, articlePageIndex, totalArticlePages, overallPageNumber, pageType } = page;
               const authorPosition = getAuthorWritingPosition(post.author.name, post.author.bio);
-              const isTwoCol = columnLayout === 'newspaper' || (columnLayout === 'hybrid' && pageType !== 'article-lead');
 
               return (
                 <div
@@ -1180,12 +1181,25 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
                   </div>
 
                   {/* PAGE CONTENT CONTAINER */}
-                  <div className="flex-1 my-1.5 sm:my-2 overflow-hidden flex flex-col justify-start">
+                  <div className="flex-1 my-2 overflow-hidden flex flex-col justify-start">
                     
-                    {/* If Page 1: Show Lead Header, Title, Cover Image, and Author */}
+                    {/* If Page 1: Classic Top Masthead + 2-Column Body Flow */}
                     {pageType === 'article-lead' && (
-                      <div className="space-y-1.5 sm:space-y-2">
+                      <div className="space-y-2 flex-1 flex flex-col justify-start">
+                        {/* Classic Top (Single Column) */}
                         <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="px-2 py-0.5 bg-[#1A1A1A] text-white text-[8px] sm:text-[8.5px] font-sans font-bold uppercase tracking-wider rounded">
+                              {post.category}
+                            </span>
+                            <span className="text-[8px] sm:text-[9px] font-mono text-[#1A1A1A]/60">
+                              {post.readTimeMinutes} dk okuma
+                            </span>
+                            <span className="text-[8px] sm:text-[9px] font-sans text-[#8C6A43] font-medium ml-auto">
+                              Ağustos 2026 • Sayı 01
+                            </span>
+                          </div>
+
                           <h2 className="font-serif-cormorant text-base sm:text-xl md:text-2xl font-bold text-[#1A1A1A] leading-tight mb-0.5 sm:mb-1">
                             {post.title}
                           </h2>
@@ -1194,85 +1208,65 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
                               {post.subtitle}
                             </p>
                           )}
-                        </div>
 
-                        {/* ONLY Author Name & Writing Position Byline */}
-                        <div className="flex items-center justify-between text-[8.5px] sm:text-[9.5px] font-sans text-[#1A1A1A]/75 border-y border-[#1A1A1A]/10 py-1 bg-[#1A1A1A]/[0.02] px-2 rounded">
-                          <div className="flex items-center gap-1.5 truncate">
-                            <span className="font-bold text-[#1A1A1A]">{post.author.name}</span>
-                            <span className="text-[#8C6A43] font-medium truncate">• {authorPosition}</span>
-                          </div>
-                          <span className="shrink-0 text-[#1A1A1A]/60 font-mono text-[8px] sm:text-[9px]">{post.readTimeMinutes} dk okuma</span>
-                        </div>
-
-                        {/* Featured Image */}
-                        {post.coverImage && (
-                          <div className="my-1 rounded-lg overflow-hidden border border-[#1A1A1A]/15 shadow-xs">
-                            <img
-                              src={post.coverImage}
-                              alt={post.title}
-                              crossOrigin="anonymous"
-                              className="w-full h-24 sm:h-36 md:h-40 object-cover"
-                              onError={(e) => {
-                                (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=800&q=80';
-                              }}
-                            />
-                          </div>
-                        )}
-
-                        {/* Lead Content (Two-column newspaper style if selected) */}
-                        <div className="mt-1 sm:mt-2">
-                          {columnLayout === 'newspaper' ? (
-                            <div className="columns-1 md:columns-2 gap-4 sm:gap-6 [column-rule:1px_solid_rgba(26,26,26,0.12)]">
-                              {renderMagazineMarkdownChunk(page.leadContent || '', `${post.id}-lead`, { isTwoColumn: true, enableDropCap: true })}
+                          {/* Author Byline */}
+                          <div className="flex items-center justify-between text-[8.5px] sm:text-[9.5px] font-sans text-[#1A1A1A]/75 border-y border-[#1A1A1A]/10 py-1 bg-[#1A1A1A]/[0.02] px-2 rounded mb-2">
+                            <div className="flex items-center gap-1.5 truncate">
+                              <span className="font-bold text-[#1A1A1A]">{post.author.name}</span>
+                              <span className="text-[#8C6A43] font-medium truncate">• {authorPosition}</span>
                             </div>
-                          ) : (
-                            <div>
-                              {renderMagazineMarkdownChunk(page.leadContent || '', `${post.id}-lead`, { isTwoColumn: false, enableDropCap: true })}
+                            <span className="italic font-serif-cormorant text-[9px] sm:text-[10px] text-[#1A1A1A]/60">Bir Ada Yazarı</span>
+                          </div>
+
+                          {/* Featured Image (if exists on page 1) */}
+                          {post.coverImage && (
+                            <div className="mb-2 rounded-lg overflow-hidden border border-[#1A1A1A]/15 shadow-xs">
+                              <img
+                                src={post.coverImage}
+                                alt={post.title}
+                                crossOrigin="anonymous"
+                                className="w-full h-24 sm:h-36 md:h-40 object-cover"
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=800&q=80';
+                                }}
+                              />
                             </div>
                           )}
                         </div>
 
-                        {/* Visual Enrichment filler for blank spaces */}
-                        <MagazineVisualEnrichment
-                          post={post}
-                          pageType={pageType}
-                          articlePageIndex={articlePageIndex}
-                          totalArticlePages={totalArticlePages}
-                          contentLength={(page.leadContent || '').length}
-                          isTwoColumn={columnLayout === 'newspaper'}
-                        />
+                        {/* Single-Column Body Flow Starts Seamlessly */}
+                        <div className="w-full flex-1">
+                          {renderMagazineMarkdownChunk(page.content, `${post.id}-p1`, { enableDropCap: true })}
+                        </div>
+
+                        {/* Sign-off seal if single-page article */}
+                        {totalArticlePages === 1 && (
+                          <div className="mt-2 pt-1.5 border-t border-[#1A1A1A]/15 flex items-center justify-between text-[8.5px] sm:text-[9.5px] font-sans text-[#1A1A1A]/70 bg-[#1A1A1A]/[0.02] p-1.5 sm:p-2 rounded break-inside-avoid shrink-0">
+                            <div className="flex items-center gap-1.5">
+                              <BirAdaLogo size="sm" showText={false} />
+                              <div>
+                                <span className="font-bold text-[#1A1A1A] block">{post.author.name}</span>
+                                <span className="text-[8px] sm:text-[8.5px] text-[#8C6A43]">{authorPosition}</span>
+                              </div>
+                            </div>
+                            <span className="italic font-serif-cormorant text-[9.5px] sm:text-[10.5px] font-semibold text-[#1A1A1A]/80">
+                              "Bir Arada, Bir Ada'da" • Ağustos 2026
+                            </span>
+                          </div>
+                        )}
                       </div>
                     )}
 
-                    {/* If Page 2 (Body) or Page 3 (Conclusion) */}
+                    {/* If Page 2+ (Body Continuation) */}
                     {pageType !== 'article-lead' && (
-                      <div className="space-y-1.5 flex-1 flex flex-col justify-between">
-                        <div>
-                          {isTwoCol ? (
-                            <div className="columns-1 md:columns-2 gap-4 sm:gap-6 [column-rule:1px_solid_rgba(26,26,26,0.12)]">
-                              {renderMagazineMarkdownChunk(page.bodyContent || '', `${post.id}-body-${articlePageIndex}`, { isTwoColumn: true, enableDropCap: false })}
-                            </div>
-                          ) : (
-                            <div>
-                              {renderMagazineMarkdownChunk(page.bodyContent || '', `${post.id}-body-${articlePageIndex}`, { isTwoColumn: false, enableDropCap: false })}
-                            </div>
-                          )}
-
-                          {/* Visual Enrichment filler for remaining empty space on body/conclusion pages */}
-                          <MagazineVisualEnrichment
-                            post={post}
-                            pageType={pageType}
-                            articlePageIndex={articlePageIndex}
-                            totalArticlePages={totalArticlePages}
-                            contentLength={(page.bodyContent || '').length}
-                            isTwoColumn={isTwoCol}
-                          />
+                      <div className="space-y-2 flex-1 flex flex-col justify-between">
+                        <div className="w-full flex-1">
+                          {renderMagazineMarkdownChunk(page.content, `${post.id}-p${articlePageIndex}`, { enableDropCap: false })}
                         </div>
 
-                        {/* Sign-off Seal on last page of article - ONLY Author Name & Writing Position */}
+                        {/* Sign-off Seal on last page of article */}
                         {articlePageIndex === totalArticlePages && (
-                          <div className="mt-2 sm:mt-3 pt-1.5 sm:pt-2 border-t border-[#1A1A1A]/15 flex items-center justify-between text-[8.5px] sm:text-[9.5px] font-sans text-[#1A1A1A]/70 bg-[#1A1A1A]/[0.02] p-1.5 sm:p-2 rounded break-inside-avoid">
+                          <div className="mt-2 sm:mt-3 pt-1.5 sm:pt-2 border-t border-[#1A1A1A]/15 flex items-center justify-between text-[8.5px] sm:text-[9.5px] font-sans text-[#1A1A1A]/70 bg-[#1A1A1A]/[0.02] p-1.5 sm:p-2 rounded break-inside-avoid shrink-0">
                             <div className="flex items-center gap-1.5">
                               <BirAdaLogo size="sm" showText={false} />
                               <div>
@@ -1503,7 +1497,6 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
         {allArticlePages.map((page) => {
           const { post, articlePageIndex, totalArticlePages, overallPageNumber, pageType } = page;
           const authorPosition = getAuthorWritingPosition(post.author.name, post.author.bio);
-          const isTwoCol = columnLayout === 'newspaper' || (columnLayout === 'hybrid' && pageType !== 'article-lead');
 
           return (
             <div
@@ -1525,9 +1518,22 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
               </div>
 
               <div className="flex-1 my-3 overflow-hidden flex flex-col justify-start">
+                {/* Page 1 Lead with Classic Masthead and 2-Column Body */}
                 {pageType === 'article-lead' && (
-                  <div className="space-y-2.5">
+                  <div className="space-y-2.5 flex-1 flex flex-col justify-start">
                     <div>
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <span className="px-2.5 py-0.5 bg-[#1A1A1A] text-white text-[10px] font-sans font-bold uppercase tracking-wider rounded">
+                          {post.category}
+                        </span>
+                        <span className="text-[10px] font-mono text-[#1A1A1A]/60">
+                          {post.readTimeMinutes} dk okuma
+                        </span>
+                        <span className="text-[10px] font-sans text-[#8C6A43] font-medium ml-auto">
+                          Ağustos 2026 • Sayı 01
+                        </span>
+                      </div>
+
                       <h2 className="font-serif-cormorant text-2xl font-bold text-[#1A1A1A] leading-tight mb-1">
                         {post.title}
                       </h2>
@@ -1536,79 +1542,61 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
                           {post.subtitle}
                         </p>
                       )}
-                    </div>
 
-                    <div className="flex items-center justify-between text-xs font-sans text-[#1A1A1A]/75 border-y border-[#1A1A1A]/10 py-1 bg-[#1A1A1A]/[0.02] px-3 rounded">
-                      <div className="flex items-center gap-2 truncate">
-                        <span className="font-bold text-[#1A1A1A]">{post.author.name}</span>
-                        <span className="text-[#8C6A43] font-medium truncate">• {authorPosition}</span>
-                      </div>
-                      <span className="shrink-0 font-medium">{post.readTimeMinutes} dk okuma süresi</span>
-                    </div>
-
-                    {/* Featured Image in Buffer */}
-                    {post.coverImage && (
-                      <div className="my-1 rounded-lg overflow-hidden border border-[#1A1A1A]/15 shadow-xs">
-                        <img
-                          src={post.coverImage}
-                          alt={post.title}
-                          crossOrigin="anonymous"
-                          className="w-full h-36 object-cover"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=800&q=80';
-                          }}
-                        />
-                      </div>
-                    )}
-
-                    <div className="mt-1">
-                      {columnLayout === 'newspaper' ? (
-                        <div className="columns-2 gap-6 [column-rule:1px_solid_rgba(26,26,26,0.15)]">
-                          {renderMagazineMarkdownChunk(page.leadContent || '', `buf-${post.id}-lead`, { isTwoColumn: true, enableDropCap: true })}
+                      <div className="flex items-center justify-between text-xs font-sans text-[#1A1A1A]/75 border-y border-[#1A1A1A]/10 py-1 bg-[#1A1A1A]/[0.02] px-3 rounded mb-2">
+                        <div className="flex items-center gap-2 truncate">
+                          <span className="font-bold text-[#1A1A1A]">{post.author.name}</span>
+                          <span className="text-[#8C6A43] font-medium truncate">• {authorPosition}</span>
                         </div>
-                      ) : (
-                        <div>
-                          {renderMagazineMarkdownChunk(page.leadContent || '', `buf-${post.id}-lead`, { isTwoColumn: false, enableDropCap: true })}
+                        <span className="italic font-serif-cormorant text-xs text-[#1A1A1A]/60">Bir Ada Yazarı</span>
+                      </div>
+
+                      {/* Featured Image in Buffer */}
+                      {post.coverImage && (
+                        <div className="mb-2 rounded-lg overflow-hidden border border-[#1A1A1A]/15 shadow-xs">
+                          <img
+                            src={post.coverImage}
+                            alt={post.title}
+                            crossOrigin="anonymous"
+                            className="w-full h-36 object-cover"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=800&q=80';
+                            }}
+                          />
                         </div>
                       )}
                     </div>
 
-                    <MagazineVisualEnrichment
-                      post={post}
-                      pageType={pageType}
-                      articlePageIndex={articlePageIndex}
-                      totalArticlePages={totalArticlePages}
-                      contentLength={(page.leadContent || '').length}
-                      isTwoColumn={columnLayout === 'newspaper'}
-                    />
+                    <div className="w-full flex-1">
+                      {renderMagazineMarkdownChunk(page.content, `buf-${post.id}-p1`, { enableDropCap: true })}
+                    </div>
+
+                    {totalArticlePages === 1 && (
+                      <div className="mt-2 pt-2 border-t border-[#1A1A1A]/15 flex items-center justify-between text-xs font-sans text-[#1A1A1A]/70 bg-[#1A1A1A]/[0.02] p-2 rounded break-inside-avoid shrink-0">
+                        <div className="flex items-center gap-2">
+                          <BirAdaLogo size="sm" showText={false} />
+                          <div>
+                            <span className="font-bold text-[#1A1A1A] block text-xs">{post.author.name}</span>
+                            <span className="text-[10px] text-[#8C6A43]">{authorPosition}</span>
+                          </div>
+                        </div>
+                        <span className="italic font-serif-cormorant text-xs font-semibold">
+                          "Bir Arada, Bir Ada'da" • Ağustos 2026
+                        </span>
+                      </div>
+                    )}
                   </div>
                 )}
 
+                {/* Page 2+ Body */}
                 {pageType !== 'article-lead' && (
                   <div className="space-y-2 flex-1 flex flex-col justify-between">
-                    <div>
-                      {isTwoCol ? (
-                        <div className="columns-2 gap-6 [column-rule:1px_solid_rgba(26,26,26,0.15)]">
-                          {renderMagazineMarkdownChunk(page.bodyContent || '', `buf-${post.id}-body-${articlePageIndex}`, { isTwoColumn: true, enableDropCap: false })}
-                        </div>
-                      ) : (
-                        <div>
-                          {renderMagazineMarkdownChunk(page.bodyContent || '', `buf-${post.id}-body-${articlePageIndex}`, { isTwoColumn: false, enableDropCap: false })}
-                        </div>
-                      )}
-
-                      <MagazineVisualEnrichment
-                        post={post}
-                        pageType={pageType}
-                        articlePageIndex={articlePageIndex}
-                        totalArticlePages={totalArticlePages}
-                        contentLength={(page.bodyContent || '').length}
-                        isTwoColumn={isTwoCol}
-                      />
+                    <div className="w-full flex-1">
+                      {renderMagazineMarkdownChunk(page.content, `buf-${post.id}-p${articlePageIndex}`, { enableDropCap: false })}
                     </div>
 
                     {articlePageIndex === totalArticlePages && (
-                      <div className="mt-3 pt-2 border-t border-[#1A1A1A]/15 flex items-center justify-between text-xs font-sans text-[#1A1A1A]/70 bg-[#1A1A1A]/[0.02] p-2 rounded break-inside-avoid">
+                      <div className="mt-3 pt-2 border-t border-[#1A1A1A]/15 flex items-center justify-between text-xs font-sans text-[#1A1A1A]/70 bg-[#1A1A1A]/[0.02] p-2 rounded break-inside-avoid shrink-0">
                         <div className="flex items-center gap-2">
                           <BirAdaLogo size="sm" showText={false} />
                           <div>

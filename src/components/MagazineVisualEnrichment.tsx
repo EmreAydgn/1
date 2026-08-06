@@ -1,17 +1,13 @@
 import React from 'react';
-import { Feather, BookOpen, Sparkles, CheckCircle2, MessageSquare, Info, Compass, ShieldCheck } from 'lucide-react';
+import { Feather, Sparkles } from 'lucide-react';
 import { BlogPost } from '../types';
-import { getAuthorWritingPosition } from '../utils/authorUtils';
-import { BirAdaLogo } from './BirAdaLogo';
 
 // Import high-res thematic assets
 import brightLondonPanorama from '../assets/images/bright_london_panorama_1786016549396.jpg';
 import editorialMagazineDesk from '../assets/images/editorial_magazine_desk_1786015050264.jpg';
 import londonDistantSkyline from '../assets/images/london_distant_skyline_panoramic_1786015473110.jpg';
 import ukHousingRatesChart from '../assets/images/uk_housing_rates_chart_1785948928358.jpg';
-import ukWindSolarEnergy from '../assets/images/uk_wind_solar_energy_1785628561512.jpg';
 import ukTurkishAiStartup from '../assets/images/uk_turkish_ai_startup_1785777942810.jpg';
-import londonStudentsCover from '../assets/images/london_students_analysis_1785937267430.jpg';
 import londonTurkishEventsCover from '../assets/images/london_turkish_events_1785940930126.jpg';
 import ukSponsorshipVisaCover from '../assets/images/uk_sponsorship_visa_1785940746279.jpg';
 import ukHeatwaveCover from '../assets/images/uk_heatwave_2026_1786019783378.jpg';
@@ -139,7 +135,6 @@ export const MagazineVisualEnrichment: React.FC<MagazineVisualEnrichmentProps> =
   contentLength,
   isTwoColumn = false,
 }) => {
-  const authorPosition = getAuthorWritingPosition(post.author.name, post.author.bio);
   const enrichment = getCategoryEnrichmentData(post, articlePageIndex);
 
   // Determine what type of enrichment to render based on available space and page position
@@ -236,22 +231,6 @@ export const MagazineVisualEnrichment: React.FC<MagazineVisualEnrichmentProps> =
           </span>
         </div>
       ) : null}
-
-      {/* 3. Community Engagement Bar on Final Page */}
-      {isLastPage && (
-        <div className="p-2 bg-[#1A1A1A]/[0.03] rounded-lg border border-[#1A1A1A]/10 flex items-center justify-between text-[8px] sm:text-[9px] font-sans text-[#1A1A1A]/80">
-          <div className="flex items-center gap-2">
-            <BirAdaLogo size="sm" showText={false} />
-            <div>
-              <span className="font-bold text-[#1A1A1A] block">Bir Ada Dijital Topluluk &amp; Yorumlar</span>
-              <span className="text-[#8C6A43] text-[7.5px] sm:text-[8px]">Bu makale hakkında görüşlerinizi birada.co.uk üzerinden yazara iletebilirsiniz.</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-1 font-mono text-[7.5px] sm:text-[8px] font-bold text-[#1A1A1A] bg-white px-2 py-1 rounded border border-[#1A1A1A]/15 shadow-2xs">
-            <span>🌐 birada.co.uk/{post.id.slice(0, 8)}</span>
-          </div>
-        </div>
-      )}
 
     </div>
   );

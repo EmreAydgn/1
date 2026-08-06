@@ -436,7 +436,7 @@ export const ArticleReader: React.FC<ArticleReaderProps> = ({
             {/* Audio Read-Aloud */}
             <button
               onClick={handleToggleAudio}
-              className={`p-2 rounded-full transition-colors ${
+              className={`p-2 rounded-full transition-colors cursor-pointer ${
                 isPlayingAudio ? 'bg-[#8C6A43] text-white animate-pulse' : 'text-[#736C65] hover:bg-[#F3EFEA] dark:hover:bg-[#272422]'
               }`}
               title={isPlayingAudio ? 'Sesli Okumayı Durdur' : 'Sesli Oku'}
@@ -450,7 +450,7 @@ export const ArticleReader: React.FC<ArticleReaderProps> = ({
             <button
               onClick={handlePrintPdf}
               id="article-pdf-btn"
-              className="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-semibold text-[#8C6A43] hover:bg-[#8C6A43]/10 dark:hover:bg-[#8C6A43]/20 transition-colors"
+              className="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-semibold text-[#8C6A43] hover:bg-[#8C6A43]/10 dark:hover:bg-[#8C6A43]/20 transition-colors cursor-pointer"
               title="Makaleyi PDF İndir / Yazdır"
             >
               <Printer className="w-3.5 h-3.5" />
@@ -458,7 +458,7 @@ export const ArticleReader: React.FC<ArticleReaderProps> = ({
             </button>
             <button
               onClick={handleCopyShare}
-              className={`p-2 rounded-full transition-colors ${
+              className={`p-2 rounded-full transition-colors cursor-pointer ${
                 copiedLink ? 'text-green-600 bg-green-50 dark:bg-green-950/30' : 'text-[#736C65] hover:bg-[#F3EFEA] dark:hover:bg-[#272422]'
               }`}
               title={copiedLink ? 'Bağlantı kopyalandı!' : 'Bağlantıyı Kopyala'}
@@ -467,7 +467,7 @@ export const ArticleReader: React.FC<ArticleReaderProps> = ({
             </button>
             <button
               onClick={() => onToggleBookmark(post.id)}
-              className={`p-2 rounded-full transition-colors ${
+              className={`p-2 rounded-full transition-colors cursor-pointer ${
                 isBookmarked ? 'text-[#8C6A43]' : 'text-[#736C65] hover:bg-[#F3EFEA] dark:hover:bg-[#272422]'
               }`}
               title="Kaydet"

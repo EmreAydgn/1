@@ -1,6 +1,6 @@
 {
   "name": "Remix: Bir Ada - Britanya Online Dergi \u0026 Yaşam Platformu",
-  "description": "Britanya\u0027da yaşayan tüm Türk toplumunu kucaklayan bağımsız online haber, dergi ve yaşam platformu. Haberler, İş Dünyası, Toplum Hikayeleri, Siyaset, Edebiyat, Kültür ve UK Gezi.",
+  "description": "Britanya'da yaşayan Türk toplumuna özel bağımsız online dergi & yaşam platformu. Çok sütunlu gazete & dergi mizanpajı, zengin görsel dolgular ve A4 PDF indirme/yazdırma desteği.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

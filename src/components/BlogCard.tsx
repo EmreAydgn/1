@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Clock, Heart, Bookmark, Eye, ArrowUpRight, Sparkles, Pin, Share2, Check } from 'lucide-react';
 import { BlogPost } from '../types';
-import { getAuthorInitials } from '../utils/authorUtils';
+import { getAuthorInitials, getAuthorWritingPosition } from '../utils/authorUtils';
 import { getArticleShareUrl } from '../utils/urlUtils';
 
 interface BlogCardProps {
@@ -97,30 +97,41 @@ export const BlogCard: React.FC<BlogCardProps> = ({
           {post.id === 'post-pin-manifesto' || post.category === 'Dergi Tanıtımı' || post.pinned ? (
             <>
               {/* Soft, natural gradient only at the top and bottom edges for effortless readability */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/40 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/50 pointer-events-none" />
 
               {/* Natural Editorial Masthead (Top) */}
               <div className="relative z-10 p-4 sm:p-6 flex items-start justify-between">
                 <div>
-                  <div className="flex items-center gap-2 text-white/90 text-[10px] sm:text-xs font-sans-inter uppercase tracking-[0.2em] font-semibold drop-shadow-sm">
+                  <div className="flex items-center gap-2 text-white/90 text-[10px] sm:text-xs font-sans-inter uppercase tracking-[0.22em] font-semibold drop-shadow-sm">
                     <span className="w-2 h-2 rounded-full bg-[#D4A373]" />
-                    <span>Britanya - Türk Toplumu Dergisi</span>
+                    <span>Aylık Fikir, Kültür ve Toplum Dergisi</span>
                   </div>
-                  <h1 className="font-serif-playfair text-2xl sm:text-4xl font-bold tracking-[0.12em] text-white uppercase drop-shadow-md mt-1">
+                  <h1 className="font-serif-playfair text-3xl sm:text-5xl font-bold tracking-[0.14em] text-white uppercase drop-shadow-md mt-1">
                     BİR ADA
                   </h1>
+                  <p className="text-white/85 text-[11px] sm:text-xs font-serif-playfair italic mt-0.5 drop-shadow-sm">
+                    "Bir Arada, Bir Ada'da"
+                  </p>
                 </div>
 
-                <span className="bg-[#1A1A1A]/80 backdrop-blur-xs text-white border border-white/20 px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold font-sans-inter uppercase tracking-wider shadow-sm">
-                  1. Sayı
-                </span>
+                <div className="flex flex-col items-end gap-1">
+                  <span className="bg-[#1A1A1A]/85 backdrop-blur-xs text-white border border-white/20 px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold font-sans-inter uppercase tracking-wider shadow-sm">
+                    Ağustos 2026 • 1. Sayı
+                  </span>
+                  <span className="text-[9px] sm:text-[10px] text-white/80 font-sans-inter tracking-widest uppercase font-medium drop-shadow-xs">
+                    Aylık Dergi • İlk Sayı
+                  </span>
+                </div>
               </div>
 
               {/* Natural Editorial Lower Tag (Bottom) */}
               <div className="relative z-10 p-4 sm:p-6 text-white">
-                <div className="flex items-center justify-between text-[10px] sm:text-xs text-white/80 font-sans-inter border-t border-white/20 pt-2 drop-shadow-sm">
-                  <span className="font-medium tracking-wider uppercase">İlk Baskı &amp; Özel Sayı</span>
-                  <span className="tracking-widest">Londra • 2026</span>
+                <div className="flex items-center justify-between text-[10px] sm:text-xs text-white/90 font-sans-inter border-t border-white/25 pt-2.5 drop-shadow-sm">
+                  <span className="font-semibold tracking-wider uppercase flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#D4A373]" />
+                    Ağustos 2026 Özel İlk Baskı
+                  </span>
+                  <span className="tracking-widest font-mono text-[9px] sm:text-[11px]">SAYI: 01 • LONDRA</span>
                 </div>
               </div>
             </>
@@ -143,7 +154,7 @@ export const BlogCard: React.FC<BlogCardProps> = ({
                   : 'text-[#D4A373] bg-white border-[#1A1A1A]/10'
               }`}>
                 {post.pinned && <Pin className="w-3 h-3 text-[#D4A373] fill-current" />}
-                <span>{post.pinned || post.category === 'Dergi Tanıtımı' ? '1. Sayı • Dergi Tanıtımı' : post.category}</span>
+                <span>{post.pinned || post.category === 'Dergi Tanıtımı' ? 'Aylık Dergi • Ağustos 2026 (1. Sayı)' : post.category}</span>
               </span>
               <div className="flex items-center gap-1 text-xs font-sans-inter text-[#1A1A1A]/50">
                 <Clock className="w-3.5 h-3.5 text-[#D4A373]" />
@@ -180,7 +191,10 @@ export const BlogCard: React.FC<BlogCardProps> = ({
                   <h4 className="text-xs font-bold font-sans-inter text-[#1A1A1A] group-hover/author:text-[#C8102E] transition-colors">
                     {post.author.name}
                   </h4>
-                  <time className="text-[10px] font-sans-inter text-[#1A1A1A]/50">{formattedDate}</time>
+                  <p className="text-[10px] font-sans-inter text-[#8C6A43] font-medium truncate max-w-[180px]">
+                    {getAuthorWritingPosition(post.author.name, post.author.bio)}
+                  </p>
+                  <time className="text-[9.5px] font-sans-inter text-[#1A1A1A]/50">{formattedDate}</time>
                 </div>
               </div>
 
@@ -290,9 +304,14 @@ export const BlogCard: React.FC<BlogCardProps> = ({
             <div className="w-7 h-7 rounded-full bg-[#FAF6EE] text-[#0F2C59] font-bold font-serif-playfair text-[10px] flex items-center justify-center border border-[#1A1A1A]/10 shrink-0 shadow-xs">
               {getAuthorInitials(post.author.name)}
             </div>
-            <span className="text-xs font-bold font-sans-inter text-[#1A1A1A] group-hover/author:text-[#C8102E] transition-colors">
-              {post.author.name}
-            </span>
+            <div className="truncate max-w-[140px]">
+              <span className="text-xs font-bold font-sans-inter text-[#1A1A1A] group-hover/author:text-[#C8102E] transition-colors block truncate">
+                {post.author.name}
+              </span>
+              <span className="text-[9.5px] font-sans-inter text-[#8C6A43] font-medium block truncate">
+                {getAuthorWritingPosition(post.author.name, post.author.bio)}
+              </span>
+            </div>
           </div>
 
           <div className="flex items-center gap-3 text-xs font-sans-inter text-[#1A1A1A]/50">

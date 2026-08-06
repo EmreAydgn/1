@@ -21,7 +21,7 @@ import {
   Pin
 } from 'lucide-react';
 import { BlogPost, BlogTheme, FontStyle, Comment } from '../types';
-import { getAuthorInitials } from '../utils/authorUtils';
+import { getAuthorInitials, getAuthorWritingPosition } from '../utils/authorUtils';
 import { getArticleShareUrl } from '../utils/urlUtils';
 
 interface ArticleReaderProps {
@@ -517,7 +517,10 @@ export const ArticleReader: React.FC<ArticleReaderProps> = ({
               </div>
               <div className="text-left">
                 <h3 className="text-xs sm:text-sm font-semibold hover:underline">{post.author.name}</h3>
-                <div className="flex items-center gap-2 sm:gap-3 text-[11px] sm:text-xs text-[#736C65] dark:text-[#9E968F]">
+                <p className="text-[11px] sm:text-xs font-sans text-[#8C6A43] font-medium">
+                  {getAuthorWritingPosition(post.author.name, post.author.bio)}
+                </p>
+                <div className="flex items-center gap-2 sm:gap-3 text-[10.5px] sm:text-[11px] text-[#736C65] dark:text-[#9E968F] mt-0.5">
                   <time>{formattedDate}</time>
                   <span>•</span>
                   <span className="flex items-center gap-1">
@@ -544,23 +547,23 @@ export const ArticleReader: React.FC<ArticleReaderProps> = ({
             />
             {(post.id === 'post-pin-manifesto' || post.category === 'Dergi Tanıtımı') && (
               <>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/40 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/50 pointer-events-none" />
                 <div className="absolute inset-0 p-5 sm:p-8 flex flex-col justify-between pointer-events-none text-white">
                   <div className="flex items-center justify-between text-[10px] sm:text-xs font-sans-inter uppercase tracking-[0.2em] font-semibold drop-shadow-sm">
                     <span className="flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-[#D4A373]" />
-                      Britanya - Türk Toplumu Dergisi
+                      Aylık Fikir, Kültür ve Toplum Dergisi
                     </span>
-                    <span className="bg-[#1A1A1A]/80 backdrop-blur-xs text-white px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold border border-white/20">
-                      1. Sayı
+                    <span className="bg-[#1A1A1A]/85 backdrop-blur-xs text-white px-3.5 py-1 rounded-full text-[10px] sm:text-xs font-bold border border-white/20">
+                      Ağustos 2026 • 1. Sayı (İlk Sayı)
                     </span>
                   </div>
                   <div>
-                    <h2 className="font-serif-playfair text-2xl sm:text-4xl lg:text-5xl font-bold text-white uppercase tracking-[0.12em] drop-shadow-md leading-tight">
+                    <h2 className="font-serif-playfair text-3xl sm:text-5xl lg:text-6xl font-bold text-white uppercase tracking-[0.14em] drop-shadow-md leading-tight">
                       BİR ADA
                     </h2>
-                    <p className="font-serif-playfair italic text-white/90 text-xs sm:text-base mt-1 drop-shadow-sm">
-                      "Bir Arada, Bir Ada'da" • İlk Baskı &amp; Kuruluş Manifestosu
+                    <p className="font-serif-playfair italic text-white/95 text-xs sm:text-base mt-1.5 drop-shadow-sm">
+                      "Bir Arada, Bir Ada'da" • Aylık Dergi • İlk Baskı &amp; Kuruluş Manifestosu
                     </p>
                   </div>
                 </div>
@@ -762,17 +765,20 @@ export const ArticleReader: React.FC<ArticleReaderProps> = ({
           </div>
         )}
 
-        {/* Author Bio Box */}
+        {/* Author Byline Box */}
         <div 
           onClick={() => onSelectAuthor && onSelectAuthor(post.author.name)}
-          className="bg-[#F3EFEA] dark:bg-[#1D1B1A] p-4 sm:p-6 rounded-xl sm:rounded-2xl my-6 sm:my-10 border border-[#E8E2D9] dark:border-[#332F2C] flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-3 sm:gap-4 cursor-pointer hover:border-[#8C6A43] transition-colors"
+          className="bg-[#F3EFEA] dark:bg-[#1D1B1A] p-4 sm:p-5 rounded-xl sm:rounded-2xl my-6 sm:my-10 border border-[#E8E2D9] dark:border-[#332F2C] flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-3 sm:gap-4 cursor-pointer hover:border-[#8C6A43] transition-colors"
           title={`${post.author.name} profiline git`}
         >
           <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#FAF6EE] text-[#0F2C59] font-bold font-serif-playfair text-sm sm:text-base flex items-center justify-center border-2 border-[#8C6A43] shrink-0 shadow-xs">
             {getAuthorInitials(post.author.name)}
           </div>
           <div>
-            <h4 className="font-semibold text-sm sm:text-base mb-1">{post.author.name} Hakkında</h4>
+            <h4 className="font-semibold text-sm sm:text-base text-[#1A1A1A] dark:text-white mb-0.5">{post.author.name}</h4>
+            <p className="text-xs font-sans text-[#8C6A43] font-semibold mb-1.5">
+              {getAuthorWritingPosition(post.author.name, post.author.bio)}
+            </p>
             <p className="text-xs text-[#736C65] dark:text-[#9E968F] leading-relaxed">
               {post.author.bio}
             </p>

@@ -4,31 +4,25 @@ import {
   Printer, 
   Download, 
   BookOpen, 
-  Sparkles, 
   Feather, 
-  ArrowRight, 
   Check, 
-  Layers, 
-  FileText, 
   Calendar, 
-  MapPin, 
-  User, 
   Clock, 
-  Info,
-  ChevronDown,
-  Sparkle,
-  Bookmark,
-  Share2,
-  ChevronLeft,
-  ChevronRight,
-  ExternalLink,
-  Smartphone,
-  AlertCircle
+  ChevronLeft, 
+  ChevronRight, 
+  Smartphone, 
+  Tablet, 
+  Monitor, 
+  AlertCircle, 
+  FileText, 
+  Sparkles,
+  Layers,
+  ArrowRight
 } from 'lucide-react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { BlogPost } from '../types';
-import { getAuthorInitials } from '../utils/authorUtils';
+import { getAuthorInitials, getAuthorWritingPosition } from '../utils/authorUtils';
 import { BirAdaLogo } from './BirAdaLogo';
 
 interface PdfMagazineModalProps {
@@ -39,6 +33,7 @@ interface PdfMagazineModalProps {
 
 type PageFormat = 'a5' | 'a4';
 type ViewFilter = 'all' | 'cover' | 'toc' | 'articles';
+type DeviceMode = 'desktop' | 'tablet' | 'mobile';
 
 // Helper to parse inline markdown (**bold**, *italic*, `code`) safely into React elements
 const parseInlineMarkdown = (text: string): React.ReactNode => {
@@ -111,12 +106,12 @@ const renderMarkdownTable = (tableLines: string[], keyPrefix: string) => {
   );
 
   return (
-    <div key={keyPrefix} className="my-2.5 overflow-x-auto rounded-md border border-[#1A1A1A]/20 bg-[#FDFBF7] shadow-xs">
-      <table className="w-full text-left text-[9.5px] sm:text-[11px] leading-tight font-serif-newsreader min-w-[320px]">
+    <div key={keyPrefix} className="my-2 sm:my-3 overflow-x-auto rounded-md border border-[#1A1A1A]/20 bg-[#FDFBF7] shadow-xs">
+      <table className="w-full text-left text-[9.5px] sm:text-[11px] leading-tight font-serif-newsreader min-w-[300px]">
         <thead className="bg-[#1A1A1A] text-white">
           <tr>
             {headerCells.map((header, i) => (
-              <th key={i} className="py-1.5 px-2 font-bold font-sans-body uppercase tracking-wider text-[8px] sm:text-[9px]">
+              <th key={i} className="py-1.5 px-2 font-bold font-sans uppercase tracking-wider text-[8px] sm:text-[9px]">
                 {parseInlineMarkdown(header)}
               </th>
             ))}
@@ -271,7 +266,7 @@ const renderMagazineMarkdownChunk = (content: string, chunkKey: string) => {
         elements.push(
           <div key={`${chunkKey}-img-${idx}`} className="my-2 rounded-lg overflow-hidden border border-[#1A1A1A]/15 bg-[#FDFBF7]">
             <img src={src} alt={alt} crossOrigin="anonymous" referrerPolicy="no-referrer" className="w-full h-auto max-h-[120px] sm:max-h-[140px] object-cover" />
-            {alt && <p className="text-[8px] font-sans-body italic text-[#1A1A1A]/70 text-center py-0.5 sm:py-1 bg-[#F5EFEB]/50 border-t border-[#1A1A1A]/10">{alt}</p>}
+            {alt && <p className="text-[8px] font-sans italic text-[#1A1A1A]/70 text-center py-0.5 sm:py-1 bg-[#F5EFEB]/50 border-t border-[#1A1A1A]/10">{alt}</p>}
           </div>
         );
       }
@@ -315,6 +310,7 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
   posts,
 }) => {
   const [activeFormat, setActiveFormat] = useState<PageFormat>('a5');
+  const [deviceMode, setDeviceMode] = useState<DeviceMode>('desktop');
   const [viewFilter, setViewFilter] = useState<ViewFilter>('all');
   const [selectedPostId, setSelectedPostId] = useState<string>('all');
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
@@ -326,12 +322,12 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
   const [downloadError, setDownloadError] = useState<string | null>(null);
   const [downloadBlobUrl, setDownloadBlobUrl] = useState<string | null>(null);
   const [printFormat, setPrintFormat] = useState<'a5' | 'a4'>('a4');
-  const [activeMobilePageIndex, setActiveMobilePageIndex] = useState<number>(0);
+  const [activePageIndex, setActivePageIndex] = useState<number>(0);
 
   const magazineContainerRef = useRef<HTMLDivElement>(null);
   const fullMagazineRenderRef = useRef<HTMLDivElement>(null);
 
-// Divide and format all posts into discrete magazine pages with smart dynamic pagination
+  // Divide and format all posts into discrete magazine pages with smart dynamic pagination
   const { allArticlePages, postPageMapping, totalMagazinePages, orderedPosts } = useMemo(() => {
     // 1. Ensure the first article is ALWAYS the Magazine Introduction / Manifesto ("Dergi Tanıtımı")
     const manifestoPost = posts.find(p => p.id === 'post-pin-manifesto' || p.category === 'Dergi Tanıtımı' || p.pinned);
@@ -349,11 +345,8 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
       // Split content by major sections (H1 / H2 headers)
       const rawSections = cleanContent.split(/\n(?=##?\s+)/g).map(s => s.trim()).filter(Boolean);
 
-      // Smart section packing algorithm based on visual weight:
-      // - Page 1 (Lead page) contains Title, Subtitle, Author Byline, Cover Image + Lead text (approx 500-800 chars)
-      // - Pages 2..N contain full-height text & tables (approx 1200-1700 chars or 1 table + text)
       if (rawSections.length <= 1 && cleanContent.length < 1000) {
-        // Very short single-page article
+        // Single-page short article
         pages.push({
           pageType: 'article-lead',
           post,
@@ -363,15 +356,13 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
           leadContent: cleanContent,
         });
       } else {
-        // Multi-section or long article: group sections into pages
         const articlePageChunks: { type: 'lead' | 'body' | 'conclusion'; content: string }[] = [];
 
-        // Page 1 Chunk: First section (Intro/Lead)
+        // Page 1 Chunk: Lead Section
         const leadSection = rawSections[0] || '';
         let nextIndex = 1;
         let leadCombined = leadSection;
 
-        // If lead section is very short (< 400 chars) and there is a short next section without table, combine them on page 1
         if (rawSections.length > 1 && leadSection.length < 400 && rawSections[1].length < 500 && !rawSections[1].includes('|')) {
           leadCombined = `${leadSection}\n\n${rawSections[1]}`;
           nextIndex = 2;
@@ -382,24 +373,20 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
           content: leadCombined,
         });
 
-        // Group remaining sections for subsequent pages
+        // Subsequent page chunks
         let currentBodyChunk = '';
         
         for (let i = nextIndex; i < rawSections.length; i++) {
           const section = rawSections[i];
           const hasTable = section.includes('|');
           const hasImage = section.includes('![');
-          // Effective weight of section
           const sectionWeight = section.length + (hasTable ? 600 : 0) + (hasImage ? 400 : 0);
 
           if (!currentBodyChunk) {
             currentBodyChunk = section;
           } else {
             const currentWeight = currentBodyChunk.length + (currentBodyChunk.includes('|') ? 600 : 0);
-            
-            // Check if adding this section exceeds comfortable page capacity (~1500 chars)
             if (currentWeight + sectionWeight > 1600 || (hasTable && currentWeight > 600)) {
-              // Push current chunk as a page and start fresh
               articlePageChunks.push({
                 type: 'body',
                 content: currentBodyChunk,
@@ -456,18 +443,10 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
     return allArticlePages;
   }, [allArticlePages, selectedPostId, viewFilter]);
 
-  // Total visible pages in current view
-  const visiblePagesCount = useMemo(() => {
-    if (viewFilter === 'cover') return 1;
-    if (viewFilter === 'toc') return 1;
-    if (selectedPostId !== 'all') return displayPages.length;
-    return totalMagazinePages;
-  }, [viewFilter, selectedPostId, displayPages.length, totalMagazinePages]);
-
   if (!isOpen) return null;
 
   // Ultra-robust Multi-Page PDF Download Engine (jsPDF + html2canvas)
-  const handleDownloadA5Pdf = async (scope: 'all' | 'current' = 'all') => {
+  const handleDownloadPdf = async (format: 'a5' | 'a4' = 'a5') => {
     setIsGeneratingPdf(true);
     setDownloadError(null);
     setDownloadBlobUrl(null);
@@ -475,17 +454,13 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
 
     try {
       // Determine which nodes to render:
-      // If scope is 'all', always render from the dedicated complete buffer to ensure all 22 pages are captured.
+      const fullContainer = document.getElementById('pdf-full-magazine-render-container');
       let pageNodes: HTMLElement[] = [];
       
-      if (scope === 'all') {
-        const fullContainer = document.getElementById('pdf-full-magazine-render-container');
-        if (fullContainer) {
-          pageNodes = Array.from(fullContainer.querySelectorAll<HTMLElement>('.magazine-pdf-page-full'));
-        }
+      if (fullContainer) {
+        pageNodes = Array.from(fullContainer.querySelectorAll<HTMLElement>('.magazine-pdf-page-full'));
       }
 
-      // Fallback to active preview pages if full container not ready
       if (pageNodes.length === 0) {
         pageNodes = Array.from(document.querySelectorAll<HTMLElement>('.magazine-pdf-page'));
       }
@@ -497,11 +472,15 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
       const total = pageNodes.length;
       setPdfProgress({ current: 0, total, text: `0 / ${total} sayfa işleniyor...` });
 
-      // Initialize jsPDF with A5 portrait dimensions (148mm x 210mm)
+      const isA4 = format === 'a4';
+      const pdfWidth = isA4 ? 210 : 148;
+      const pdfHeight = isA4 ? 297 : 210;
+
+      // Initialize jsPDF
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
-        format: 'a5',
+        format: isA4 ? 'a4' : 'a5',
         compress: true,
       });
 
@@ -510,33 +489,30 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
         setPdfProgress({
           current: i + 1,
           total,
-          text: `Sayfa ${i + 1} / ${total} yüksek çözünürlükte işleniyor...`,
+          text: `Sayfa ${i + 1} / ${total} (${isA4 ? 'A4' : 'A5'}) yüksek kalitede işleniyor...`,
         });
 
         try {
-          // Robust html2canvas settings: allowTaint: false (PREVENTS SecurityError), useCORS: true
           const canvas = await html2canvas(pageNode, {
-            scale: 1.8, // Crisp text while optimizing memory & speed on mobile
+            scale: 2.0, // High-DPI crisp print quality
             useCORS: true,
             allowTaint: false,
             logging: false,
             backgroundColor: '#FAF8F5',
-            imageTimeout: 6000,
+            imageTimeout: 8000,
           });
 
-          const imgData = canvas.toDataURL('image/jpeg', 0.92);
+          const imgData = canvas.toDataURL('image/jpeg', 0.94);
 
           if (i > 0) {
-            pdf.addPage('a5', 'portrait');
+            pdf.addPage(isA4 ? 'a4' : 'a5', 'portrait');
           }
 
-          // Exact A5 Dimensions in mm: 148 x 210
-          pdf.addImage(imgData, 'JPEG', 0, 0, 148, 210, undefined, 'FAST');
+          pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
         } catch (pageErr) {
-          console.warn(`Page ${i + 1} rendering warning, falling back:`, pageErr);
-          // If a specific image taints the canvas, render a clean fallback page
+          console.warn(`Sayfa ${i + 1} işlenirken uyarı:`, pageErr);
           if (i > 0) {
-            pdf.addPage('a5', 'portrait');
+            pdf.addPage(isA4 ? 'a4' : 'a5', 'portrait');
           }
           pdf.setFontSize(14);
           pdf.text(`BİR ADA DERGİSİ — Sayfa ${i + 1}`, 15, 20);
@@ -550,9 +526,8 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
       const blobUrl = URL.createObjectURL(pdfBlob);
       setDownloadBlobUrl(blobUrl);
 
-      const fileName = `Bir_Ada_Dergisi_Sayi_01_A5_${scope === 'current' ? 'Secili' : 'Tam_Sayi'}.pdf`;
+      const fileName = `Bir_Ada_Dergisi_Agustos_2026_Sayi_01_${isA4 ? 'A4' : 'A5'}.pdf`;
       
-      // Native anchor trigger (compatible with mobile Chrome, Safari, Android & Desktop)
       const downloadLink = document.createElement('a');
       downloadLink.href = blobUrl;
       downloadLink.download = fileName;
@@ -575,31 +550,31 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
     }
   };
 
-  // Dedicated Print Trigger (Calibrated with @page size: A4)
-  const handlePrintA4 = () => {
-    setPrintFormat('a4');
+  // Dedicated Print Trigger (A4 / A5)
+  const handlePrint = (format: 'a5' | 'a4' = 'a4') => {
+    setPrintFormat(format);
     setTimeout(() => {
       window.print();
     }, 200);
   };
 
-  // Dedicated A5 Print Trigger
-  const handlePrintA5 = () => {
-    setPrintFormat('a5');
-    setTimeout(() => {
-      window.print();
-    }, 200);
-  };
-
-  // Mobile page jump helper
-  const handleJumpToPage = (index: number) => {
-    setActiveMobilePageIndex(index);
+  // Scroll to page helper
+  const scrollToPageIndex = (index: number) => {
+    setActivePageIndex(index);
     if (magazineContainerRef.current) {
       const pages = magazineContainerRef.current.querySelectorAll('.magazine-pdf-page');
       if (pages[index]) {
         pages[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }
+  };
+
+  const getPageContainerWidth = () => {
+    if (deviceMode === 'mobile') return 'max-w-[390px] min-h-[460px] text-[11px]';
+    if (deviceMode === 'tablet') return 'max-w-[620px] min-h-[640px]';
+    return activeFormat === 'a5' 
+      ? 'max-w-[560px] min-h-[500px] sm:min-h-[720px]' 
+      : 'max-w-[740px] min-h-[600px] sm:min-h-[880px]';
   };
 
   return (
@@ -656,33 +631,32 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
         }
       `}</style>
 
-      {/* Main Modal Card */}
-      <div className="pdf-modal-container bg-[#FAF8F5] w-full max-w-5xl rounded-none sm:rounded-2xl md:rounded-3xl border-0 sm:border border-[#1A1A1A]/20 shadow-2xl overflow-hidden flex flex-col h-full sm:h-auto sm:max-h-[95vh] print:max-h-none print:shadow-none print:border-none print:w-full print:rounded-none">
+      {/* Main Modal Container */}
+      <div className="pdf-modal-container bg-[#FAF8F5] w-full max-w-5xl rounded-none sm:rounded-2xl md:rounded-3xl border-0 sm:border border-[#1A1A1A]/20 shadow-2xl overflow-hidden flex flex-col h-full sm:h-auto sm:max-h-[96vh] print:max-h-none print:shadow-none print:border-none print:w-full print:rounded-none">
         
-        {/* Top Header & Interactive Control Bar */}
+        {/* Top Responsive Control Bar */}
         <div className="pdf-modal-controls bg-[#1A1A1A] text-white px-3 sm:px-6 py-2.5 sm:py-3.5 flex flex-col gap-2.5 print:hidden border-b border-white/10 shrink-0">
           
-          {/* Top Title & Close Bar */}
+          {/* Masthead Header */}
           <div className="flex items-center justify-between gap-2 sm:gap-3">
             <div className="flex items-center gap-2 sm:gap-3 min-w-0">
               <BirAdaLogo size="sm" showText={false} />
               <div className="min-w-0">
-                <div className="flex items-center gap-1.5 sm:gap-2">
+                <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
                   <h3 className="font-serif-cormorant text-base sm:text-xl font-bold tracking-tight text-white truncate">
-                    BİR ADA — Özel PDF Dergi Sayısı
+                    BİR ADA — Aylık Dergi PDF İndirme ve Okuma
                   </h3>
-                  <span className="px-1.5 sm:px-2 py-0.5 bg-[#D4A373] text-[#1A1A1A] text-[9px] sm:text-[10px] font-sans-body font-bold rounded-full uppercase tracking-wider shrink-0">
-                    Sayı 01
+                  <span className="px-2 py-0.5 bg-[#D4A373] text-[#1A1A1A] text-[9px] sm:text-[10px] font-sans font-bold rounded-full uppercase tracking-wider shrink-0">
+                    Ağustos 2026 • 1. Sayı
                   </span>
                 </div>
-                <p className="text-[10px] sm:text-xs font-sans-body text-white/60 truncate">
-                  Toplam {totalMagazinePages} Sayfa • A5 Dergi Kitapçığı &amp; A4 Baskı
+                <p className="text-[10px] sm:text-xs font-sans text-white/60 truncate">
+                  Toplam {totalMagazinePages} Sayfa • Mobil, Tablet ve Masaüstü Uyumlu • A5 Kitapçık / A4 Baskı
                 </p>
               </div>
             </div>
 
             <div className="flex items-center gap-1.5 shrink-0">
-              {/* Quick Close Button */}
               <button
                 onClick={onClose}
                 className="p-1.5 sm:p-2 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
@@ -693,37 +667,77 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
             </div>
           </div>
 
-          {/* Desktop & Tablet Action & Filter Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-2 pt-1.5 border-t border-white/10">
+          {/* Action & Filter Toolbar */}
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-white/10">
             
-            {/* Format Preview Toggle (A5 vs A4) */}
-            <div className="flex items-center gap-1 bg-white/10 p-0.5 sm:p-1 rounded-full text-xs font-sans-body">
+            {/* Format Toggle (A5 vs A4) */}
+            <div className="flex items-center gap-1 bg-white/10 p-0.5 sm:p-1 rounded-full text-xs font-sans">
               <button
                 onClick={() => setActiveFormat('a5')}
-                className={`px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                className={`px-2.5 sm:px-3 py-1 rounded-full text-[10.5px] sm:text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
                   activeFormat === 'a5'
                     ? 'bg-[#D4A373] text-[#1A1A1A] shadow-xs'
                     : 'text-white/80 hover:text-white'
                 }`}
-                title="A5 Dergi Formatı (148 x 210 mm) - İndirme ve kitapçık için ideal"
+                title="A5 Dergi Kitapçığı Formatı (148 x 210 mm)"
               >
                 <span>A5 Dergi</span>
               </button>
               <button
                 onClick={() => setActiveFormat('a4')}
-                className={`px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                className={`px-2.5 sm:px-3 py-1 rounded-full text-[10.5px] sm:text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
                   activeFormat === 'a4'
                     ? 'bg-[#D4A373] text-[#1A1A1A] shadow-xs'
                     : 'text-white/80 hover:text-white'
                 }`}
-                title="A4 Standart Format (210 x 297 mm) - Yazdırma için ideal"
+                title="A4 Standart Belge Formatı (210 x 297 mm)"
               >
                 <span>A4 Standart</span>
               </button>
             </div>
 
+            {/* Device Layout Mode Selector */}
+            <div className="flex items-center gap-1 bg-white/10 p-0.5 sm:p-1 rounded-full text-xs font-sans">
+              <button
+                onClick={() => setDeviceMode('desktop')}
+                className={`px-2 sm:px-2.5 py-1 rounded-full text-[10.5px] font-medium transition-all cursor-pointer flex items-center gap-1 ${
+                  deviceMode === 'desktop'
+                    ? 'bg-white text-[#1A1A1A] font-bold'
+                    : 'text-white/70 hover:text-white'
+                }`}
+                title="Masaüstü Tam Görünüm"
+              >
+                <Monitor className="w-3.5 h-3.5" />
+                <span className="hidden md:inline">Masaüstü</span>
+              </button>
+              <button
+                onClick={() => setDeviceMode('tablet')}
+                className={`px-2 sm:px-2.5 py-1 rounded-full text-[10.5px] font-medium transition-all cursor-pointer flex items-center gap-1 ${
+                  deviceMode === 'tablet'
+                    ? 'bg-white text-[#1A1A1A] font-bold'
+                    : 'text-white/70 hover:text-white'
+                }`}
+                title="Tablet Görünümü (640px)"
+              >
+                <Tablet className="w-3.5 h-3.5" />
+                <span className="hidden md:inline">Tablet</span>
+              </button>
+              <button
+                onClick={() => setDeviceMode('mobile')}
+                className={`px-2 sm:px-2.5 py-1 rounded-full text-[10.5px] font-medium transition-all cursor-pointer flex items-center gap-1 ${
+                  deviceMode === 'mobile'
+                    ? 'bg-white text-[#1A1A1A] font-bold'
+                    : 'text-white/70 hover:text-white'
+                }`}
+                title="Mobil Telefon Görünümü (400px)"
+              >
+                <Smartphone className="w-3.5 h-3.5" />
+                <span className="hidden md:inline">Mobil</span>
+              </button>
+            </div>
+
             {/* View Filter Pills */}
-            <div className="flex items-center gap-1 bg-white/10 p-0.5 sm:p-1 rounded-full text-xs font-sans-body overflow-x-auto max-w-full no-scrollbar">
+            <div className="flex items-center gap-1 bg-white/10 p-0.5 sm:p-1 rounded-full text-xs font-sans overflow-x-auto max-w-full no-scrollbar">
               <button
                 onClick={() => { setViewFilter('all'); setSelectedPostId('all'); }}
                 className={`px-2 sm:px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-medium transition-all cursor-pointer whitespace-nowrap ${
@@ -756,7 +770,7 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
               </button>
             </div>
 
-            {/* Article Quick Select Dropdown */}
+            {/* Article Select Dropdown */}
             <div className="hidden md:flex items-center gap-1.5">
               <select
                 value={selectedPostId}
@@ -766,37 +780,35 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
                     setViewFilter('articles');
                   }
                 }}
-                className="bg-white/10 hover:bg-white/15 text-white text-[11px] font-sans-body px-2.5 py-1 rounded-full border border-white/20 outline-none cursor-pointer max-w-[180px] truncate"
+                className="bg-white/10 hover:bg-white/15 text-white text-[11px] font-sans px-2.5 py-1 rounded-full border border-white/20 outline-none cursor-pointer max-w-[190px] truncate"
               >
                 <option value="all" className="bg-[#1A1A1A] text-white">Tüm Makaleler</option>
                 {posts.map((p, i) => (
                   <option key={p.id} value={p.id} className="bg-[#1A1A1A] text-white">
-                    {i + 1}. {p.title.slice(0, 35)}...
+                    {i + 1}. {p.title.slice(0, 32)}...
                   </option>
                 ))}
               </select>
             </div>
 
-            {/* Action Buttons: A5 Download & A4 Print */}
+            {/* Action Buttons: PDF Download & Print */}
             <div className="flex items-center gap-1.5 sm:gap-2 ml-auto">
-              {/* A5 PDF Download Button */}
               <button
-                onClick={() => handleDownloadA5Pdf('all')}
+                onClick={() => handleDownloadPdf(activeFormat)}
                 disabled={isGeneratingPdf}
-                id="btn-download-a5-pdf"
-                className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 bg-[#D4A373] hover:bg-[#c49261] active:scale-95 text-[#1A1A1A] rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider font-sans-body transition-all shadow-md cursor-pointer disabled:opacity-50"
-                title="Tüm dergiyi A5 formatında gerçek PDF olarak indir"
+                id="btn-download-pdf"
+                className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 bg-[#D4A373] hover:bg-[#c49261] active:scale-95 text-[#1A1A1A] rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider font-sans transition-all shadow-md cursor-pointer disabled:opacity-50"
+                title="Tüm dergiyi yüksek çözünürlüklü PDF olarak indir"
               >
                 <Download className="w-3.5 h-3.5" />
-                <span>{isGeneratingPdf ? 'İndiriliyor...' : 'A5 PDF İndir'}</span>
+                <span>{isGeneratingPdf ? 'İndiriliyor...' : `PDF İndir (${activeFormat.toUpperCase()})`}</span>
               </button>
 
-              {/* A4 Print Button */}
               <button
-                onClick={handlePrintA4}
+                onClick={() => handlePrint('a4')}
                 id="btn-print-a4"
-                className="flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 bg-white/20 hover:bg-white text-white hover:text-[#1A1A1A] active:scale-95 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider font-sans-body transition-all border border-white/20 shadow-xs cursor-pointer"
-                title="Tüm dergiyi A4 formatında sayfalar kaymadan yazdır veya PDF olarak kaydet"
+                className="flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 bg-white/20 hover:bg-white text-white hover:text-[#1A1A1A] active:scale-95 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider font-sans transition-all border border-white/20 shadow-xs cursor-pointer"
+                title="Tarayıcı yazdırma veya 'PDF Olarak Kaydet' penceresini aç"
               >
                 <Printer className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">A4 Yazdır / Kaydet</span>
@@ -824,10 +836,10 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
             <div className="bg-red-500/20 border border-red-500/40 rounded-xl p-2 text-xs text-red-200 flex items-center justify-between gap-2">
               <div className="flex items-center gap-1.5">
                 <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
-                <span>{downloadError} "A4 Yazdır" seçeneği ile PDF olarak kaydedebilirsiniz.</span>
+                <span>{downloadError} "A4 Yazdır" butonuyla PDF olarak kaydedebilirsiniz.</span>
               </div>
               <button 
-                onClick={handlePrintA4}
+                onClick={() => handlePrint('a4')}
                 className="px-2 py-0.5 bg-white text-[#1A1A1A] rounded text-[10px] font-bold uppercase tracking-wider shrink-0"
               >
                 Yazdır / Kaydet
@@ -839,28 +851,28 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
             <div className="bg-emerald-500/20 border border-emerald-500/40 rounded-xl p-2 text-xs text-emerald-200 flex items-center justify-between gap-2">
               <div className="flex items-center gap-1.5">
                 <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>PDF hazırlandı! İndirme otomatik başlamadıysa:</span>
+                <span>PDF başarıyla oluşturuldu! Otomatik başlamadıysa:</span>
               </div>
               <a 
                 href={downloadBlobUrl}
-                download="Bir_Ada_Dergisi_Sayi_01_A5.pdf"
+                download="Bir_Ada_Dergisi_Agustos_2026_Sayi_01.pdf"
                 className="px-2.5 py-0.5 bg-emerald-400 text-[#1A1A1A] rounded text-[10px] font-bold uppercase tracking-wider shrink-0 underline"
               >
-                Doğrudan İndir
+                Doğrudan İndir (.pdf)
               </a>
             </div>
           )}
 
         </div>
 
-        {/* Mobile Quick Navigation & Info Bar (Visible on mobile/tablet screens) */}
-        <div className="sm:hidden bg-[#242220] px-3 py-1.5 flex items-center justify-between text-white/80 text-[11px] font-sans-body border-b border-white/10 shrink-0">
-          <div className="flex items-center gap-1">
-            <Smartphone className="w-3.5 h-3.5 text-[#D4A373]" />
-            <span>Mobil Görünüm</span>
+        {/* Mobile & Tablet Quick Bar (Device Responsive) */}
+        <div className="sm:hidden bg-[#242220] px-3 py-2 flex items-center justify-between text-white/90 text-[11px] font-sans border-b border-white/10 shrink-0">
+          <div className="flex items-center gap-1.5 text-[#D4A373] font-bold">
+            <Smartphone className="w-3.5 h-3.5" />
+            <span>Mobil / Tablet Okuma</span>
           </div>
           <div className="flex items-center gap-1">
-            <span className="text-[10px] text-white/60">Makale Seç:</span>
+            <span className="text-[10px] text-white/60">Bölüm:</span>
             <select
               value={selectedPostId}
               onChange={(e) => {
@@ -869,7 +881,7 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
                   setViewFilter('articles');
                 }
               }}
-              className="bg-white/15 text-white text-[10px] font-sans-body px-1.5 py-0.5 rounded border border-white/20 outline-none max-w-[130px] truncate"
+              className="bg-white/15 text-white text-[10px] font-sans px-2 py-0.5 rounded border border-white/20 outline-none max-w-[140px] truncate"
             >
               <option value="all" className="bg-[#1A1A1A] text-white">Tümü ({totalMagazinePages}s)</option>
               {posts.map((p, i) => (
@@ -890,18 +902,14 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
           {/* ================= PAGE 1: MAGAZINE COVER ================= */}
           {(viewFilter === 'all' || viewFilter === 'cover') && (
             <div 
-              className={`magazine-pdf-page bg-[#FAF8F5] border sm:border-2 border-[#1A1A1A] p-4 sm:p-7 md:p-8 mx-auto shadow-lg sm:shadow-xl flex flex-col justify-between transition-all w-full ${
-                activeFormat === 'a5' 
-                  ? 'max-w-[560px] min-h-[500px] sm:min-h-[700px]' 
-                  : 'max-w-[720px] min-h-[600px] sm:min-h-[860px]'
-              }`}
+              className={`magazine-pdf-page bg-[#FAF8F5] border sm:border-2 border-[#1A1A1A] p-4 sm:p-7 md:p-8 mx-auto shadow-lg sm:shadow-xl flex flex-col justify-between transition-all w-full ${getPageContainerWidth()}`}
             >
               {/* Masthead Header */}
               <div className="border-b-2 border-[#1A1A1A] pb-2 sm:pb-3 text-center">
-                <div className="flex items-center justify-between text-[8px] sm:text-[9.5px] font-sans-body uppercase tracking-[0.2em] font-bold text-[#1A1A1A]/70 mb-1">
+                <div className="flex items-center justify-between text-[8px] sm:text-[9.5px] font-sans uppercase tracking-[0.2em] font-bold text-[#1A1A1A]/70 mb-1">
                   <span>LONDRA • EDINBURGH • CARDIFF</span>
-                  <span>SAYI 01 / 2026</span>
-                  <span>ÖZEL BASKI</span>
+                  <span className="text-[#8C6A43] font-bold">AĞUSTOS 2026 • SAYI 01</span>
+                  <span>İLK BASKI ÖZEL</span>
                 </div>
                 
                 <div className="flex justify-center my-1 sm:my-2">
@@ -913,20 +921,32 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
                 </h1>
                 
                 <p className="font-serif-cormorant italic text-[11px] sm:text-sm md:text-base text-[#8C6A43] font-medium">
-                  "Bir Arada, Bir Ada'da" • Britanya Online Dergi ve Yaşam Seçkisi
+                  "Bir Arada, Bir Ada'da" • Aylık Fikir, Kültür ve Yaşam Dergisi
                 </p>
               </div>
 
               {/* Cover Hero Feature */}
               <div className="my-2 sm:my-4 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6 items-center">
                 <div className="space-y-1.5 sm:space-y-3">
-                  <span className="inline-block px-2 py-0.5 bg-[#1A1A1A] text-white text-[8px] sm:text-[9.5px] uppercase tracking-widest font-sans-body font-bold rounded">
-                    Özel Kapak Dosyası
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="inline-block px-2 py-0.5 bg-[#1A1A1A] text-white text-[8px] sm:text-[9px] uppercase tracking-widest font-sans font-bold rounded">
+                      Kapak Dosyası
+                    </span>
+                    <span className="text-[9px] sm:text-[10px] font-sans text-[#8C6A43] font-semibold">
+                      Ağustos 2026 (1. Sayı)
+                    </span>
+                  </div>
                   
                   <h2 className="font-serif-cormorant text-lg sm:text-2xl md:text-3xl font-bold leading-tight text-[#1A1A1A]">
                     Bir Arada, Bir Ada'da
                   </h2>
+
+                  {/* ONLY Author Name & Writing Position */}
+                  <div className="text-[9px] sm:text-[10.5px] font-sans font-medium text-[#8C6A43] flex items-center gap-1.5 border-y border-[#1A1A1A]/10 py-1">
+                    <span className="font-bold text-[#1A1A1A]">Bir Ada Yayın Kurulu</span>
+                    <span>•</span>
+                    <span>Yayın Kurulu &amp; Editöryal Masa</span>
+                  </div>
                   
                   <p className="font-serif-newsreader text-[10.5px] sm:text-xs text-[#1A1A1A]/80 leading-relaxed text-justify">
                     Londra'nın sisli sokaklarından İskoç Yaylaları'na; Birleşik Krallık'ta yaşayan toplumumuzun sesini, girişimcilik hikâyelerini, vize rehberlerini ve zengin kültür takvimini sayfalarımıza taşıyoruz.
@@ -947,53 +967,63 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
                   />
                   <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-1.5 sm:p-2 text-white">
                     <p className="font-serif-cormorant italic text-[9.5px] sm:text-xs text-center">
-                      Londra Panoraması &amp; Westminster • 1. Sayı Özel Koleksiyonu
+                      Londra Panoraması &amp; Thames • Ağustos 2026 Özel Koleksiyonu
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* Cover Bottom Teasers */}
-              <div className="border-t-2 border-[#1A1A1A] pt-2 sm:pt-3 grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2 text-[9.5px] sm:text-[10px] font-sans-body">
+              {/* Cover Bottom Teasers with ONLY Author Names and Writing Positions */}
+              <div className="border-t-2 border-[#1A1A1A] pt-2 sm:pt-3 grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-2 text-[9.5px] sm:text-[10px] font-sans">
                 <div className="bg-[#1A1A1A]/[0.03] p-1.5 rounded border border-[#1A1A1A]/10">
-                  <span className="text-[#8C6A43] font-bold block uppercase tracking-wider text-[8px] sm:text-[9px]">01. SPONSORLUK VİZESİ</span>
-                  <p className="font-serif-newsreader text-[#1A1A1A] text-[9.5px] sm:text-[10px] truncate">Av. Ahmet Hüsrev Analizi</p>
+                  <span className="text-[#8C6A43] font-bold block uppercase tracking-wider text-[7.5px] sm:text-[8px]">01. SAĞLIK &amp; İKLİM</span>
+                  <p className="font-serif-newsreader font-bold text-[#1A1A1A] text-[9.5px] truncate">Dr. Celal Görgülü</p>
+                  <p className="text-[8px] text-[#8C6A43] truncate">Adli Tıp Uzmanı Hekim &amp; Britanya Gündemi Analisti</p>
                 </div>
                 <div className="bg-[#1A1A1A]/[0.03] p-1.5 rounded border border-[#1A1A1A]/10">
-                  <span className="text-[#8C6A43] font-bold block uppercase tracking-wider text-[8px] sm:text-[9px]">02. UK ETKİNLİKLER</span>
-                  <p className="font-serif-newsreader text-[#1A1A1A] text-[9.5px] sm:text-[10px] truncate">Londra Türk Konser &amp; Tiyatro</p>
+                  <span className="text-[#8C6A43] font-bold block uppercase tracking-wider text-[7.5px] sm:text-[8px]">02. HUKUK &amp; ŞİRKETLER</span>
+                  <p className="font-serif-newsreader font-bold text-[#1A1A1A] text-[9.5px] truncate">Av. Fetanet Darıoğlu</p>
+                  <p className="text-[8px] text-[#8C6A43] truncate">Resen Legal Kurucusu &amp; Kıdemli Avukat</p>
                 </div>
                 <div className="bg-[#1A1A1A]/[0.03] p-1.5 rounded border border-[#1A1A1A]/10">
-                  <span className="text-[#8C6A43] font-bold block uppercase tracking-wider text-[8px] sm:text-[9px]">03. SHOREDITCH AI</span>
-                  <p className="font-serif-newsreader text-[#1A1A1A] text-[9.5px] sm:text-[10px] truncate">Türk Yapay Zeka Girişimi</p>
+                  <span className="text-[#8C6A43] font-bold block uppercase tracking-wider text-[7.5px] sm:text-[8px]">03. VİZE &amp; GÖÇMENLİK</span>
+                  <p className="font-serif-newsreader font-bold text-[#1A1A1A] text-[9.5px] truncate">Av. Ahmet Hüsrev</p>
+                  <p className="text-[8px] text-[#8C6A43] truncate">Londra Göçmenlik &amp; Vize Avukatı</p>
                 </div>
                 <div className="bg-[#1A1A1A]/[0.03] p-1.5 rounded border border-[#1A1A1A]/10">
-                  <span className="text-[#8C6A43] font-bold block uppercase tracking-wider text-[8px] sm:text-[9px]">04. ISA &amp; GAYRİMENKUL</span>
-                  <p className="font-serif-newsreader text-[#1A1A1A] text-[9.5px] sm:text-[10px] truncate">Vergisiz Yatırım &amp; Konut</p>
+                  <span className="text-[#8C6A43] font-bold block uppercase tracking-wider text-[7.5px] sm:text-[8px]">04. SİYASET &amp; EKONOMİ</span>
+                  <p className="font-serif-newsreader font-bold text-[#1A1A1A] text-[9.5px] truncate">Mehmet Karateke</p>
+                  <p className="text-[8px] text-[#8C6A43] truncate">Kamu Görevlisi &amp; Siyaset ve Ekonomi Analisti</p>
+                </div>
+                <div className="bg-[#1A1A1A]/[0.03] p-1.5 rounded border border-[#1A1A1A]/10">
+                  <span className="text-[#8C6A43] font-bold block uppercase tracking-wider text-[7.5px] sm:text-[8px]">05. GAYRİMENKUL &amp; YATIRIM</span>
+                  <p className="font-serif-newsreader font-bold text-[#1A1A1A] text-[9.5px] truncate">Emre Aydoğan</p>
+                  <p className="text-[8px] text-[#8C6A43] truncate">Genel Yayın Yönetmeni &amp; Emlak Danışmanı</p>
+                </div>
+                <div className="bg-[#1A1A1A]/[0.03] p-1.5 rounded border border-[#1A1A1A]/10">
+                  <span className="text-[#8C6A43] font-bold block uppercase tracking-wider text-[7.5px] sm:text-[8px]">06. KÜLTÜR &amp; ETKİNLİK</span>
+                  <p className="font-serif-newsreader font-bold text-[#1A1A1A] text-[9.5px] truncate">Emre Çakmak</p>
+                  <p className="text-[8px] text-[#8C6A43] truncate">UK Etkinlik &amp; Kültür Sanat Yazarı</p>
                 </div>
               </div>
 
               {/* Cover Running Footer */}
-              <div className="flex items-center justify-between text-[8px] sm:text-[9px] font-sans-body text-[#1A1A1A]/60 pt-1.5 sm:pt-2 border-t border-[#1A1A1A]/10">
+              <div className="flex items-center justify-between text-[8px] sm:text-[9px] font-sans text-[#1A1A1A]/60 pt-1.5 sm:pt-2 border-t border-[#1A1A1A]/10">
                 <span>ISSN 2814-9921 • BİRLEŞİK KRALLIK</span>
-                <span className="font-serif-cormorant italic">Sayfa 1 (Kapak)</span>
+                <span className="font-serif-cormorant italic font-bold">Sayfa 1 (Kapak)</span>
               </div>
             </div>
           )}
 
-          {/* ================= PAGE 2: TABLE OF CONTENTS & MANIFESTO ================= */}
+          {/* ================= PAGE 2: TABLE OF CONTENTS & EDITORIAL NOTE ================= */}
           {(viewFilter === 'all' || viewFilter === 'toc') && (
             <div 
-              className={`magazine-pdf-page bg-[#FAF8F5] border border-[#1A1A1A]/20 p-4 sm:p-7 md:p-8 mx-auto shadow-lg sm:shadow-xl flex flex-col justify-between transition-all w-full ${
-                activeFormat === 'a5' 
-                  ? 'max-w-[560px] min-h-[500px] sm:min-h-[700px]' 
-                  : 'max-w-[720px] min-h-[600px] sm:min-h-[860px]'
-              }`}
+              className={`magazine-pdf-page bg-[#FAF8F5] border border-[#1A1A1A]/20 p-4 sm:p-7 md:p-8 mx-auto shadow-lg sm:shadow-xl flex flex-col justify-between transition-all w-full ${getPageContainerWidth()}`}
             >
               {/* Running Header */}
-              <div className="flex items-center justify-between border-b border-[#1A1A1A] pb-1.5 sm:pb-2 text-[8.5px] sm:text-[10px] font-sans-body uppercase tracking-wider text-[#1A1A1A]/70">
-                <span className="font-bold text-[#8C6A43]">BİR ADA DERGİSİ</span>
-                <span>SAYI 01 / 2026 • DERGİ DİZİNİ</span>
+              <div className="flex items-center justify-between border-b border-[#1A1A1A] pb-1.5 sm:pb-2 text-[8.5px] sm:text-[10px] font-sans uppercase tracking-wider text-[#1A1A1A]/70">
+                <span className="font-bold text-[#8C6A43]">BİR ADA AYLIK DERGİ</span>
+                <span>AĞUSTOS 2026 • SAYI 01 • DERGİ DİZİNİ</span>
                 <span className="font-bold">SAYFA 2</span>
               </div>
 
@@ -1004,7 +1034,7 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
                     İçindekiler &amp; Yayın Dizini
                   </h2>
                   <p className="font-serif-cormorant italic text-[11px] sm:text-xs text-[#8C6A43]">
-                    Bu Sayıda Yer Alan Özel Dosyalar ve Makaleler
+                    1. Sayıda Yer Alan Makaleler ve Yazarlar
                   </p>
                 </div>
                 <Feather className="w-5 h-5 text-[#8C6A43]/50" />
@@ -1013,17 +1043,20 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
               {/* Editorial Note */}
               <div className="p-2.5 sm:p-3 bg-[#F4ECE1] rounded-lg border border-[#8C6A43]/20 text-[10px] sm:text-xs font-serif-newsreader text-[#1A1A1A]/85 leading-snug">
                 <p className="italic">
-                  "Değerli Okurlarımız; Londra'dan tüm Britanya'ya uzanan bu ilk dergi seçkimizde; göçmenlik ve sponsorluk rehberinden Shoreditch yapay zeka ekosistemine, Londra Türk etkinlik takviminden İskoçya rotalarına kadar Ada yaşamının tüm boyutlarını derledik. Keyifli okumalar dileriz."
+                  "Değerli Okurlarımız; Ağustos 2026 tarihli ilk dergi sayımızda; göçmenlik ve vize rehberinden sağlık ve iklim analizlerine, İngiltere ekonomisinden Londra kültür rotalarına kadar Ada yaşamının tüm boyutlarını yetkin yazarlarımızın kalemiyle derledik."
                 </p>
-                <p className="text-right not-italic font-bold font-sans-body text-[8.5px] sm:text-[9px] uppercase tracking-wider text-[#1A1A1A] mt-1">
-                  — Bir Ada Yayın Kurulu, Londra
-                </p>
+                <div className="text-right font-sans text-[8.5px] sm:text-[9px] uppercase tracking-wider text-[#1A1A1A] mt-1.5 flex items-center justify-end gap-1.5">
+                  <span className="font-bold">Bir Ada Yayın Kurulu</span>
+                  <span className="text-[#8C6A43]">• Editöryal Masa, Londra</span>
+                </div>
               </div>
 
-              {/* Numbered Table of Contents List */}
+              {/* Numbered Table of Contents List with ONLY Author Names & Positions */}
               <div className="my-1.5 sm:my-2 space-y-1 sm:space-y-1.5 divide-y divide-dashed divide-[#1A1A1A]/15 overflow-hidden">
                 {orderedPosts.map((post, idx) => {
                   const targetPage = postPageMapping[post.id] || (idx * 2 + 3);
+                  const authorPosition = getAuthorWritingPosition(post.author.name, post.author.bio);
+
                   return (
                     <div 
                       key={post.id} 
@@ -1034,12 +1067,19 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
                           {String(idx + 1).padStart(2, '0')}
                         </span>
                         <div className="min-w-0">
-                          <span className="text-[7.5px] sm:text-[8px] font-sans-body uppercase tracking-wider font-bold text-[#8C6A43] block">
-                            {post.category}
-                          </span>
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-[7.5px] sm:text-[8px] font-sans uppercase tracking-wider font-bold text-[#8C6A43] block">
+                              {post.category}
+                            </span>
+                          </div>
                           <h4 className="font-serif-cormorant text-xs sm:text-sm font-bold text-[#1A1A1A] truncate leading-tight">
                             {post.title}
                           </h4>
+                          {/* ONLY Author Name & Writing Position */}
+                          <p className="text-[8px] sm:text-[9px] font-sans text-[#1A1A1A]/70 truncate mt-0.5">
+                            <span className="font-semibold text-[#1A1A1A]">{post.author.name}</span>
+                            <span className="text-[#8C6A43]"> — {authorPosition}</span>
+                          </p>
                         </div>
                       </div>
                       <span className="font-serif-cormorant italic text-[11px] sm:text-xs text-[#1A1A1A]/70 shrink-0 font-bold">
@@ -1051,29 +1091,26 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
               </div>
 
               {/* Running Footer */}
-              <div className="flex items-center justify-between text-[8px] sm:text-[9px] font-sans-body text-[#1A1A1A]/60 pt-1.5 sm:pt-2 border-t border-[#1A1A1A]/10">
-                <span>BİR ADA • BİRLEŞİK KRALLIK BAĞIMSIZ YAYINCILIK</span>
-                <span className="font-serif-cormorant italic">Sayfa 2</span>
+              <div className="flex items-center justify-between text-[8px] sm:text-[9px] font-sans text-[#1A1A1A]/60 pt-1.5 sm:pt-2 border-t border-[#1A1A1A]/10">
+                <span>BİR ADA • AĞUSTOS 2026 (1. SAYI)</span>
+                <span className="font-serif-cormorant italic font-bold">Sayfa 2</span>
               </div>
             </div>
           )}
 
           {/* ================= ARTICLES PAGES (Formatted in A5/A4 Pages) ================= */}
           {(viewFilter === 'all' || viewFilter === 'articles') && (
-            displayPages.map((page, pIdx) => {
+            displayPages.map((page) => {
               const { post, articlePageIndex, totalArticlePages, overallPageNumber, pageType } = page;
+              const authorPosition = getAuthorWritingPosition(post.author.name, post.author.bio);
 
               return (
                 <div
                   key={`${post.id}-page-${articlePageIndex}`}
-                  className={`magazine-pdf-page bg-[#FAF8F5] border border-[#1A1A1A]/20 p-4 sm:p-7 md:p-8 mx-auto shadow-lg sm:shadow-xl flex flex-col justify-between transition-all w-full ${
-                    activeFormat === 'a5' 
-                      ? 'max-w-[560px] min-h-[500px] sm:min-h-[700px]' 
-                      : 'max-w-[720px] min-h-[600px] sm:min-h-[860px]'
-                  }`}
+                  className={`magazine-pdf-page bg-[#FAF8F5] border border-[#1A1A1A]/20 p-4 sm:p-7 md:p-8 mx-auto shadow-lg sm:shadow-xl flex flex-col justify-between transition-all w-full ${getPageContainerWidth()}`}
                 >
                   {/* Top Running Header */}
-                  <div className="flex items-center justify-between border-b border-[#1A1A1A] pb-1 sm:pb-1.5 text-[8px] sm:text-[9.5px] font-sans-body uppercase tracking-wider text-[#1A1A1A]/70 shrink-0">
+                  <div className="flex items-center justify-between border-b border-[#1A1A1A] pb-1 sm:pb-1.5 text-[8px] sm:text-[9.5px] font-sans uppercase tracking-wider text-[#1A1A1A]/70 shrink-0">
                     <span className="font-bold text-[#8C6A43]">{post.category}</span>
                     <span className="truncate max-w-[160px] sm:max-w-[280px]">
                       BİR ADA • {post.title}
@@ -1098,13 +1135,13 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
                           )}
                         </div>
 
-                        {/* Author byline */}
-                        <div className="flex items-center justify-between text-[8.5px] sm:text-[9px] font-sans-body text-[#1A1A1A]/65 border-y border-[#1A1A1A]/10 py-0.5 sm:py-1">
-                          <div className="flex items-center gap-1.5">
+                        {/* ONLY Author Name & Writing Position Byline */}
+                        <div className="flex items-center justify-between text-[8.5px] sm:text-[9.5px] font-sans text-[#1A1A1A]/75 border-y border-[#1A1A1A]/10 py-1 bg-[#1A1A1A]/[0.02] px-2 rounded">
+                          <div className="flex items-center gap-1.5 truncate">
                             <span className="font-bold text-[#1A1A1A]">{post.author.name}</span>
-                            <span className="truncate max-w-[180px] sm:max-w-none">• {post.author.bio?.split('.')[0] || 'Bir Ada Yazarı'}</span>
+                            <span className="text-[#8C6A43] font-medium truncate">• {authorPosition}</span>
                           </div>
-                          <span className="shrink-0">{post.readTimeMinutes} dk • Londra</span>
+                          <span className="shrink-0 text-[#1A1A1A]/60 font-mono text-[8px] sm:text-[9px]">{post.readTimeMinutes} dk okuma</span>
                         </div>
 
                         {/* Featured Image */}
@@ -1134,18 +1171,18 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
                       <div className="space-y-1">
                         {renderMagazineMarkdownChunk(page.bodyContent || '', `${post.id}-body-${articlePageIndex}`)}
 
-                        {/* Sign-off Seal on last page of article */}
+                        {/* Sign-off Seal on last page of article - ONLY Author Name & Writing Position */}
                         {articlePageIndex === totalArticlePages && (
-                          <div className="mt-2.5 sm:mt-3 pt-1.5 sm:pt-2 border-t border-[#1A1A1A]/15 flex items-center justify-between text-[8.5px] sm:text-[9px] font-sans-body text-[#1A1A1A]/70 bg-[#1A1A1A]/[0.02] p-1.5 sm:p-2 rounded">
+                          <div className="mt-2.5 sm:mt-3 pt-1.5 sm:pt-2 border-t border-[#1A1A1A]/15 flex items-center justify-between text-[8.5px] sm:text-[9.5px] font-sans text-[#1A1A1A]/70 bg-[#1A1A1A]/[0.02] p-1.5 sm:p-2 rounded">
                             <div className="flex items-center gap-1.5">
                               <BirAdaLogo size="sm" showText={false} />
                               <div>
                                 <span className="font-bold text-[#1A1A1A] block">{post.author.name}</span>
-                                <span className="text-[7.5px] sm:text-[8px] text-[#8C6A43]">Bir Ada Kültür &amp; Araştırma Masası</span>
+                                <span className="text-[8px] sm:text-[8.5px] text-[#8C6A43]">{authorPosition}</span>
                               </div>
                             </div>
-                            <span className="italic font-serif-cormorant text-[9.5px] sm:text-[10px]">
-                              "Bir Arada, Bir Ada'da"
+                            <span className="italic font-serif-cormorant text-[9.5px] sm:text-[10.5px] font-semibold text-[#1A1A1A]/80">
+                              "Bir Arada, Bir Ada'da" • Ağustos 2026
                             </span>
                           </div>
                         )}
@@ -1155,8 +1192,8 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
                   </div>
 
                   {/* Bottom Running Footer */}
-                  <div className="flex items-center justify-between text-[8px] sm:text-[9px] font-sans-body text-[#1A1A1A]/60 pt-1 sm:pt-1.5 border-t border-[#1A1A1A]/10 shrink-0">
-                    <span>BİR ADA DERGİSİ • SAYI 01</span>
+                  <div className="flex items-center justify-between text-[8px] sm:text-[9px] font-sans text-[#1A1A1A]/60 pt-1 sm:pt-1.5 border-t border-[#1A1A1A]/10 shrink-0">
+                    <span>BİR ADA DERGİSİ • AĞUSTOS 2026 (SAYI 01)</span>
                     <span className="font-serif-cormorant italic text-[9.5px] sm:text-[10px] font-bold">
                       Sayfa {overallPageNumber}
                     </span>
@@ -1171,17 +1208,17 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
         {/* Mobile Sticky Bottom Action Bar (Ensures 1-tap download & print on phones) */}
         <div className="sm:hidden bg-[#1A1A1A] border-t border-white/10 p-2.5 flex items-center justify-between gap-2 shrink-0 z-10 print:hidden">
           <button
-            onClick={() => handleDownloadA5Pdf('all')}
+            onClick={() => handleDownloadPdf('a5')}
             disabled={isGeneratingPdf}
-            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-[#D4A373] text-[#1A1A1A] rounded-xl text-xs font-bold uppercase tracking-wider font-sans-body active:scale-95 shadow-md disabled:opacity-50"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-[#D4A373] text-[#1A1A1A] rounded-xl text-xs font-bold uppercase tracking-wider font-sans active:scale-95 shadow-md disabled:opacity-50"
           >
             <Download className="w-4 h-4" />
             <span>{isGeneratingPdf ? 'İndiriliyor...' : 'A5 PDF İndir'}</span>
           </button>
 
           <button
-            onClick={handlePrintA4}
-            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-white/20 text-white hover:bg-white hover:text-[#1A1A1A] rounded-xl text-xs font-bold uppercase tracking-wider font-sans-body active:scale-95 border border-white/20"
+            onClick={() => handlePrint('a4')}
+            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-white/20 text-white hover:bg-white hover:text-[#1A1A1A] rounded-xl text-xs font-bold uppercase tracking-wider font-sans active:scale-95 border border-white/20"
           >
             <Printer className="w-4 h-4" />
             <span>Kaydet / Yazdır</span>
@@ -1191,9 +1228,7 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
       </div>
 
       {/* ========================================================================= */}
-      {/* HIDDEN COMPLETE MAGAZINE BUFFER FOR 100% RELIABLE FULL A5 PDF EXPORT       */}
-      {/* This renders ALL pages off-screen so clicking download always gets ALL     */}
-      {/* 22+ pages even when filtered on screen                                    */}
+      {/* HIDDEN COMPLETE MAGAZINE BUFFER FOR 100% RELIABLE FULL PDF EXPORT         */}
       {/* ========================================================================= */}
       <div 
         id="pdf-full-magazine-render-container"
@@ -1204,53 +1239,80 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
         {/* Buffer Page 1: Cover */}
         <div className="magazine-pdf-page-full bg-[#FAF8F5] border-2 border-[#1A1A1A] p-7 w-[560px] min-h-[780px] flex flex-col justify-between mb-8">
           <div className="border-b-2 border-[#1A1A1A] pb-3 text-center">
-            <div className="flex items-center justify-between text-[9px] font-sans-body uppercase tracking-[0.2em] font-bold text-[#1A1A1A]/70 mb-1">
+            <div className="flex items-center justify-between text-[9px] font-sans uppercase tracking-[0.2em] font-bold text-[#1A1A1A]/70 mb-1">
               <span>LONDRA • EDINBURGH • CARDIFF</span>
-              <span>SAYI 01 / 2026</span>
-              <span>ÖZEL BASKI</span>
+              <span className="text-[#8C6A43] font-bold">AĞUSTOS 2026 • SAYI 01</span>
+              <span>İLK BASKI ÖZEL</span>
             </div>
             <h1 className="font-serif-cormorant text-5xl font-bold tracking-tighter text-[#1A1A1A] uppercase leading-none my-1">
               BİR ADA
             </h1>
             <p className="font-serif-cormorant italic text-sm text-[#8C6A43] font-medium">
-              "Bir Arada, Bir Ada'da" • Britanya Online Dergi ve Yaşam Seçkisi
+              "Bir Arada, Bir Ada'da" • Aylık Fikir, Kültür ve Yaşam Dergisi
             </p>
           </div>
 
           <div className="my-4 space-y-3">
-            <span className="inline-block px-2 py-0.5 bg-[#1A1A1A] text-white text-[9px] uppercase tracking-widest font-sans-body font-bold rounded">
-              Özel Kapak Dosyası
+            <span className="inline-block px-2 py-0.5 bg-[#1A1A1A] text-white text-[9px] uppercase tracking-widest font-sans font-bold rounded">
+              Kapak Dosyası • Ağustos 2026 (1. Sayı)
             </span>
             <h2 className="font-serif-cormorant text-2xl font-bold leading-tight text-[#1A1A1A]">
               Bir Arada, Bir Ada'da
             </h2>
+            <div className="text-[9.5px] font-sans font-medium text-[#8C6A43] flex items-center gap-1.5 border-y border-[#1A1A1A]/10 py-1">
+              <span className="font-bold text-[#1A1A1A]">Bir Ada Yayın Kurulu</span>
+              <span>•</span>
+              <span>Yayın Kurulu &amp; Editöryal Masa</span>
+            </div>
             <p className="font-serif-newsreader text-xs text-[#1A1A1A]/80 leading-relaxed text-justify">
               Londra'nın sisli sokaklarından İskoç Yaylaları'na; Birleşik Krallık'ta yaşayan toplumumuzun sesini, girişimcilik hikâyelerini, vize rehberlerini ve zengin kültür takvimini sayfalarımıza taşıyoruz.
             </p>
           </div>
 
-          <div className="border-t-2 border-[#1A1A1A] pt-3 grid grid-cols-2 gap-2 text-[9.5px] font-sans-body">
+          <div className="border-t-2 border-[#1A1A1A] pt-3 grid grid-cols-3 gap-2 text-[9px] font-sans">
             <div className="bg-[#1A1A1A]/[0.03] p-1.5 rounded border border-[#1A1A1A]/10">
-              <span className="text-[#8C6A43] font-bold block uppercase tracking-wider text-[8.5px]">01. SPONSORLUK VİZESİ</span>
-              <p className="font-serif-newsreader text-[#1A1A1A] text-[9.5px] truncate">Av. Ahmet Hüsrev Analizi</p>
+              <span className="text-[#8C6A43] font-bold block uppercase tracking-wider text-[7.5px]">01. SAĞLIK &amp; İKLİM</span>
+              <p className="font-serif-newsreader font-bold text-[#1A1A1A] text-[9.5px] truncate">Dr. Celal Görgülü</p>
+              <p className="text-[7.5px] text-[#8C6A43] truncate">Adli Tıp Uzmanı Hekim</p>
             </div>
             <div className="bg-[#1A1A1A]/[0.03] p-1.5 rounded border border-[#1A1A1A]/10">
-              <span className="text-[#8C6A43] font-bold block uppercase tracking-wider text-[8.5px]">02. UK ETKİNLİKLER</span>
-              <p className="font-serif-newsreader text-[#1A1A1A] text-[9.5px] truncate">Londra Türk Kültür Sanat</p>
+              <span className="text-[#8C6A43] font-bold block uppercase tracking-wider text-[7.5px]">02. HUKUK &amp; ŞİRKETLER</span>
+              <p className="font-serif-newsreader font-bold text-[#1A1A1A] text-[9.5px] truncate">Av. Fetanet Darıoğlu</p>
+              <p className="text-[7.5px] text-[#8C6A43] truncate">Resen Legal Kurucusu &amp; Kıdemli Avukat</p>
+            </div>
+            <div className="bg-[#1A1A1A]/[0.03] p-1.5 rounded border border-[#1A1A1A]/10">
+              <span className="text-[#8C6A43] font-bold block uppercase tracking-wider text-[7.5px]">03. VİZE &amp; GÖÇMENLİK</span>
+              <p className="font-serif-newsreader font-bold text-[#1A1A1A] text-[9.5px] truncate">Av. Ahmet Hüsrev</p>
+              <p className="text-[7.5px] text-[#8C6A43] truncate">Londra Göçmenlik &amp; Vize Avukatı</p>
+            </div>
+            <div className="bg-[#1A1A1A]/[0.03] p-1.5 rounded border border-[#1A1A1A]/10">
+              <span className="text-[#8C6A43] font-bold block uppercase tracking-wider text-[7.5px]">04. SİYASET &amp; EKONOMİ</span>
+              <p className="font-serif-newsreader font-bold text-[#1A1A1A] text-[9.5px] truncate">Mehmet Karateke</p>
+              <p className="text-[7.5px] text-[#8C6A43] truncate">Kamu Görevlisi &amp; Siyaset Analisti</p>
+            </div>
+            <div className="bg-[#1A1A1A]/[0.03] p-1.5 rounded border border-[#1A1A1A]/10">
+              <span className="text-[#8C6A43] font-bold block uppercase tracking-wider text-[7.5px]">05. GAYRİMENKUL &amp; YATIRIM</span>
+              <p className="font-serif-newsreader font-bold text-[#1A1A1A] text-[9.5px] truncate">Emre Aydoğan</p>
+              <p className="text-[7.5px] text-[#8C6A43] truncate">Genel Yayın Yönetmeni &amp; Emlak Danışmanı</p>
+            </div>
+            <div className="bg-[#1A1A1A]/[0.03] p-1.5 rounded border border-[#1A1A1A]/10">
+              <span className="text-[#8C6A43] font-bold block uppercase tracking-wider text-[7.5px]">06. KÜLTÜR &amp; SANAT</span>
+              <p className="font-serif-newsreader font-bold text-[#1A1A1A] text-[9.5px] truncate">Emre Çakmak</p>
+              <p className="text-[7.5px] text-[#8C6A43] truncate">UK Etkinlik &amp; Kültür Yazarı</p>
             </div>
           </div>
 
-          <div className="flex items-center justify-between text-[8.5px] font-sans-body text-[#1A1A1A]/60 pt-2 border-t border-[#1A1A1A]/10">
+          <div className="flex items-center justify-between text-[8.5px] font-sans text-[#1A1A1A]/60 pt-2 border-t border-[#1A1A1A]/10">
             <span>ISSN 2814-9921 • BİRLEŞİK KRALLIK</span>
-            <span className="font-serif-cormorant italic">Sayfa 1 (Kapak)</span>
+            <span className="font-serif-cormorant italic font-bold">Sayfa 1 (Kapak)</span>
           </div>
         </div>
 
         {/* Buffer Page 2: Table of Contents */}
         <div className="magazine-pdf-page-full bg-[#FAF8F5] border border-[#1A1A1A]/20 p-7 w-[560px] min-h-[780px] flex flex-col justify-between mb-8">
-          <div className="flex items-center justify-between border-b border-[#1A1A1A] pb-2 text-[9.5px] font-sans-body uppercase tracking-wider text-[#1A1A1A]/70">
-            <span className="font-bold text-[#8C6A43]">BİR ADA DERGİSİ</span>
-            <span>SAYI 01 / 2026 • DERGİ DİZİNİ</span>
+          <div className="flex items-center justify-between border-b border-[#1A1A1A] pb-2 text-[9.5px] font-sans uppercase tracking-wider text-[#1A1A1A]/70">
+            <span className="font-bold text-[#8C6A43]">BİR ADA AYLIK DERGİ</span>
+            <span>AĞUSTOS 2026 • SAYI 01 • DERGİ DİZİNİ</span>
             <span className="font-bold">SAYFA 2</span>
           </div>
 
@@ -1259,13 +1321,15 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
               İçindekiler &amp; Yayın Dizini
             </h2>
             <p className="font-serif-cormorant italic text-xs text-[#8C6A43]">
-              Bu Sayıda Yer Alan Özel Dosyalar ve Makaleler
+              1. Sayıda Yer Alan Makaleler ve Yazarlar
             </p>
           </div>
 
           <div className="my-2 space-y-1 divide-y divide-dashed divide-[#1A1A1A]/15 overflow-hidden">
             {orderedPosts.map((post, idx) => {
               const targetPage = postPageMapping[post.id] || (idx * 2 + 3);
+              const authorPosition = getAuthorWritingPosition(post.author.name, post.author.bio);
+
               return (
                 <div key={post.id} className="pt-1 first:pt-0 flex items-baseline justify-between gap-2">
                   <div className="flex items-baseline gap-2 min-w-0">
@@ -1273,12 +1337,16 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
                       {String(idx + 1).padStart(2, '0')}
                     </span>
                     <div className="min-w-0">
-                      <span className="text-[8px] font-sans-body uppercase tracking-wider font-bold text-[#8C6A43] block">
+                      <span className="text-[8px] font-sans uppercase tracking-wider font-bold text-[#8C6A43] block">
                         {post.category}
                       </span>
                       <h4 className="font-serif-cormorant text-xs font-bold text-[#1A1A1A] truncate leading-tight">
                         {post.title}
                       </h4>
+                      <p className="text-[8.5px] font-sans text-[#1A1A1A]/70 truncate">
+                        <span className="font-semibold text-[#1A1A1A]">{post.author.name}</span>
+                        <span className="text-[#8C6A43]"> — {authorPosition}</span>
+                      </p>
                     </div>
                   </div>
                   <span className="font-serif-cormorant italic text-xs text-[#1A1A1A]/70 shrink-0 font-bold">
@@ -1289,21 +1357,23 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
             })}
           </div>
 
-          <div className="flex items-center justify-between text-[8.5px] font-sans-body text-[#1A1A1A]/60 pt-2 border-t border-[#1A1A1A]/10">
-            <span>BİR ADA • BİRLEŞİK KRALLIK BAĞIMSIZ YAYINCILIK</span>
-            <span className="font-serif-cormorant italic">Sayfa 2</span>
+          <div className="flex items-center justify-between text-[8.5px] font-sans text-[#1A1A1A]/60 pt-2 border-t border-[#1A1A1A]/10">
+            <span>BİR ADA • AĞUSTOS 2026 (1. SAYI)</span>
+            <span className="font-serif-cormorant italic font-bold">Sayfa 2</span>
           </div>
         </div>
 
         {/* Buffer Pages 3+: All Articles in full sequence */}
         {allArticlePages.map((page) => {
           const { post, articlePageIndex, totalArticlePages, overallPageNumber, pageType } = page;
+          const authorPosition = getAuthorWritingPosition(post.author.name, post.author.bio);
+
           return (
             <div
               key={`buffer-${post.id}-page-${articlePageIndex}`}
               className="magazine-pdf-page-full bg-[#FAF8F5] border border-[#1A1A1A]/20 p-7 w-[560px] min-h-[780px] flex flex-col justify-between mb-8"
             >
-              <div className="flex items-center justify-between border-b border-[#1A1A1A] pb-1.5 text-[9px] font-sans-body uppercase tracking-wider text-[#1A1A1A]/70 shrink-0">
+              <div className="flex items-center justify-between border-b border-[#1A1A1A] pb-1.5 text-[9px] font-sans uppercase tracking-wider text-[#1A1A1A]/70 shrink-0">
                 <span className="font-bold text-[#8C6A43]">{post.category}</span>
                 <span className="truncate max-w-[280px]">BİR ADA • {post.title}</span>
                 <span className="font-bold">SAYFA {overallPageNumber}</span>
@@ -1323,9 +1393,12 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
                       )}
                     </div>
 
-                    <div className="flex items-center justify-between text-[9px] font-sans-body text-[#1A1A1A]/65 border-y border-[#1A1A1A]/10 py-1">
-                      <span className="font-bold text-[#1A1A1A]">{post.author.name}</span>
-                      <span>{post.readTimeMinutes} dk • Londra</span>
+                    <div className="flex items-center justify-between text-[9px] font-sans text-[#1A1A1A]/75 border-y border-[#1A1A1A]/10 py-1 bg-[#1A1A1A]/[0.02] px-2 rounded">
+                      <div className="flex items-center gap-1.5 truncate">
+                        <span className="font-bold text-[#1A1A1A]">{post.author.name}</span>
+                        <span className="text-[#8C6A43] font-medium truncate">• {authorPosition}</span>
+                      </div>
+                      <span className="shrink-0">{post.readTimeMinutes} dk</span>
                     </div>
 
                     <div className="mt-1">
@@ -1339,10 +1412,13 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
                     {renderMagazineMarkdownChunk(page.bodyContent || '', `buf-${post.id}-body-${articlePageIndex}`)}
 
                     {articlePageIndex === totalArticlePages && (
-                      <div className="mt-3 pt-2 border-t border-[#1A1A1A]/15 flex items-center justify-between text-[9px] font-sans-body text-[#1A1A1A]/70 bg-[#1A1A1A]/[0.02] p-1.5 rounded">
-                        <span className="font-bold text-[#1A1A1A]">{post.author.name}</span>
-                        <span className="italic font-serif-cormorant text-[10px]">
-                          "Bir Arada, Bir Ada'da"
+                      <div className="mt-3 pt-2 border-t border-[#1A1A1A]/15 flex items-center justify-between text-[9px] font-sans text-[#1A1A1A]/70 bg-[#1A1A1A]/[0.02] p-1.5 rounded">
+                        <div>
+                          <span className="font-bold text-[#1A1A1A] block">{post.author.name}</span>
+                          <span className="text-[8px] text-[#8C6A43]">{authorPosition}</span>
+                        </div>
+                        <span className="italic font-serif-cormorant text-[10px] font-semibold">
+                          "Bir Arada, Bir Ada'da" • Ağustos 2026
                         </span>
                       </div>
                     )}
@@ -1350,8 +1426,8 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
                 )}
               </div>
 
-              <div className="flex items-center justify-between text-[8.5px] font-sans-body text-[#1A1A1A]/60 pt-1.5 border-t border-[#1A1A1A]/10 shrink-0">
-                <span>BİR ADA DERGİSİ • SAYI 01</span>
+              <div className="flex items-center justify-between text-[8.5px] font-sans text-[#1A1A1A]/60 pt-1.5 border-t border-[#1A1A1A]/10 shrink-0">
+                <span>BİR ADA DERGİSİ • AĞUSTOS 2026 (SAYI 01)</span>
                 <span className="font-serif-cormorant italic text-[10px] font-bold">
                   Sayfa {overallPageNumber}
                 </span>

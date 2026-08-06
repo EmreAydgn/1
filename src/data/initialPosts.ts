@@ -8,7 +8,7 @@ import mehmetKaratekeAvatar from '../assets/images/mehmet_karateke_avatar_178601
 import britishAppleJuice from '../assets/images/british_apple_juice_1785628805063.jpg';
 import ukHeatwave2026Cover from '../assets/images/uk_heatwave_2026_1786019783378.jpg';
 import drCelalGorguluAvatar from '../assets/images/dr_celal_gorgulu_avatar_1786019795183.jpg';
-import birAdaManifestoCover from '../assets/images/bright_london_panorama_1786016549396.jpg';
+import birAdaManifestoCover from '../assets/images/london_aerial_view_1786020338763.jpg';
 import londonStudentsCover from '../assets/images/london_students_analysis_1785937267430.jpg';
 import fetanetDariogluAvatar from '../assets/images/fetanet_darioglu_official_1785628301139.jpg';
 import ukSponsorshipVisaCover from '../assets/images/uk_sponsorship_visa_1785940746279.jpg';
@@ -94,10 +94,10 @@ export const INITIAL_POSTS: BlogPost[] = [
   {
     id: 'post-pin-manifesto',
     title: 'Bir Arada, Bir Ada\'da',
-    subtitle: 'Bir Ada Online Dergi ve Yaşam Platformu Kuruluş Manifestosu',
-    excerpt: 'Her yolculuk bir hayalle başlar. Britanya\'da yaşayan tüm toplumumuzu kucaklayan bağımsız online haber ve yaşam platformumuza hoş geldiniz.',
+    subtitle: 'Bir Ada Aylık Fikir, Kültür ve Yaşam Dergisi • Ağustos 2026 (1. Sayı) Kuruluş Manifestosu',
+    excerpt: 'Her yolculuk bir hayalle başlar. Britanya\'da yaşayan tüm toplumumuzu kucaklayan bağımsız aylık haber, fikir ve yaşam dergimizin Ağustos 2026 tarihli 1. sayısına ve ortak buluşma noktamıza hoş geldiniz.',
     category: 'Dergi Tanıtımı',
-    tags: ['BirAda', 'Manifesto', 'DergiTanıtımı', 'Britanya', 'Toplum', 'Londra', 'SabitYazı'],
+    tags: ['BirAda', 'Manifesto', 'DergiTanıtımı', 'Britanya', 'Toplum', 'Londra', 'Ağustos2026', 'İlkSayı', 'AylıkDergi', 'SabitYazı'],
     coverImage: birAdaManifestoCover,
     author: {
       name: 'Bir Ada Yayın Kurulu',

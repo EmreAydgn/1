@@ -3,8 +3,9 @@ import { BlogPost } from '../types';
 import { BlogCard } from './BlogCard';
 import { Users, BookOpen, Feather, ArrowLeft, ArrowUpRight, Sparkles, CheckCircle2, Globe, Share2, Check } from 'lucide-react';
 import { BirAdaLogo, BIR_ADA_LOGO_AVATAR } from './BirAdaLogo';
-import fetanetDariogluAvatar from '../assets/images/fetanet_darioglu_official_1785628301139.jpg';
 import emreAydoganAvatar from '../assets/images/emre_aydogan_avatar_1785948893520.jpg';
+import fetanetDariogluAvatar from '../assets/images/fetanet_darioglu_official_1785628301139.jpg';
+import mehmetKaratekeAvatar from '../assets/images/mehmet_karateke_avatar_1786013433247.jpg';
 import { getAuthorInitials } from '../utils/authorUtils';
 import { getAuthorShareUrl } from '../utils/urlUtils';
 
@@ -37,10 +38,17 @@ export const AUTHORS_DATA: AuthorProfile[] = [
   {
     name: 'Fetanet Darıoğlu',
     avatar: fetanetDariogluAvatar,
-    role: 'Resen Legal Kurucusu & Kıdemli Avukat (Founder & Principal Lawyer)',
-    bio: 'Resen Legal (resenlegal.com) kurucusu ve kıdemli avukatı. Birleşik Krallık ticaret hukuku, şirket kurulumu, veri merkezleri mevzuatı, sözleşmeler ve sınır ötesi hukuki danışmanlık alanlarında uzman.',
-    location: 'Londra & İstanbul (Resen Legal)',
-    website: 'https://resenlegal.com/',
+    role: 'Resen Legal Kurucusu & Kıdemli Avukat',
+    bio: 'Resen Legal Kurucusu & Kıdemli Avukat (resenlegal.com). Birleşik Krallık şirketler hukuku, ticari sözleşmeler, uluslararası yükseköğrenim mevzuatı ve Londra pazarında kariyer & vize geçiş stratejileri üzerine uzman danışmanlık sunmaktadır.',
+    location: 'Londra & İstanbul',
+    website: 'https://resenlegal.com',
+  },
+  {
+    name: 'Av. Ahmet Hüsrev',
+    avatar: 'https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=200&q=80',
+    role: 'Londra Göçmenlik & Vize Avukatı | Lease Yenileme ve Uzatma Uzmanı',
+    bio: 'Londra merkezli göçmenlik ve vize avukatı. Birleşik Krallık vize türleri, Skilled Worker sponsorluk lisansları, süresiz oturum (ILR), vatandaşlık başvuruları ile konut ve ticari gayrimenkullerde Lease yenileme ve uzatma (Lease Extension & Leasehold Reform) hukuku alanında uzman danışmanlık hizmeti sunmaktadır.',
+    location: 'Londra, Birleşik Krallık',
   },
   {
     name: 'Dr. Aylin Yılmaz',
@@ -85,11 +93,11 @@ export const AUTHORS_DATA: AuthorProfile[] = [
     location: 'Londra / Cambridge',
   },
   {
-    name: 'Kemal Ertürk',
-    avatar: '',
-    role: 'Bir Ada Haber Müdürü & Westminster Siyaset Analisti',
-    bio: '15 yılı aşkın süredir Londra\'da yerleşik gazeteci. Avam Kamarası gelişmeleri, Birleşik Krallık iç siyaseti ve küresel diplomasi denklemını takip eder.',
-    location: 'Westminster, Londra',
+    name: 'Mehmet Karateke',
+    avatar: mehmetKaratekeAvatar,
+    role: 'Kamu Görevlisi & Siyaset ve Ekonomi Analisti | Eski Eğitimci',
+    bio: 'Üniversitelerin İngilizce bölümünden mezun olup Türkçe, İngilizce, Arnavutça ve İtalyancayı çok iyi derecede konuşabilmektedir. Yıllarca eğitimcilik yapmış olup şu anda Birleşik Krallık\'ta memur olarak çalışmakta ve İngiltere siyasetini ve ekonomi politikalarını yakından takip etmektedir.',
+    location: 'Londra, Birleşik Krallık',
   },
   {
     name: 'Murat Yazıcı',
@@ -244,6 +252,12 @@ export const AuthorsView: React.FC<AuthorsViewProps> = ({
                 alt={activeAuthor.name}
                 className="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover border-4 border-white shadow-md bg-white p-1 shrink-0"
               />
+            ) : activeAuthor.avatar ? (
+              <img
+                src={activeAuthor.avatar}
+                alt={activeAuthor.name}
+                className="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover border-4 border-white shadow-md bg-white shrink-0"
+              />
             ) : (
               <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-[#FAF6EE] text-[#0F2C59] font-bold font-serif-playfair text-2xl sm:text-3xl flex items-center justify-center border-4 border-white shadow-md shrink-0">
                 {getAuthorInitials(activeAuthor.name)}
@@ -338,6 +352,12 @@ export const AuthorsView: React.FC<AuthorsViewProps> = ({
                         src={BIR_ADA_LOGO_AVATAR}
                         alt={author.name}
                         className="w-20 h-20 rounded-full object-cover mx-auto border-2 border-[#1A1A1A]/10 group-hover:border-[#D4A373] transition-colors shadow-xs bg-white p-1 shrink-0"
+                      />
+                    ) : author.avatar ? (
+                      <img
+                        src={author.avatar}
+                        alt={author.name}
+                        className="w-20 h-20 rounded-full object-cover mx-auto border-2 border-[#1A1A1A]/10 group-hover:border-[#D4A373] transition-colors shadow-xs bg-white shrink-0"
                       />
                     ) : (
                       <div className="w-20 h-20 rounded-full bg-[#FAF6EE] text-[#0F2C59] font-bold font-serif-playfair text-xl flex items-center justify-center mx-auto border-2 border-[#1A1A1A]/10 group-hover:border-[#D4A373] transition-colors shadow-xs shrink-0">

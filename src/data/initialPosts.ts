@@ -6,7 +6,7 @@ import ukWindSolarEnergy from '../assets/images/uk_wind_solar_energy_17856285615
 import ukEconomicReformsCover from '../assets/images/uk_economic_reforms_1786013419108.jpg';
 import mehmetKaratekeAvatar from '../assets/images/mehmet_karateke_avatar_1786013433247.jpg';
 import britishAppleJuice from '../assets/images/british_apple_juice_1785628805063.jpg';
-import birAdaManifestoCover from '../assets/images/bir_ada_manifesto_cover_1785767235106.jpg';
+import birAdaManifestoCover from '../assets/images/natural_london_manifesto_1786015033004.jpg';
 import londonStudentsCover from '../assets/images/london_students_analysis_1785937267430.jpg';
 import fetanetDariogluAvatar from '../assets/images/fetanet_darioglu_official_1785628301139.jpg';
 import ukSponsorshipVisaCover from '../assets/images/uk_sponsorship_visa_1785940746279.jpg';

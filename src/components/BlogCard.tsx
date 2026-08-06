@@ -86,6 +86,7 @@ export const BlogCard: React.FC<BlogCardProps> = ({
           <img
             src={post.coverImage}
             alt={post.title}
+            referrerPolicy="no-referrer"
             onError={(e) => {
               (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=1200&q=80';
             }}
@@ -204,6 +205,7 @@ export const BlogCard: React.FC<BlogCardProps> = ({
           <img
             src={post.coverImage}
             alt={post.title}
+            referrerPolicy="no-referrer"
             onError={(e) => {
               (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=1200&q=80';
             }}

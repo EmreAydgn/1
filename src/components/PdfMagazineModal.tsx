@@ -1022,7 +1022,7 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
 
               {/* Numbered Table of Contents List */}
               <div className="my-1.5 sm:my-2 space-y-1 sm:space-y-1.5 divide-y divide-dashed divide-[#1A1A1A]/15 overflow-hidden">
-                {posts.map((post, idx) => {
+                {orderedPosts.map((post, idx) => {
                   const targetPage = postPageMapping[post.id] || (idx * 2 + 3);
                   return (
                     <div 
@@ -1264,7 +1264,7 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
           </div>
 
           <div className="my-2 space-y-1 divide-y divide-dashed divide-[#1A1A1A]/15 overflow-hidden">
-            {posts.map((post, idx) => {
+            {orderedPosts.map((post, idx) => {
               const targetPage = postPageMapping[post.id] || (idx * 2 + 3);
               return (
                 <div key={post.id} className="pt-1 first:pt-0 flex items-baseline justify-between gap-2">

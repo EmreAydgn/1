@@ -1,5 +1,5 @@
 export type BlogTheme = 'warm' | 'dark' | 'paper' | 'clean';
-export type FontStyle = 'serif-newsreader' | 'serif-cormorant' | 'sans-body' | 'mono-type';
+export type FontStyle = 'serif-lora' | 'serif-newsreader' | 'sans-body' | 'serif-merriweather' | 'serif-cormorant' | 'mono-type';
 
 export interface Comment {
   id: string;

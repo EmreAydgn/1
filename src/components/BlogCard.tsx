@@ -167,12 +167,12 @@ export const BlogCard: React.FC<BlogCardProps> = ({
             </h2>
 
             {post.subtitle && (
-              <p className="text-sm font-serif-playfair italic text-[#1A1A1A]/75 mb-3.5 line-clamp-2 leading-relaxed">
+              <p className="text-sm font-serif-lora italic text-[#332E2A] mb-3.5 line-clamp-2 leading-relaxed">
                 {post.subtitle}
               </p>
             )}
 
-            <p className="text-xs sm:text-[13px] font-sans-inter text-[#1A1A1A]/70 leading-relaxed line-clamp-3 mb-6">
+            <p className="text-xs sm:text-[13.5px] font-sans-inter text-[#2C2723] leading-relaxed line-clamp-3 mb-6">
               {post.excerpt}
             </p>
           </div>
@@ -288,7 +288,7 @@ export const BlogCard: React.FC<BlogCardProps> = ({
             {post.title}
           </h3>
 
-          <p className="text-xs font-sans-inter text-[#1A1A1A]/70 leading-relaxed line-clamp-3 mb-4">
+          <p className="text-[12.5px] font-sans-inter text-[#2C2723] leading-relaxed line-clamp-3 mb-4">
             {post.excerpt}
           </p>
         </div>

@@ -10,8 +10,6 @@ import {
   Eye, 
   MessageSquare, 
   Check, 
-  Type, 
-  Palette, 
   Sparkles,
   Send,
   Copy,
@@ -20,7 +18,7 @@ import {
   Download,
   Pin
 } from 'lucide-react';
-import { BlogPost, BlogTheme, FontStyle, Comment } from '../types';
+import { BlogPost, BlogTheme, Comment } from '../types';
 import { getAuthorInitials, getAuthorWritingPosition } from '../utils/authorUtils';
 import { getArticleShareUrl } from '../utils/urlUtils';
 
@@ -205,9 +203,8 @@ export const ArticleReader: React.FC<ArticleReaderProps> = ({
   onSelectAuthor,
 }) => {
   const [theme, setTheme] = useState<BlogTheme>(post.themePreference || 'warm');
-  const [font, setFont] = useState<FontStyle>('serif-cormorant');
   const [fontSize, setFontSize] = useState<number>(() =>
-    typeof window !== 'undefined' && window.innerWidth < 640 ? 17 : 19
+    typeof window !== 'undefined' && window.innerWidth < 640 ? 17.5 : 19.5
   );
   const [dropCap, setDropCap] = useState<boolean>(true);
   const [scrollProgress, setScrollProgress] = useState<number>(0);
@@ -377,11 +374,11 @@ export const ArticleReader: React.FC<ArticleReaderProps> = ({
   };
 
   const getThemeClasses = () => {
-    return 'bg-[#FAF8F5] text-[#2C2825] border-[#E8E2D9] dark:bg-[#141312] dark:text-[#ECE8E3] dark:border-[#2A2723]';
+    return 'bg-[#FAF8F5] text-[#1C1917] border-[#E8E2D9] dark:bg-[#141312] dark:text-[#ECE8E3] dark:border-[#2A2723]';
   };
 
   const getFontClass = () => {
-    return 'font-serif-cormorant';
+    return 'font-serif-lora';
   };
 
   const formattedDate = new Date(post.createdAt).toLocaleDateString('tr-TR', {
@@ -403,31 +400,33 @@ export const ArticleReader: React.FC<ArticleReaderProps> = ({
 
       {/* Floating Reader Toolbar */}
       <div className="sticky top-2 sm:top-4 z-40 max-w-4xl mx-auto px-2.5 sm:px-4 mb-4 sm:mb-8">
-        <div className="bg-white/95 dark:bg-[#1D1B1A]/95 backdrop-blur-md border border-[#E8E2D9] dark:border-[#332F2C] rounded-full px-2.5 py-1.5 sm:p-2 shadow-md sm:shadow-lg flex items-center justify-between gap-1.5 sm:gap-2">
+        <div className="bg-white/95 dark:bg-[#1D1B1A]/95 backdrop-blur-md border border-[#E8E2D9] dark:border-[#332F2C] rounded-full px-2.5 py-1.5 sm:p-2 shadow-md sm:shadow-lg flex items-center justify-between gap-1.5 sm:gap-2 relative">
           <button
             onClick={onBack}
             id="reader-back-btn"
-            className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-semibold text-[#736C65] dark:text-[#9E968F] hover:bg-[#F3EFEA] dark:hover:bg-[#272422] transition-colors shrink-0"
+            className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-semibold text-[#736C65] dark:text-[#9E968F] hover:bg-[#F3EFEA] dark:hover:bg-[#272422] transition-colors shrink-0 cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Geri</span>
           </button>
 
           {/* Font Size & Audio Controls */}
-          <div className="flex items-center gap-1 sm:gap-2">
-            
+          <div className="flex items-center gap-1.5 sm:gap-2">
             {/* Font Size Adjusters */}
-            <div className="flex items-center gap-1 text-xs">
+            <div className="flex items-center gap-0.5 text-xs bg-[#F3EFEA] dark:bg-[#272422] rounded-full p-0.5 border border-[#E8E2D9] dark:border-[#332F2C]">
               <button
-                onClick={() => setFontSize(Math.max(14, fontSize - 2))}
-                className="px-2 py-1 rounded hover:bg-[#F3EFEA] dark:hover:bg-[#272422]"
+                onClick={() => setFontSize(Math.max(14, fontSize - 1.5))}
+                className="px-2.5 py-0.5 rounded-full hover:bg-white dark:hover:bg-[#1D1B1A] font-bold text-[#736C65] dark:text-[#9E968F] transition-colors cursor-pointer"
                 title="Yazıyı Küçült"
               >
                 A-
               </button>
+              <span className="text-[10px] font-mono font-medium text-[#736C65] dark:text-[#9E968F] px-1">
+                {Math.round(fontSize)}px
+              </span>
               <button
-                onClick={() => setFontSize(Math.min(26, fontSize + 2))}
-                className="px-2 py-1 rounded hover:bg-[#F3EFEA] dark:hover:bg-[#272422]"
+                onClick={() => setFontSize(Math.min(28, fontSize + 1.5))}
+                className="px-2.5 py-0.5 rounded-full hover:bg-white dark:hover:bg-[#1D1B1A] font-bold text-[#736C65] dark:text-[#9E968F] transition-colors cursor-pointer"
                 title="Yazıyı Büyüt"
               >
                 A+
@@ -668,7 +667,7 @@ export const ArticleReader: React.FC<ArticleReaderProps> = ({
             if (trimmed.startsWith('>')) {
               const cleanQuote = trimmed.replace(/^>\s*/, '');
               return (
-                <blockquote key={index} className="my-5 sm:my-8 pl-3.5 sm:pl-6 border-l-3 sm:border-l-4 border-[#8C6A43] italic font-serif-cormorant text-base sm:text-xl text-[#59524B] dark:text-[#C5BEB8] leading-relaxed">
+                <blockquote key={index} className="my-6 sm:my-8 pl-4 sm:pl-6 py-2.5 sm:py-3 border-l-4 border-[#8C6A43] bg-[#F3EFEA]/80 dark:bg-[#272422]/80 rounded-r-2xl italic font-serif-lora text-base sm:text-lg text-[#3A332C] dark:text-[#E8E2D9] leading-relaxed">
                   {parseInlineMarkdown(cleanQuote)}
                 </blockquote>
               );
@@ -744,7 +743,7 @@ export const ArticleReader: React.FC<ArticleReaderProps> = ({
             }
 
             return (
-              <p key={index} className="mb-4 sm:mb-6 leading-relaxed sm:leading-loose text-[#1A1A1A]/95 dark:text-gray-100 break-words hyphens-auto tracking-normal">
+              <p key={index} className="mb-5 sm:mb-7 leading-[1.8] sm:leading-[1.85] text-[#1C1917] dark:text-[#F3EFEA] break-words hyphens-auto tracking-normal font-normal">
                 {parseInlineMarkdown(trimmed)}
               </p>
             );

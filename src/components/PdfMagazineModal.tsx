@@ -235,39 +235,39 @@ const renderMagazineMarkdownChunk = (
     // Check Headers
     if (trimmed.startsWith('# ')) {
       elements.push(
-        <h2 key={`${chunkKey}-h1-${idx}`} className="text-sm sm:text-base font-serif-cormorant font-bold text-[#1A1A1A] mt-2 mb-1 leading-snug tracking-tight border-b border-[#1A1A1A]/15 pb-0.5 break-inside-avoid">
+        <h2 key={`${chunkKey}-h1-${idx}`} className="text-sm sm:text-base font-serif-playfair font-bold text-[#141414] mt-2 mb-1 leading-snug tracking-tight border-b border-[#1A1A1A]/15 pb-0.5 break-inside-avoid">
           {parseInlineMarkdown(trimmed.replace(/^#\s*/, ''))}
         </h2>
       );
     } else if (trimmed.startsWith('## ')) {
       elements.push(
-        <h3 key={`${chunkKey}-h2-${idx}`} className="text-[11px] sm:text-[12.5px] font-serif-cormorant font-bold text-[#1A1A1A] mt-2 mb-0.5 leading-snug flex items-center gap-1.5 break-inside-avoid border-t border-[#1A1A1A]/10 pt-1">
+        <h3 key={`${chunkKey}-h2-${idx}`} className="text-[11.5px] sm:text-[13px] font-serif-lora font-bold text-[#141414] mt-2 mb-0.5 leading-snug flex items-center gap-1.5 break-inside-avoid border-t border-[#1A1A1A]/10 pt-1">
           <span className="w-1.5 h-1.5 rounded-full bg-[#D4A373] shrink-0" />
           <span>{parseInlineMarkdown(trimmed.replace(/^##\s*/, ''))}</span>
         </h3>
       );
     } else if (trimmed.startsWith('### ')) {
       elements.push(
-        <h4 key={`${chunkKey}-h3-${idx}`} className="text-[10px] sm:text-[11.5px] font-serif-cormorant font-bold text-[#8C6A43] mt-1.5 mb-0.5 leading-snug break-inside-avoid">
+        <h4 key={`${chunkKey}-h3-${idx}`} className="text-[10.5px] sm:text-[12px] font-serif-lora font-bold text-[#8C6A43] mt-1.5 mb-0.5 leading-snug break-inside-avoid">
           {parseInlineMarkdown(trimmed.replace(/^###\s*/, ''))}
         </h4>
       );
     } else if (trimmed.startsWith('#### ')) {
       elements.push(
-        <h5 key={`${chunkKey}-h4-${idx}`} className="text-[9px] sm:text-[10px] font-sans font-bold text-[#1A1A1A] mt-1 mb-0.5 leading-snug flex items-center gap-1 break-inside-avoid">
+        <h5 key={`${chunkKey}-h4-${idx}`} className="text-[9.5px] sm:text-[10.5px] font-sans-body font-bold text-[#141414] mt-1 mb-0.5 leading-snug flex items-center gap-1 break-inside-avoid">
           <span className="w-1 h-1 rounded-full bg-[#8C6A43] shrink-0" />
           <span>{parseInlineMarkdown(trimmed.replace(/^####\s*/, ''))}</span>
         </h5>
       );
     } else if (trimmed.startsWith('##### ')) {
       elements.push(
-        <h6 key={`${chunkKey}-h5-${idx}`} className="text-[8.5px] sm:text-[9.5px] font-sans font-semibold text-[#59524B] mt-1 mb-0.5 leading-snug break-inside-avoid">
+        <h6 key={`${chunkKey}-h5-${idx}`} className="text-[9px] sm:text-[10px] font-sans-body font-semibold text-[#443E38] mt-1 mb-0.5 leading-snug break-inside-avoid">
           {parseInlineMarkdown(trimmed.replace(/^#####\s*/, ''))}
         </h6>
       );
     } else if (trimmed.startsWith('> ')) {
       elements.push(
-        <blockquote key={`${chunkKey}-quote-${idx}`} className="my-1.5 py-1 px-2.5 bg-[#1A1A1A]/[0.03] border-l-2 border-[#D4A373] italic font-serif-newsreader text-[10px] sm:text-[11px] text-[#1A1A1A]/85 rounded-r break-inside-avoid">
+        <blockquote key={`${chunkKey}-quote-${idx}`} className="my-1.5 py-1.5 px-3 bg-[#1A1A1A]/[0.04] border-l-2.5 border-[#D4A373] italic font-serif-lora text-[10.5px] sm:text-[11.5px] text-[#1E1B18] rounded-r break-inside-avoid leading-relaxed">
           {parseInlineMarkdown(trimmed.replace(/^>\s*/, ''))}
         </blockquote>
       );
@@ -279,7 +279,7 @@ const renderMagazineMarkdownChunk = (
         elements.push(
           <div key={`${chunkKey}-img-${idx}`} className="my-1.5 rounded-lg overflow-hidden border border-[#1A1A1A]/15 bg-[#FDFBF7] break-inside-avoid">
             <img src={src} alt={alt} crossOrigin="anonymous" referrerPolicy="no-referrer" className="w-full h-auto max-h-[110px] sm:max-h-[130px] object-cover" />
-            {alt && <p className="text-[7.5px] sm:text-[8px] font-sans italic text-[#1A1A1A]/70 text-center py-0.5 bg-[#F5EFEB]/50 border-t border-[#1A1A1A]/10">{alt}</p>}
+            {alt && <p className="text-[8px] sm:text-[8.5px] font-sans italic text-[#1A1A1A]/75 text-center py-0.5 bg-[#F5EFEB]/50 border-t border-[#1A1A1A]/10">{alt}</p>}
           </div>
         );
       }
@@ -299,9 +299,9 @@ const renderMagazineMarkdownChunk = (
       elements.push(
         <p 
           key={`${chunkKey}-p-${idx}`} 
-          className={`my-1 text-[9.5px] sm:text-[11px] leading-[1.6] font-serif-newsreader text-[#1A1A1A]/85 text-justify hyphens-auto break-inside-avoid ${
+          className={`my-1 text-[10px] sm:text-[11.5px] leading-[1.65] font-serif-lora text-[#181818] text-justify hyphens-auto break-inside-avoid tracking-normal ${
             applyDropCap 
-              ? "first-letter:text-3xl first-letter:font-serif-cormorant first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:text-[#8C6A43] first-letter:leading-none"
+              ? "first-letter:text-3xl first-letter:font-serif-playfair first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:text-[#8C6A43] first-letter:leading-none"
               : ""
           }`}
         >

@@ -298,17 +298,17 @@ export const BlogCard: React.FC<BlogCardProps> = ({
         <div className="flex items-center justify-between pt-4 border-t border-[#1A1A1A]/5">
           <div 
             onClick={handleAuthorClick}
-            className="flex items-center gap-2.5 hover:opacity-80 transition-opacity cursor-pointer group/author"
+            className="flex items-center gap-2.5 hover:opacity-90 transition-opacity cursor-pointer group/author flex-1 min-w-0 mr-2"
             title={`${post.author.name} profiline git`}
           >
-            <div className="w-7 h-7 rounded-full bg-[#FAF6EE] text-[#0F2C59] font-bold font-serif-playfair text-[10px] flex items-center justify-center border border-[#1A1A1A]/10 shrink-0 shadow-xs">
+            <div className="w-7 h-7 rounded-full bg-[#FAF6EE] text-[#0F2C59] font-bold font-serif-playfair text-[10.5px] flex items-center justify-center border border-[#1A1A1A]/10 shrink-0 shadow-xs">
               {getAuthorInitials(post.author.name)}
             </div>
-            <div className="truncate max-w-[140px]">
-              <span className="text-xs font-bold font-sans-inter text-[#1A1A1A] group-hover/author:text-[#C8102E] transition-colors block truncate">
+            <div className="truncate min-w-0">
+              <span className="text-[12px] sm:text-[12.5px] font-bold font-sans-inter text-[#141414] group-hover/author:text-[#C8102E] transition-colors block truncate tracking-tight">
                 {post.author.name}
               </span>
-              <span className="text-[9.5px] font-sans-inter text-[#8C6A43] font-medium block truncate">
+              <span className="text-[9.5px] sm:text-[10px] font-sans-inter text-[#8C6A43] font-medium block truncate tracking-normal">
                 {getAuthorWritingPosition(post.author.name, post.author.bio)}
               </span>
             </div>

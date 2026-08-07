@@ -31,6 +31,12 @@ export const AUTHORS_DATA: AuthorProfile[] = [
     location: 'Londra, Birleşik Krallık',
   },
   {
+    name: 'Saliha Özdemir',
+    role: 'Uluslararası Eğitim & Kariyer Danışmanı',
+    bio: 'Londra merkezli uluslararası eğitim ve kariyer danışmanı. Birleşik Krallık üniversiteleri, yüksek lisans programları, Graduate Route (PSW) kariyer planlaması ve Londra öğrenci ekosistemi üzerine stratejik rehberlik sunmaktadır.',
+    location: 'Londra & İstanbul',
+  },
+  {
     name: 'Fetanet Darıoğlu',
     role: 'Resen Legal Kurucusu & Kıdemli Avukat',
     bio: 'Resen Legal Kurucusu & Kıdemli Avukat (resenlegal.com). Birleşik Krallık şirketler hukuku, ticari sözleşmeler, uluslararası yükseköğrenim mevzuatı ve Londra pazarında kariyer & vize geçiş stratejileri üzerine uzman danışmanlık sunmaktadır.',
@@ -134,11 +140,6 @@ export const AuthorsView: React.FC<AuthorsViewProps> = ({
     ? posts.filter((p) => p.author.name.toLowerCase() === selectedAuthorName.toLowerCase())
     : [];
 
-  const activeAuthorAvatar =
-    activeAuthor?.avatar ||
-    authorPosts.find((p) => p.author.avatar)?.author.avatar ||
-    posts.find((p) => p.author.name.toLowerCase() === selectedAuthorName?.toLowerCase() && p.author.avatar)?.author.avatar;
-
   const handleShareAuthor = async () => {
     if (!activeAuthor) return;
     const authorUrl = getAuthorShareUrl(activeAuthor.name);
@@ -241,18 +242,9 @@ export const AuthorsView: React.FC<AuthorsViewProps> = ({
         <div className="space-y-10">
           {/* Author Profile Banner */}
           <div className="bg-[#FAF8F5] p-6 sm:p-8 rounded-3xl border border-[#1A1A1A]/10 flex flex-col sm:flex-row items-center gap-6">
-            {activeAuthorAvatar ? (
-              <img
-                src={activeAuthorAvatar}
-                alt={activeAuthor.name}
-                referrerPolicy="no-referrer"
-                className="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover border-4 border-white shadow-md shrink-0"
-              />
-            ) : (
-              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-[#FAF6EE] text-[#0F2C59] font-bold font-serif-playfair text-2xl sm:text-3xl flex items-center justify-center border-4 border-white shadow-md shrink-0">
-                {getAuthorInitials(activeAuthor.name)}
-              </div>
-            )}
+            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-[#FAF6EE] text-[#0F2C59] font-bold font-serif-playfair text-2xl sm:text-3xl flex items-center justify-center border-4 border-white shadow-md shrink-0">
+              {getAuthorInitials(activeAuthor.name)}
+            </div>
             <div className="text-center sm:text-left flex-1">
               <div className="flex items-center justify-center sm:justify-start gap-2 mb-1">
                 <h2 className="font-serif-playfair text-2xl font-bold text-[#1A1A1A]">{activeAuthor.name}</h2>
@@ -329,10 +321,6 @@ export const AuthorsView: React.FC<AuthorsViewProps> = ({
               (p) => p.author.name.toLowerCase() === author.name.toLowerCase()
             ).length;
 
-            const authorAvatar =
-              author.avatar ||
-              posts.find((p) => p.author.name.toLowerCase() === author.name.toLowerCase() && p.author.avatar)?.author.avatar;
-
             return (
               <div
                 key={author.name}
@@ -341,18 +329,9 @@ export const AuthorsView: React.FC<AuthorsViewProps> = ({
               >
                 <div>
                   <div className="relative mb-4 text-center">
-                    {authorAvatar ? (
-                      <img
-                        src={authorAvatar}
-                        alt={author.name}
-                        referrerPolicy="no-referrer"
-                        className="w-20 h-20 rounded-full object-cover mx-auto border-2 border-[#1A1A1A]/10 group-hover:border-[#D4A373] transition-colors shadow-xs shrink-0"
-                      />
-                    ) : (
-                      <div className="w-20 h-20 rounded-full bg-[#FAF6EE] text-[#0F2C59] font-bold font-serif-playfair text-xl flex items-center justify-center mx-auto border-2 border-[#1A1A1A]/10 group-hover:border-[#D4A373] transition-colors shadow-xs shrink-0">
-                        {getAuthorInitials(author.name)}
-                      </div>
-                    )}
+                    <div className="w-20 h-20 rounded-full bg-[#FAF6EE] text-[#0F2C59] font-bold font-serif-playfair text-xl flex items-center justify-center mx-auto border-2 border-[#1A1A1A]/10 group-hover:border-[#D4A373] transition-colors shadow-xs shrink-0">
+                      {getAuthorInitials(author.name)}
+                    </div>
                     <span className="absolute bottom-0 right-1/2 translate-x-8 translate-y-1 bg-[#1A1A1A] text-white text-[9px] font-bold px-2 py-0.5 rounded-full border border-white">
                       {authorPostCount} Yazı
                     </span>

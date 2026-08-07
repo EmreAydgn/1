@@ -10,6 +10,7 @@ export const getAuthorInitials = (name: string): string => {
 
 export const AUTHOR_POSITIONS_MAP: Record<string, string> = {
   'Dr. Celal Görgülü': 'Adli Tıp Uzmanı Hekim & Britanya Gündemi Analisti',
+  'Saliha Özdemir': 'Uluslararası Eğitim & Kariyer Danışmanı',
   'Av. Fetanet Darıoğlu': 'Resen Legal Kurucusu & Kıdemli Avukat',
   'Fetanet Darıoğlu': 'Resen Legal Kurucusu & Kıdemli Avukat',
   'Av. Ahmet Hüsrev': 'Londra Göçmenlik & Vize Avukatı',

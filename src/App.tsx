@@ -197,7 +197,7 @@ export default function App() {
     const newComment = {
       id: `c-${Date.now()}`,
       authorName,
-      authorAvatar: `https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80`,
+      authorAvatar: '',
       content,
       createdAt: new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' }),
       likes: 0,

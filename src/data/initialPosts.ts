@@ -1,19 +1,14 @@
 import { BlogPost, CategoryOption } from '../types';
-import emreAydoganAvatar from '../assets/images/emre_aydogan_avatar_1785948893520.jpg';
 import ukPropertyInvestCover from '../assets/images/uk_property_invest_1785948908924.jpg';
 import ukHousingRatesChart from '../assets/images/uk_housing_rates_chart_1785948928358.jpg';
 import ukWindSolarEnergy from '../assets/images/uk_wind_solar_energy_1785628561512.jpg';
 import ukEconomicReformsCover from '../assets/images/uk_economic_reforms_1786013419108.jpg';
-import mehmetKaratekeAvatar from '../assets/images/mehmet_karateke_avatar_1786013433247.jpg';
 import britishAppleJuice from '../assets/images/british_apple_juice_1785628805063.jpg';
 import ukHeatwave2026Cover from '../assets/images/uk_heatwave_2026_1786019783378.jpg';
-import drCelalGorguluAvatar from '../assets/images/dr_celal_gorgulu_avatar_1786019795183.jpg';
 import birAdaManifestoCover from '../assets/images/london_aerial_view_1786020338763.jpg';
 import londonStudentsCover from '../assets/images/london_students_analysis_1785937267430.jpg';
-import fetanetDariogluAvatar from '../assets/images/fetanet_darioglu_official_1785628301139.jpg';
 import ukSponsorshipVisaCover from '../assets/images/uk_sponsorship_visa_1785940746279.jpg';
 import londonTurkishEventsCover from '../assets/images/london_turkish_events_1785940930126.jpg';
-import { BIR_ADA_LOGO_AVATAR } from '../components/BirAdaLogo';
 
 export const CATEGORIES: CategoryOption[] = [
   {
@@ -101,7 +96,7 @@ export const INITIAL_POSTS: BlogPost[] = [
     coverImage: birAdaManifestoCover,
     author: {
       name: 'Bir Ada Yayın Kurulu',
-      avatar: BIR_ADA_LOGO_AVATAR,
+      avatar: '',
       bio: 'Britanya\'da yaşayan Türk toplumunun ortak sesi ve bağımsız yaşam mecrası.',
     },
     createdAt: '2026-07-24T10:00:00Z',
@@ -196,7 +191,7 @@ Birbirimizin sesi olalım.
     coverImage: ukHeatwave2026Cover,
     author: {
       name: 'Dr. Celal Görgülü',
-      avatar: drCelalGorguluAvatar,
+      avatar: '',
       bio: 'Adli Tıp Uzmanı Doktor (Forensic Medicine Specialist / MD). Uzun yıllara dayanan adli tıp ve klinik tecrübesinin yanı sıra Britanya gündemini, ada iklimini, halk sağlığı dinamiklerini ve toplum sağlığı risklerini yakından takip eden araştırmacı yazar.',
     },
     createdAt: '2026-08-06T10:00:00Z',
@@ -321,15 +316,15 @@ Bir Ada ailesi olarak sağlığınızı, sevdiklerinizi ve toplumsal dayanışma
   {
     id: 'post-london-international-turkish-students-analysis',
     title: 'Son 10 Yılda Londra\'ya Gelen Uluslararası ve Türk Öğrencilerin Kapsamlı Analizi (2016 – 2026): Yükseliş Evreleri, Tercih Edilen Bölümler ve 10 Yıllık Maliyet Haritası',
-    subtitle: 'Resen Legal Kurucusu Av. Fetanet Darıoğlu kalemiyle: Brexit belirsizliğinden Graduate Route (PSW) patlamasına ve yeni vize kısıtlamalarına Londra\'daki uluslararası öğrenci hareketliliği, İşletme, AI ve Hukuk alanlarındaki talep dağılımı ile 2016 vs 2021 vs 2026 harç, yurt ve bütçe karşılaştırması.',
-    excerpt: 'Son 10 yılda Londra\'da uluslararası ve Türk öğrenci ekosistemi: 2016-2019 Brexit geçişi, 2020-2023 Graduate Route ile kırılan 140.000 öğrenci rekoru ve Türkiye\'den %65 artış, en çok tercih edilen 6 eğitim alanı, harçlar, kiralar ve IHS ile 10 yıllık maliyet haritası analizi. Av. Fetanet Darıoğlu rehberi.',
+    subtitle: 'Eğitim ve Kariyer Danışmanı Saliha Özdemir kalemiyle: Brexit belirsizliğinden Graduate Route (PSW) patlamasına ve yeni vize kısıtlamalarına Londra\'daki uluslararası öğrenci hareketliliği, İşletme, AI ve Hukuk alanlarındaki talep dağılımı ile 2016 vs 2021 vs 2026 harç, yurt ve bütçe karşılaştırması.',
+    excerpt: 'Son 10 yılda Londra\'da uluslararası ve Türk öğrenci ekosistemi: 2016-2019 Brexit geçişi, 2020-2023 Graduate Route ile kırılan 140.000 öğrenci rekoru ve Türkiye\'den %65 artış, en çok tercih edilen 6 eğitim alanı, harçlar, kiralar ve IHS ile 10 yıllık maliyet haritası analizi. Saliha Özdemir rehberi.',
     category: 'İş Dünyası',
-    tags: ['LondraÖğrencileri', 'İngiltereEğitim', 'YüksekLisans', 'GraduateRoute', 'PSW', 'TürkÖğrenciler', 'RussellGroup', 'EğitimMaliyeti', 'ResenLegal', 'FetanetDarıoğlu', 'İşDünyası', 'Londra'],
+    tags: ['LondraÖğrencileri', 'İngiltereEğitim', 'YüksekLisans', 'GraduateRoute', 'PSW', 'TürkÖğrenciler', 'RussellGroup', 'EğitimMaliyeti', 'SalihaÖzdemir', 'EğitimDanışmanı', 'İşDünyası', 'Londra'],
     coverImage: londonStudentsCover,
     author: {
-      name: 'Fetanet Darıoğlu',
-      avatar: fetanetDariogluAvatar,
-      bio: 'Resen Legal Kurucusu & Kıdemli Avukat (Founder & Principal Lawyer at Resen Legal - resenlegal.com). Birleşik Krallık ticaret ve şirketler hukuku, uluslararası eğitim & kariyer mevzuatı uzmanı.',
+      name: 'Saliha Özdemir',
+      avatar: '',
+      bio: 'Uluslararası Eğitim & Kariyer Danışmanı (London Higher Education Advisor). Birleşik Krallık üniversiteleri, yüksek lisans programları, burslar ve Londra öğrenci ekosistemi uzmanı.',
     },
     createdAt: '2026-08-06T09:00:00Z',
     readTimeMinutes: 10,
@@ -341,7 +336,7 @@ Bir Ada ailesi olarak sağlığınızı, sevdiklerinizi ve toplumsal dayanışma
     pinned: false,
     content: `# Son 10 Yılda Londra'ya Gelen Uluslararası ve Türk Öğrencilerin Kapsamlı Analizi (2016 – 2026)
 
-**Yazar: Fetanet Darıoğlu** — *Resen Legal Kurucusu & Kıdemli Avukat (Founder & Principal Lawyer at Resen Legal)*
+**Yazar: Saliha Özdemir** — *Uluslararası Eğitim & Kariyer Danışmanı (London Higher Education Advisor)*
 
 Birleşik Krallık’ın ve küresel eğitimin başkenti **Londra**, *QS Best Student Cities* sıralamasında art arda dünyanın en iyi öğrenci şehri seçilerek akademik cazibesini ve kültürel liderliğini tartışmasız şekilde kanıtlamıştır. **Imperial College London, University College London (UCL), London School of Economics (LSE), King's College London, Queen Mary University of London (QMUL)** ve **University of the Arts London (UAL)** gibi dünyanın en prestijli eğitim kurumlarına ev sahipliği yapan Londra; her yıl 130.000'i aşkın uluslararası öğrenciyi ve binlerce Türk gencini ağırlamaktadır.
 
@@ -431,17 +426,17 @@ Yüksek lisans mezuniyetinin ardından 2 yıllık Graduate Route vizesine başvu
 
 Son 10 yıllık veriler açıkça ortaya koymaktadır ki; Londra yükseköğrenim ekosistemi harç ve yaşam maliyetlerindeki artışa rağmen, sağladığı **küresel itibar, benzersiz profesyonel ağ (networking), 1 yıllık program verimliliği ve 2 yıllık Graduate Route kariyer kapısı** sayesinde dünyanın ve Türkiye’nin en parlak beyinleri için vazgeçilmez bir çekim merkezi olmaya devam etmektedir.
 
-Eğitim yolculuğuna başlamadan önce kabul şartlarının, CAS belgesi gerekliliklerinin, konut kira sözleşmelerinin (Tenancy Agreements) ve mezuniyet sonrası vize geçiş stratejilerinin doğru hukuki danışmanlıkla planlanması, başarının en temel anahtarıdır.
+Eğitim yolculuğuna başlamadan önce kabul şartlarının, CAS belgesi gerekliliklerinin, konut kira sözleşmelerinin (Tenancy Agreements) ve mezuniyet sonrası vize geçiş stratejilerinin doğru danışmanlıkla planlanması, başarının en temel anahtarıdır.
 
 ---
 
-*Hazırlayan: Av. Fetanet Darıoğlu — Resen Legal Kurucusu & Kıdemli Avukat (resenlegal.com) | Londra & İstanbul*`,
+*Hazırlayan: Saliha Özdemir — Uluslararası Eğitim & Kariyer Danışmanı | Londra & İstanbul*`,
     comments: [
       {
         id: 'c-students-1',
         authorName: 'Canberk Demir',
         authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
-        content: 'KCL\'de LLM yapmayı planlayan bir hukukçu olarak 10 yıllık harç karşılaştırması ve tahkim alanı analizleri muhteşem bir rehber olmuş. Fetanet Hanım\'a çok teşekkürler.',
+        content: 'KCL\'de LLM yapmayı planlayan bir hukukçu olarak 10 yıllık harç karşılaştırması ve tahkim alanı analizleri muhteşem bir rehber olmuş. Saliha Hanım\'a çok teşekkürler.',
         createdAt: '2026-08-06T09:30:00Z',
         likes: 34,
       },
@@ -465,7 +460,7 @@ Eğitim yolculuğuna başlamadan önce kabul şartlarının, CAS belgesi gerekli
     coverImage: ukSponsorshipVisaCover,
     author: {
       name: 'Av. Ahmet Hüsrev',
-      avatar: 'https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=200&q=80',
+      avatar: '',
       bio: 'Londra Göçmenlik & Vize Avukatı | Lease Yenileme ve Uzatma Uzmanı.',
     },
     createdAt: '2026-08-05T08:00:00Z',
@@ -610,7 +605,7 @@ Sponsorluk Vizesi sürecine girmeden önce şu 3 stratejik adımı mutlaka kontr
     coverImage: 'https://images.unsplash.com/photo-1543783207-ec64e4d95325?auto=format&fit=crop&w=1200&q=80',
     author: {
       name: 'Dr. Selin Karan',
-      avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80',
+      avatar: '',
       bio: 'Tarih Araştırmacısı ve Oxford Üniversitesi Tarih Akademisyeni.',
     },
     createdAt: '2026-07-24T08:00:00Z',
@@ -655,7 +650,7 @@ Bugün Oxford\'a giden ziyaretçiler, Broad Street caddesinin ortasındaki parke
     coverImage: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=1200&q=80',
     author: {
       name: 'Ece Aydın',
-      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80',
+      avatar: '',
       bio: 'Sanat Eleştirmeni ve Londra Sanat Rotası Yazarı.',
     },
     createdAt: '2026-07-23T18:00:00Z',
@@ -689,7 +684,7 @@ Tate Modern çıkışında yer alan yaya köprüsü Millennium Bridge üzerinden
     coverImage: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80',
     author: {
       name: 'Dr. Mehmet Soylu',
-      avatar: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=200&q=80',
+      avatar: '',
       bio: 'NHS Bünyesinde Tıp Uzmanı ve Sağlık Teknolojileri Yazarı.',
     },
     createdAt: '2026-07-23T12:00:00Z',
@@ -715,7 +710,7 @@ Londra, Manchester, Birmingham ve Cambridge'deki araştırma merkezlerinde başl
       {
         id: 'c-health-1',
         authorName: 'Sibel Akman',
-        authorAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80',
+        authorAvatar: '',
         content: 'Tıp dünyasında ve İngiltere\'de umut verici harika bir gelişme. Detaylı anlatım için teşekkürler.',
         createdAt: '2026-07-23T15:00:00Z',
         likes: 31,
@@ -732,7 +727,7 @@ Londra, Manchester, Birmingham ve Cambridge'deki araştırma merkezlerinde başl
     coverImage: ukEconomicReformsCover,
     author: {
       name: 'Mehmet Karateke',
-      avatar: mehmetKaratekeAvatar,
+      avatar: '',
       bio: 'Üniversitelerin İngilizce bölümünden mezun. Türkçe, İngilizce, Arnavutça ve İtalyancayı çok iyi derecede konuşabilmekte. Yıllarca eğitimcilik yapmış olup şu anda İngiltere\'de memur olarak çalışmakta ve İngiltere siyasetini yakinen takip etmektedir.',
     },
     createdAt: '2026-08-06T08:30:00Z',
@@ -898,7 +893,7 @@ Londra'nın sergilediği bu duruş; bir yandan Birleşik Krallık'ı uluslararas
     coverImage: ukPropertyInvestCover,
     author: {
       name: 'Emre Aydoğan',
-      avatar: emreAydoganAvatar,
+      avatar: '',
       bio: 'Bir Ada Dergisi Kurucusu & Genel Yayın Yönetmeni | Emlak ve Yatırım Danışmanı. Üniversitelerin İngiliz Dili ve Edebiyatı bölümünden mezun olup 2015 yılından bu yana Londra\'da yaşamakta ve kariyerini Birleşik Krallık Emlak ve Yatırım Danışmanlığı alanında sürdürmektedir.',
     },
     createdAt: '2026-08-04T11:00:00Z',
@@ -1013,7 +1008,7 @@ Aşağıdaki tablo, 2019 yılından 2026 güncel dönemine kadar Birleşik Krall
       {
         id: 'c-emre-1',
         authorName: 'Murat Yazıcı',
-        authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
+        authorAvatar: '',
         content: 'Genel Yayın Yönetmenimiz Emre Aydoğan\'dan UK emlak piyasası, 2019-2026 faiz grafiği ve Buy-to-Let stratejileri üzerine başucu niteliğinde bir makale. Emeğinize sağlık!',
         createdAt: '2026-08-04T12:30:00Z',
         likes: 48,
@@ -1021,7 +1016,7 @@ Aşağıdaki tablo, 2019 yılından 2026 güncel dönemine kadar Birleşik Krall
       {
         id: 'c-emre-2',
         authorName: 'Selin Varol',
-        authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
+        authorAvatar: '',
         content: 'Özellikle BoE faiz döngüsü ile konut fiyat endeksinin karşılaştırmalı tablosu ve SPV Limited şirket tavsiyeleri Birleşik Krallık\'ta ev almak isteyen herkes için altın değerinde.',
         createdAt: '2026-08-04T14:15:00Z',
         likes: 36,
@@ -1038,7 +1033,7 @@ Aşağıdaki tablo, 2019 yılından 2026 güncel dönemine kadar Birleşik Krall
     coverImage: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=80',
     author: {
       name: 'Ece Aydın',
-      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80',
+      avatar: '',
       bio: 'Karşılaştırmalı Edebiyat Araştırmacısı ve Editör.',
     },
     createdAt: '2026-07-18T11:00:00Z',
@@ -1061,7 +1056,7 @@ Aşağıdaki tablo, 2019 yılından 2026 güncel dönemine kadar Birleşik Krall
     coverImage: britishAppleJuice,
     author: {
       name: 'Merve Karan',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+      avatar: '',
       bio: 'Seyahat yazarı, gastronomi araştırmacısı ve fotoğrafçı.',
     },
     createdAt: '2026-08-01T15:00:00Z',
@@ -1111,7 +1106,7 @@ Kırsal rotamızın kuzey ayağında, sisli vadileri ve derin gölleriyle **Scot
       {
         id: 'c-601',
         authorName: 'Selin Doğan',
-        authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+        authorAvatar: '',
         content: 'Somerset\'teki elma bahçelerine gitmiştim, taze sıkım elma suyu gerçekten harikaydı. Çok zengin ve harika bir seyahat rehberi olmuş!',
         createdAt: '2026-08-01T16:00:00Z',
         likes: 12,
@@ -1269,7 +1264,7 @@ Londra'da finans, hukuk, yazılım, akademi ve girişimcilik alanında çalışa
       {
         id: 'c-event-1',
         authorName: 'Deniz Sarp',
-        authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
+        authorAvatar: '',
         content: 'Londra\'da ne zaman hangi konser var diye sürekli onlarca sayfayı geziyorduk. Tek bir takvimde ve böylesine ayrıntılı toplanması muhteşem olmuş! Indigo O2 ve Jazz Cafe notları tam yerinde.',
         createdAt: '2026-08-05T08:15:00Z',
         likes: 38,
@@ -1277,7 +1272,7 @@ Londra'da finans, hukuk, yazılım, akademi ve girişimcilik alanında çalışa
       {
         id: 'c-event-2',
         authorName: 'Ceren Yurt',
-        authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
+        authorAvatar: '',
         content: 'Shaw Theatre\'daki Türkçe tiyatro oyunlarını ve Shoreditch\'teki tech buluşmalarını da eklemeniz çok değerli. Takvimi favorilerime kaydettim, elinize sağlık Emre Bey!',
         createdAt: '2026-08-05T08:50:00Z',
         likes: 27,

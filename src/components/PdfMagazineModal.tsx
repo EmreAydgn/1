@@ -1043,9 +1043,9 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
                   <p className="text-[8px] text-[#8C6A43] truncate">Adli Tıp Uzmanı Hekim &amp; Britanya Gündemi Analisti</p>
                 </div>
                 <div className="bg-[#1A1A1A]/[0.03] p-1.5 rounded border border-[#1A1A1A]/10">
-                  <span className="text-[#8C6A43] font-bold block uppercase tracking-wider text-[7.5px] sm:text-[8px]">02. HUKUK &amp; ŞİRKETLER</span>
-                  <p className="font-serif-newsreader font-bold text-[#1A1A1A] text-[9.5px] truncate">Av. Fetanet Darıoğlu</p>
-                  <p className="text-[8px] text-[#8C6A43] truncate">Resen Legal Kurucusu &amp; Kıdemli Avukat</p>
+                  <span className="text-[#8C6A43] font-bold block uppercase tracking-wider text-[7.5px] sm:text-[8px]">02. EĞİTİM &amp; KARİYER</span>
+                  <p className="font-serif-newsreader font-bold text-[#1A1A1A] text-[9.5px] truncate">Saliha Özdemir</p>
+                  <p className="text-[8px] text-[#8C6A43] truncate">Uluslararası Eğitim &amp; Kariyer Danışmanı</p>
                 </div>
                 <div className="bg-[#1A1A1A]/[0.03] p-1.5 rounded border border-[#1A1A1A]/10">
                   <span className="text-[#8C6A43] font-bold block uppercase tracking-wider text-[7.5px] sm:text-[8px]">03. VİZE &amp; GÖÇMENLİK</span>
@@ -1396,9 +1396,9 @@ export const PdfMagazineModal: React.FC<PdfMagazineModalProps> = ({
               <p className="text-[10px] text-[#8C6A43] truncate">Adli Tıp Uzmanı Hekim</p>
             </div>
             <div className="bg-[#1A1A1A]/[0.03] p-2.5 rounded border border-[#1A1A1A]/10">
-              <span className="text-[#8C6A43] font-bold block uppercase tracking-wider text-[9px] mb-0.5">02. HUKUK &amp; ŞİRKETLER</span>
-              <p className="font-serif-newsreader font-bold text-[#1A1A1A] text-[13px] truncate">Av. Fetanet Darıoğlu</p>
-              <p className="text-[10px] text-[#8C6A43] truncate">Resen Legal Kurucusu &amp; Kıdemli Avukat</p>
+              <span className="text-[#8C6A43] font-bold block uppercase tracking-wider text-[9px] mb-0.5">02. EĞİTİM &amp; KARİYER</span>
+              <p className="font-serif-newsreader font-bold text-[#1A1A1A] text-[13px] truncate">Saliha Özdemir</p>
+              <p className="text-[10px] text-[#8C6A43] truncate">Uluslararası Eğitim &amp; Kariyer Danışmanı</p>
             </div>
             <div className="bg-[#1A1A1A]/[0.03] p-2.5 rounded border border-[#1A1A1A]/10">
               <span className="text-[#8C6A43] font-bold block uppercase tracking-wider text-[9px] mb-0.5">03. VİZE &amp; GÖÇMENLİK</span>
